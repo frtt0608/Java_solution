@@ -1,0 +1,25 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - CarTest",
+            "request": "launch",
+            "mainClass": "CarTest",
+            "projectName": "java_solution_afb651b0"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - Practice",
+            "request": "launch",
+            "mainClass": "Practice",
+            "projectName": "java_solution_afb651b0"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - practice",
+            "request": "launch",
+            "mainClass": "practice",
+            "projectName": "java_solution_afb651b0"
+        }
+    ]
+}

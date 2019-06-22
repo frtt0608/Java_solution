@@ -1,0 +1,79 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - S7510",
+            "request": "launch",
+            "mainClass": "S7510",
+            "projectName": "swea_f5cb1c05"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - S7733",
+            "request": "launch",
+            "mainClass": "S7733"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - S7102",
+            "request": "launch",
+            "mainClass": "S7102"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - S6913",
+            "request": "launch",
+            "mainClass": "S6913"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - S6730",
+            "request": "launch",
+            "mainClass": "S6730"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - S7728",
+            "request": "launch",
+            "mainClass": "S7728"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - palindrome",
+            "request": "launch",
+            "mainClass": "palindrome"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - S3431",
+            "request": "launch",
+            "mainClass": "S3431"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - S1945",
+            "request": "launch",
+            "mainClass": "S1945"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - S2070",
+            "request": "launch",
+            "mainClass": "S2070",
+            "projectName": "D1_d1acc92c"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - Stamp",
+            "request": "launch",
+            "mainClass": "Stamp",
+            "projectName": "D1_d1acc92c"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - FileRead",
+            "request": "launch",
+            "mainClass": "FileRead"
+        }
+    ]
+}
