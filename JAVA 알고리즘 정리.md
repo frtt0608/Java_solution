@@ -79,5 +79,206 @@ static void BFS(String x) {
 
 
 
+### List, Set, Map
+
+1. List
+
+   * 중복과 순서가 있음
+
+   * Vector : 동기화, 속도가 느려질 수 있음
+
+   * ArrayList : 비동기화
+
+     ```java
+     ArrayList<String> list = new ArrayList<String>(5);
+     list.add("A");
+     list.remove(1);
+     list.sort(this); // 오름차순
+     list.sort(this, list.reverseOrder()); // 내림차순
+     ```
+
+2. Set
+
+   * 중복이 없고 순서도 없음
+
+   * HashSet
+
+   * TreeSet(정렬)
+
+     ```java
+     TreeSet<Integer> tree = new TreeSet<Integer>();
+     ```
+
+3. Map
+
+   * 검색할 때는 가장 빠름, 키값과 밸류값
+
+   * HashTable : 동기화
+
+   * HashMap : 비동기화
+
+   * TreeMap은 정렬제공
+
+     ```java
+     
+     ```
+
+
+
+### Tree
+
+> 비선형 구조로 원소들 간에 1:n 관계를 가지는 자료구조
+
+한개 이상의 노드로 이루어진 유한 집합
+
+* 루트: 노드 중 최상위 노드(시작노드)
+* 노드 : 트리의 원소
+* 간선 : 노드를 연결하는 선
+* 노드의 높이 : 노드의 레벨, 루트에서 노드에 이르는 간선의 수
+* 트리의 높이 : 트리에 있는 노드의 높이 중에서 가장 큰 값(최대 레벨)
+
+
+
+1. Binary Tree(이진트리)
+
+   1. 모든 노드들이 2개의 부트리를 갖는 형태 (최대 2개)
+
+   2. 포화 이진트리
+
+      * 모든 레벨에 노드가 포화상태로 차 있는 트리
+      * 루트를 1번으로 하여 각 노드가 노드번호를 가짐
+
+   3. 완전 이진트리
+
+      * 노드 수가 n개 일때 노드 번호 1번부터 n번까지 빈 자리가 없는 트리
+
+   4. 편향 이진트리
+
+      * 높이 h에 대한 최소 개수의 노드를 가지면서 한쪽 방향의 자식 노드만을 가진 트리
+      * 왼쪽 Skewed / 오른쪽 Skewed
+
+
+
+2. 순회
+
+   * Tree의 각 노드를 중복되지 않게 전부 방문하기.
+
+   1. 전위 순회
+
+      * 자손노드보다 루트노드를 먼저 방문
+
+        1. 현재 노드 n을 방문하여 처리
+        2. n의 왼쪽 부트리로 이동
+        3. n의 오른쪽 부트리로 이동
+
+   2. 중위 순회
+
+      * 왼쪽 자손, 루트, 오른쪽 자손 순으로 방문
+
+        1. 현재 노드 n의 왼쪽 부트리로 이동
+        2. n을 방문하여 처리
+        3. n의 오른쪽 부트리로 이동
+
+   3. 후위 순회
+
+      * 루트노드보다 자손을 먼저 방문
+
+        1. 현재 노드 n의 왼쪽 부트리로 이동
+        2. n의 오른쪽 부트리로 이동
+        3. n을 방문하여 처리
+
+   4. 레벨 순회
+
+      * 노드 번호에 따라 순서대로 방문
+        1. 루트 노드 1번부터 차례대로 이동
+
+
+
+   ```java
+public Node {
+    private char data;
+    private Node left;
+    private Node right;
+       
+   public Node(char data) {
+       this.data = data;
+   }
+   public char getData() {
+       return data;
+   }
+   public Node getLeft() {
+       return left;
+   }
+   public Node getRight() {
+       return right;
+   }
+}
+   
+// 전위 순회
+static public void preorder(Node n) {
+   if(n != null) {
+       System.out.print(n.getData() + " ");
+       preorder(n.getLeft());
+       preorder(n.getRight());
+   }
+}
+
+// 중위 순회
+static public void inorder(Node n) {
+   if(n != null) {
+       inorder(n.getLeft());
+       System.out.print(" " + n.getData());
+       inorder(n.getRight());
+   }
+}
+
+// 후위 순회
+static public void postorder(Node n) {
+   if(n != null) {
+       postorder(n.getLeft());
+       postorder(n.getRight());
+       System.out.print(" " + n.getData());
+   }
+}
+
+// 레벨 순회 (Queue)
+class Queue {
+    private Node[] q;
+    private int rear;
+    private int front;
+    
+    public Queu(int n) {
+        q = new Node[n];
+    } 
+}
+static public void levelorder(Node node) {
+    Queue que = new new Queue(10);
+    que.add(node);
+    Node n;
+    while(!que.isEmpty()) {
+        n = que.poll();
+        if(n != null) {
+            System.out.println(n.getData());
+            que.add(n.getLeft());
+            que.add(n.getRight());
+        }
+    }
+}
+
+
+   ```
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
