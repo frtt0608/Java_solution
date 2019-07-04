@@ -120,7 +120,16 @@ static void BFS(String x) {
    * TreeMap은 정렬제공
 
      ```java
+     Map<String, Integer> map = new HashMap<String, Integer>();
+     map.put("홍길동", 100);
+     map.put("jake", 26);
      
+     Set<String> set = map.keySet(); // key값
+     for(String str:set)
+         System.out.println(str + map.get()) // map.get(): value값
+         
+     Map<String, Integer> map = new TreeMap<String, Integer>();
+     // key값에 따라 정렬
      ```
 
 
