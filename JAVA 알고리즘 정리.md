@@ -208,22 +208,22 @@ public Node {
     private char data;
     private Node left;
     private Node right;
-       
-   public Node(char data) {
-       this.data = data;
-   }
-   public char getData() {
+    
+    public Node(char data) {
+        this.data = data;
+    }
+    public char getData() {
        return data;
-   }
-   public Node getLeft() {
+    }
+    public Node getLeft() {
        return left;
-   }
-   public Node getRight() {
+    }
+    public Node getRight() {
        return right;
-   }
-   public void setLeft(Node left) { 
+    }
+    public void setLeft(Node left) { 
        this.left = left;
-   }
+    }
     public void setRight(Node right) {
         this.right = right;
     }
@@ -234,29 +234,29 @@ public Node {
    
 // 전위 순회
 static public void preorder(Node n) {
-   if(n != null) {
-       System.out.print(n.getData() + " ");
-       preorder(n.getLeft());
-       preorder(n.getRight());
-   }
+    if(n != null) {
+        System.out.print(n.getData() + " ");
+        preorder(n.getLeft());
+        preorder(n.getRight());
+    }
 }
 
 // 중위 순회
 static public void inorder(Node n) {
-   if(n != null) {
-       inorder(n.getLeft());
-       System.out.print(" " + n.getData());
-       inorder(n.getRight());
-   }
+    if(n != null) {
+        inorder(n.getLeft());
+        System.out.print(" " + n.getData());
+        inorder(n.getRight());
+    }
 }
 
 // 후위 순회
 static public void postorder(Node n) {
-   if(n != null) {
-       postorder(n.getLeft());
-       postorder(n.getRight());
-       System.out.print(" " + n.getData());
-   }
+    if(n != null) {
+        postorder(n.getLeft());
+        postorder(n.getRight());
+        System.out.print(" " + n.getData());
+    }
 }
 
 // 레벨 순회 (Queue)
@@ -282,8 +282,6 @@ static public void levelorder(Node node) {
         }
     }
 }
-
-
    ```
 
 
