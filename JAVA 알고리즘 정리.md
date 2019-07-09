@@ -201,6 +201,87 @@ static void BFS(String x) {
       * 노드 번호에 따라 순서대로 방문
         1. 루트 노드 1번부터 차례대로 이동
 
+```java
+public Node {
+    private char data;
+    private Node left;
+    private Node right;
+    
+    public Node(char data) {
+        this.data = data;
+    }
+    public char getData() {
+       return data;
+    }
+    public Node getLeft() {
+       return left;
+    }
+    public Node getRight() {
+       return right;
+    }
+    public void setLeft(Node left) { 
+       this.left = left;
+    }
+    public void setRight(Node right) {
+        this.right = right;
+    }
+    public void setData(char data) { 
+        this.data = data; 
+    }
+}
+
+// 전위 순회
+static public void preorder(Node n) {
+    if(n != null) {
+        System.out.print(n.getData() + " ");
+        preorder(n.getLeft());
+        preorder(n.getRight());
+    }
+}
+
+// 중위 순회
+static public void inorder(Node n) {
+    if(n != null) {
+        inorder(n.getLeft());
+        System.out.print(" " + n.getData());
+        inorder(n.getRight());
+    }
+}
+
+// 후위 순회
+static public void postorder(Node n) {
+    if(n != null) {
+        postorder(n.getLeft());
+        postorder(n.getRight());
+        System.out.print(" " + n.getData());
+    }
+}
+
+// 레벨 순회 (Queue)
+class Queue {
+    private Node[] q;
+    private int rear;
+    private int front;
+    
+    public Queu(int n) {
+        q = new Node[n];
+    } 
+}
+static public void levelorder(Node node) {
+    Queue que = new new Queue(10);
+    que.add(node);
+    Node n;
+    while(!que.isEmpty()) {
+        n = que.poll();
+        if(n != null) {
+            System.out.println(n.getData());
+            que.add(n.getLeft());
+            que.add(n.getRight());
+        }
+    }
+}
+```
+
 
 
    ```java
@@ -231,7 +312,7 @@ public Node {
         this.data = data; 
     }
 }
-   
+
 // 전위 순회
 static public void preorder(Node n) {
     if(n != null) {
