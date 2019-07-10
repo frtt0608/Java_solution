@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - PrimMST",
+            "request": "launch",
+            "mainClass": "PrimMST",
+            "projectName": "알고리즘ex_4fdef869"
+        }
+    ]
+}

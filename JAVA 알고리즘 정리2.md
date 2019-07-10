@@ -486,7 +486,7 @@
                from[i] = vertex;
                dist[i] = c[vertex][i];
            }
-           for(int i=0 i<n-1; i++) {
+           for(int i=0; i<n-1; i++) {
                // n-1은 연결될 간선의 수
                int best = isBest(dist);
                // dist배열 중 0을 제외한 최소값을 가진 원소의 인덱스
@@ -510,9 +510,33 @@
            // dist배열 중 0을 제외한 최소값을 가진 원소의 인덱스를 반환하는 메소드
            int best = 0;
            for(int i=0; i<dist.length; i++) {
-               if()
-               best = i;
-               break;
+               if(dist[i] != 0) {
+   	            best = i;
+                   break;
+               }
+           }
+           for(int j=0; j<dist.length; j++) {
+               // dist에서 0이아닌 값 중 값이 가장 작은 인덱스를 찾는다.
+               if(dist[j] != 0 && dist[j] < dist[best]) {
+                   best = j;
+               }
+           }
+           return best;
+       }
+       
+       public static void main(String[] args) {
+           int[][] graph = {
+               {0,6,7,infi,10,9},
+               {6,0,8,infi,infi,infi},
+               {7,8,0,4,5,infi},
+               {infi,infi,4,0,3,11},
+               {10,infi,5,3,0,11},
+               {9,infi,infi,infi,11,0}
+           };
+           int[][] t = new int[2][graph.length-1];
+           prim(graph, graph.length, t, 0);
+           for(int i=0; i<t[0].length; i++) {
+               System.out.println(t[0][i] + " " + (t[1][i]));
            }
        }
    }
