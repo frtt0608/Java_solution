@@ -2,6 +2,18 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - DijkstraSP",
+            "request": "launch",
+            "mainClass": "DijkstraSP"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - KruskalMST",
+            "request": "launch",
+            "mainClass": "KruskalMST"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - PrimMST",
             "request": "launch",
             "mainClass": "PrimMST",
