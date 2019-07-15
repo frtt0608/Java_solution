@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - FloydSP",
+            "request": "launch",
+            "mainClass": "FloydSP",
+            "projectName": "알고리즘ex_4fdef869"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - DijkstraSP",
             "request": "launch",
             "mainClass": "DijkstraSP"
