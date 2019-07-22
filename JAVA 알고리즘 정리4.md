@@ -190,58 +190,60 @@
             ```
 
             ![](https://t1.daumcdn.net/cfile/tistory/223CF8435911DE5E08)
-
-
-
-             위는 자바에서 String클래스의 hashcode메소드를 예로 든 것이다. hashcode내부의 31진수처럼 표현해서 사용하는 것을 볼 수 있다.
-
+            
+            위는 자바에서 String클래스의 hashcode메소드를 예로 든 것이다. hashcode내부의 31진수처럼 표현해서 사용하는 것을 볼 수 있다.
+            
+            
+            
             ```java
             public class Record {
-                private String name;
-                private int id;
-                private double value;
-                ...;
-                public innt hashcode() {
-                    int hash = 17; // nonzero constant
-                    hash = 31 * hash + name.hashcode();
-                    hash = 31 * hash + Integer.valueOf(id).hashcode();
-                    hash = 31 * hash + Double.valueOf(value).hashcode();
-                    return hash;
-                }
-            }
+                        private String name;
+                        private int id;
+                        private double value;
+                        ...;
+                        public innt hashcode() {
+                            int hash = 17; // nonzero constant
+                            hash = 31 * hash + name.hashcode();
+                            hash = 31 * hash + Integer.valueOf(id).hashcode();
+                            hash = 31 * hash + Double.valueOf(value).hashcode();
+                            return hash;
+                        }
+                    }
             ```
-
-             만약 사용자가 정의 클래스에서 사용하고 싶다면 해당 클래스 내에서 hashcode를 오버라이딩해주면 된다.
-
-
-
+            
+            만약 사용자가 정의 클래스에서 사용하고 싶다면 해당 클래스 내에서 hashcode를 오버라이딩해주면 된다.
+            
+            
+            
             ```java
             private int hash(Key key) {
-                return (key.hashcode() & 0x7fffffff) % M;
-            }
+                        return (key.hashcode() & 0x7fffffff) % M;
+                    }
             ```
-
+            
             hash code와 hash함수를 구분할 필요가 있는데 hashcode는 임의의 -2^31에서 2^31사이의 정수이다. 따라서, 이 값을 바로 해쉬함수의 값으로 쓰는 것이 아니라 내가 원하는 테이블 안에 들어가는 인덱스로 변환해주는 함수가 필요하다.
-
+            
             위의 코드는 첫 비트를 양수로 변환해준 후 m으로 나눈 나머지를 구하는 코드이다. 이 함수를 수행하면 0에서 m-1까지의 인덱스가 나오게 된다.
-
-
-
+            
+            
+            
             ```java
             HashSet<MyKey> set = new HashSet<MyKey>();
-            set.add(MyKey);
-            if(set.contains(thsKey))
-                ...;
-            int k = set.size();
-            set.remove(theKey);
-            Iterator<MyKey> it = set.iterator();
-            while (it.hasNext()) {
-                MyKey key = it.next();
-                if(key.equals(aKey))
-                    it.remove();
-            }
+                    set.add(MyKey);
+                    if(set.contains(thsKey))
+                        ...;
+                    int k = set.size();
+                    set.remove(theKey);
+                    Iterator<MyKey> it = set.iterator();
+                    while (it.hasNext()) {
+                        MyKey key = it.next();
+                        if(key.equals(aKey))
+                            it.remove();
+                    }
             ```
-
-            자바가 제공해주는 해시 테이블은 Hashmap이라는 Treemap과 유사한 인터페이스를 제공하며, 이는 내부적으로 하나의 배열을 해시 테이블로 사용한다. 또한 chaining으로 충돌을 해결한다. 그리고 Load factor를 지정할 수 있는 특징을 가지고 있다. 이 때, 저장된 키의 개수가 Load factor를 초과하면 더 큰 배열을 할당하고 저장된 키들을 재배치(re-hashing)한다.
-
+            
+            자바가 제공해주는 해시 테이블은 Hashmap이라는 Treemap과 유사한 인터페이스를 제공하며, 이는 내부적으로 하나의 배열을 해시 테이블로 사용한다. 또한 chaining으로 충돌을 해결한다. 
+            
+            그리고 Load factor를 지정할 수 있는 특징을 가지고 있다. 이 때, 저장된 키의 개수가 Load factor를 초과하면 더 큰 배열을 할당하고 저장된 키들을 재배치(re-hashing)한다.
+            
             마지막으로 Hashset이라는 인터페이스도 제공하는데 set이라는 이름대로 집합의 성질을 지닌다. 해당 원소의 추가, 제거, 심지어 이터레이터까지 제공하게 된다. 이러한 인터페이스를 제공하는 것이 Hashset이다.
