@@ -1,6 +1,6 @@
 # JAVA 알고리즘 정리 5
 
-## Sort
+## Sort1
 
 ### Sort(정렬)
 
