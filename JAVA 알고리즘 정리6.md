@@ -102,6 +102,8 @@
 
 2. #### 힙정렬
 
+   <https://new93helloworld.tistory.com/106?category=691027>
+
    > 힙 정렬은 바이너리 힙, 이진 힙이라고 부르는 자료구조를 이용하는 정렬 알고리즘이다. (여기서, 힙은 메모리 영역인 힙과는 다른 말이다.)
 
    힙 정렬의 특징은 다음과 같다.
@@ -123,9 +125,9 @@
    ​	: Binary tree란 자식 노드가 2개씩 분화되는 tree이다. 따라서, 위의 2개는 tree는 모두 이진 트리이며 자식 노드가 생성될 때 왼쪽부터 생성된다.
 
    
-
+   
     2) Heap property
-   	2-1) MIN-heap property - 부모는 자식보다 데이터가 크거나 같다.
+	2-1) MIN-heap property - 부모는 자식보다 데이터가 크거나 같다.
    	2-2) MAX-heap property - 부모는 자식보다 데이터가 작거나 같다.
 
    ​	2개의 조건으로 나뉜다.
@@ -137,7 +139,7 @@
    (a)는 3개 다 heap이다.
 
    (b)는 3개 다 heap이 아니다. (heap property를 만족x)
-
+   
    (c)는 2개 다 heap이 아니다.  (complete binary tree의 모양x)
 
 
@@ -211,7 +213,7 @@
    MAX-Heapify의 시간 복잡도는 루브부터 마지막 레벨까지 비교, 교환 연산을 하므로 트리의 높이보다 많은 시간이필요하지 않다. 따라서 시간 복잡도는 높이에 의해서 결정되며, O(h)이다.
 
    일반적인 이진트리가 아니라 Complete Binary Tree이므로 노드의 개수를 n이라고 했을 때 시간 복잡도는 O(logn)이 된다.
-   
+
 
 3. #### Heapify
 
@@ -264,3 +266,91 @@
    MAX-HEAPIFY의 시간 복잡도는 logn의 밑은 2이다.
 
    따라서 총 시간 복잡도는 nlogn(밑은 2)가 된다.
+   
+   
+   
+4. #### Heap의 응용, 우선순위 큐(Priority queue)
+
+   > Queue는 FIFO구조를 가진 자료구조로 우선순위 큐는 이러한 큐의 한 종류이다.
+   >
+   > 우선순위 큐는 최대 우선 큐와 최소 우선 순위 큐로 나뉜다. 우리는 최대 우선 순위 큐를 중심으로 알아보도록 하겠다.
+
+   1) INSERT(x)  : 새로운 원소 x를 삽입
+
+   2) EXTRACT_MAX : 최대값을 삭제하고 반환
+
+   반대로 최소 우선 순위 큐는 EXTRACT_MAX 대신 EXTRACT_MIN을 지원한다. MAX HEAP을 이용해서 최대 우선 순위 큐를 구현할 수 있다.
+
+   ![](https://t1.daumcdn.net/cfile/tistory/27555543591BA75A2C)
+
+   먼저 INSERT에 대해 알아보도록 하자.
+
+   현재 Heap의 상황은 Complete Binary Tree와 MAX Heap Property를 만족한다.
+
+   INSERT로 새로운 노드를 추가하려면 마지막 leat에 추가될 수 밖에 없으며 이때 MAX Heap Property를 만족시키기위해 Heap Sort를 이용해서 전체 Heap을 정렬시켜서 Max Heap의 형태를 만들도록 해야 한다.
+
+   ```java
+   MAX-HEAP_INSERT(A, key) {
+       heap_size = heap_size+1;
+       A[heap_size] = key;
+       i = heap_size;
+       while(i>1 and A[Parent(i)] < A[i]) {
+   		exchange A[i] and A[Parent(i)];
+           i = Parent(i);
+       }
+   }
+   ```
+
+   슈도 코드로 MAX-Heap-Insert를 나타내었다. 위의 코드에서 A가 Heap이다.
+
+   Heap의 사이즈를 1 증가시키고 그 자리에 새로운 key값을 넣어준다. i는 새로 추가된 노드이다. 그 후 while문에서 i>1이라는 것은 root노드가 아니라는 뜻이며 A[Parent(i)] < A[i] 부모노드에 저장된 값보다 크다는 것(MAX Heap이 아니라는 것)이다. 위의 조건에 해당되면 부모 노드와 값을 교환해준다.
+
+   다시 말해 root 노드가 될때까지 또는, 자신의 부모 노드보다 작을 때까지 교환연산을 진행하게 되는 것이다. 이때 시간 복잡도는 트리에 높이에 비례하게 되나 Heap은 Complete Binary Tree이므로 O(nlogn)이다.
+
+   ![](https://t1.daumcdn.net/cfile/tistory/2552FC43591BA75B31)
+
+   다음은 EXTRACT_MAX를 표현한 그림이다. Heap은 아무 노드나 삭제할 수 없다. 여전히 Complete Binary Tree를 만족하기 위해서는 마지막 노드를 삭제할 수 밖에 없다.
+
+   따라서 root노드 값을 삭제하고 마지막 노드에 있던 값을 root노드로 옮겨주게 된다. 이후 Heap property복원을 위해서 sort를 진행하게 된다.
+
+   ```java
+   HEAP-EXTRACT-MAX(A) {
+   	if heap-size[A] < 1
+           then error "heap underflow"
+       max <- A[1]
+       A[1] <- A[heap-size[A]]
+       heap-size[A] <- heap-size[A]-1
+       MAX-HEAPIFY(A, 1)
+       return max
+   }
+   ```
+
+   EXTRACT-MAX의 슈도코드이다. size가 1보다 작을 경우 Dequeue연산을 진행할 수 없으므로 에러메세지를 출력한다.
+
+   그렇지 않으면 A[1]의 값(root)을 리턴하기 위해 MAX에 넣어주고, 마지막 값을 루트로 이동시켜준 후 마지막 노드를 삭제한다.
+
+   마지막으로 Sort함수를 호출하면 EXTRACT-MAX연산이 완료된다.
+   
+5. #### 정렬의 Low Bound / 시간복잡도의 최선은 왜 O(nlogn)일까
+
+   > 왜 O(nlogn)이라는 시간복잡도가 최선일까? 미리 결론부터 이야기하자면 Comparison Sort(비교 정렬)에 대해서는 nlogn보다 더 나은 복잡도가 없다는 것이다.
+
+   비교정렬은 데이터들의 크기 관계가 정의되어있다면 어떤 데이터형에서도 적용이 가능하다. 어떤 좋은 Comparison Sort도 nlogn을 넘지 않기 때문에 이와 같은 개념을 `하한`이라고 한다.
+
+   ![](https://t1.daumcdn.net/cfile/tistory/22146242591BA79F26)
+
+   이를 위해서 Decision Tree라는 것을 이용해 `하한`에 대해 알아보자.
+
+   위의 그림은 Insertion Sort에 대한 예제인데, Decision Tree는 이러한 과정을 하나의 Tree로 나타낸 것이다.
+
+   정렬할 데이터가 a(1), b(2), c(3)라면 맨 처음(root) 순서는 a(1)와 b(2)를 비교하는 것이다. 이에 따라 선택지는 2개로 분화되게 된다. a(1)가 큰 경우와 b(2)가 큰 경우이다.
+   
+   이와 같이 데이터를 비교할 때, 데이터 값에따라 나오는 경우의 수는 모든 순열에 해당되기 때문에 이 decision tree에서 leaf노드는 n!개가 된다.
+   
+   따라서, decision tree를 이용해 구해본 최악의 경우 시간 복잡도는 이 트리의 높이에 비례한다.(비교 연산)
+   
+   그렇다면 이진 트리에서 leaf node가 n!일 때 트리의 높이는
+   
+   `height >= log(n!) = O(nlogn)`이 된다.
+   
+   
