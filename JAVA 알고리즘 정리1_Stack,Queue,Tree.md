@@ -1,4 +1,4 @@
-# JAVA 알고리즘 정리
+# JAVA 알고리즘 정리1
 
 ## Data Structure
 
