@@ -1,3 +1,4 @@
+// Magnetic
 import java.io.*;
 import java.util.*;
 
@@ -10,10 +11,15 @@ public class S1220 {
     for(int tc=1; tc<2; tc++) {
       int N = in.nextInt();
       System.out.println(N);
-      StringTokenizer st = null;
-      st = in.next();
-      System.out.println(st);
-      // st.nextToken();
+      table = new int[N][N];
+
+      for(int i=0; i<N; i++) {
+        for(int j=0; j<N; j++) {
+          table[i][j] = in.nextInt();
+          System.out.print(table[i][j]);
+        }
+        System.out.println();
+      }
     }
   }
 }
