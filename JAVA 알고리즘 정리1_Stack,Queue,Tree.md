@@ -263,7 +263,7 @@ class Queue {
     private int rear;
     private int front;
     
-    public Queu(int n) {
+    public Queue(int n) {
         q = new Node[n];
     } 
 }
