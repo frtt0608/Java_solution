@@ -4,6 +4,7 @@ import java.util.*;
 
 public class S6958 {
   static int[][] table;
+
   public static void main(String[] args) throws Exception {
     System.setIn(new FileInputStream("input.txt"));
     Scanner in = new Scanner(System.in);
@@ -12,7 +13,7 @@ public class S6958 {
     for(int tc=1; tc<=T; tc++) {
       int N = in.nextInt();
       int M = in.nextInt();
-      int max_res = 0;
+      int max_res = -1;
       int person = 0;
 
       table = new int[N][M];
