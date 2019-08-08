@@ -197,18 +197,18 @@
             
             ```java
             public class Record {
-                        private String name;
-                        private int id;
-                        private double value;
-                        ...;
-                        public innt hashcode() {
-                            int hash = 17; // nonzero constant
-                            hash = 31 * hash + name.hashcode();
-                            hash = 31 * hash + Integer.valueOf(id).hashcode();
-                            hash = 31 * hash + Double.valueOf(value).hashcode();
-                            return hash;
-                        }
-                    }
+                private String name;
+                private int id;
+                private double value;
+                ...;
+                public int hashcode() {
+                int hash = 17; // nonzero constant
+                hash = 31 * hash + name.hashcode();
+                hash = 31 * hash + Integer.valueOf(id).hashcode();
+                hash = 31 * hash + Double.valueOf(value).hashcode();
+                return hash;
+                }
+            }
             ```
             
             만약 사용자가 정의 클래스에서 사용하고 싶다면 해당 클래스 내에서 hashcode를 오버라이딩해주면 된다.
@@ -217,8 +217,8 @@
             
             ```java
             private int hash(Key key) {
-                        return (key.hashcode() & 0x7fffffff) % M;
-                    }
+                return (key.hashcode() & 0x7fffffff) % M;
+            }
             ```
             
             hash code와 hash함수를 구분할 필요가 있는데 hashcode는 임의의 -2^31에서 2^31사이의 정수이다. 따라서, 이 값을 바로 해쉬함수의 값으로 쓰는 것이 아니라 내가 원하는 테이블 안에 들어가는 인덱스로 변환해주는 함수가 필요하다.
