@@ -1,3 +1,4 @@
+// SEM력
 import java.io.*;
 import java.util.*;
 
@@ -6,38 +7,46 @@ import java.util.*;
 // 예를 들어서 AD 24년은 24 24 24이고 AD 25년은 25 1 25이다.
 
 public class S7532 {
-    static int a,b,c; // 365 24 29
+    static int a, i; // 365 24 29
 
     public static void main(String[] args) throws Exception {
         System.setIn(new FileInputStream("input.txt"));
         Scanner in = new Scanner(System.in);
 
-        a=1;
-        b=1;
-        c=1;
-
         int T = in.nextInt();
-        for (int tc = 1; tc <= 1; tc++) {
+        for (int tc = 1; tc <= T; tc++) {
             int S = in.nextInt();
             int E = in.nextInt();
             int M = in.nextInt();
 
-            S = E-S;
-            E = M-E;
-            M = S-M;
-            System.out.println(S);
-            while((365*a - S)%24 != 0) {
-                a += 1;
-                while((24*b - E)%29 != 0) {
-                    b += 1;
-                    while((29*c - M)%365 !=0) {
-                        c += 1;
-                    }
+            i = 0;
+            a = 0;
+
+            if (S==365)
+                S = 0;
+            if(E==24)
+                E = 0;
+            if(M==29)
+                M = 0;
+
+            if(S==0 && E==0 & M==0)
+                i = 1;
+
+            while(true) {
+                a = 24*i + E;
+                if(a%29 != M) {
+                    i+=1;
+                } else {
+                    if (a%365 != S) {
+                        i += 1;
+                    } else {
+                        break;
+                    } 
                 }
+                
             }
-            System.out.println(a);
-            System.out.println(b);
-            System.out.println(c);
+
+            System.out.println("#" + tc + " " + a);
         }
     }
 }
