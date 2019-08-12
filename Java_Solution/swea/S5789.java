@@ -16,7 +16,18 @@ public class S5789 {
             table = new int[N];
 
             for(int i=1; i<=Q; i++) {
-                
+                int L = in.nextInt()-1;
+                int R = in.nextInt()-1;
+                for(int j=L; j<=R; j++) {
+                    table[j] = i;
+                }
+            }
+            System.out.print("#" + tc + " ");
+            for(int cnt=0; cnt < table.length; cnt++) {
+                if(cnt != table.length-1)
+                    System.out.print(table[cnt] + " ");
+                else
+                    System.out.println(table[cnt]);
             }
         }
     }
