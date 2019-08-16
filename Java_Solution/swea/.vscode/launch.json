@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - S7964",
+            "request": "launch",
+            "mainClass": "S7964",
+            "projectName": "swea_e6d891b6"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - S6900",
             "request": "launch",
             "mainClass": "S6900"
