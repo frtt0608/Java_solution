@@ -23,14 +23,12 @@ public class S6900 {
       for(int j=0; j<8; j++) {
         if(temp1[j].equals(temp2[j]) || temp1[j].equals("*")) {
           flag = true;
-          continue;
         } else {
           flag = false;
           break;
         }
       }
       if(flag==true) {
-        lotto[i] = "xxxxxxxx";
         return cash[i];
       }
     }
