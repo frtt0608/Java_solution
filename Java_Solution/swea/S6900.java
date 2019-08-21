@@ -29,7 +29,7 @@ public class S6900 {
           break;
         }
       }
-      if(flag==true) {
+      if(flag == true) {
         lotto[i] = "xxxxxxxx";
         return cash[i];
       }
