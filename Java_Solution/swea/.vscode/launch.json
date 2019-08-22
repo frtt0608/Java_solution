@@ -2,17 +2,31 @@
     "configurations": [
         {
             "type": "java",
-<<<<<<< HEAD
+            "name": "CodeLens (Launch) - S4047",
+            "request": "launch",
+            "mainClass": "S4047",
+            "projectName": "swea_932e0805"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - S8104",
+            "request": "launch",
+            "mainClass": "S8104",
+            "projectName": "swea_932e0805"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - S5948",
             "request": "launch",
             "mainClass": "S5948",
             "projectName": "swea_932e0805"
-=======
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - S7964",
             "request": "launch",
             "mainClass": "S7964",
             "projectName": "swea_e6d891b6"
->>>>>>> f537d4c1728d1a6ac87070de66405b014f6bda7f
         },
         {
             "type": "java",
