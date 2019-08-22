@@ -28,12 +28,9 @@ public class S6900 {
           break;
         }
       }
-<<<<<<< HEAD
+      
       if(flag == true) {
         lotto[i] = "xxxxxxxx";
-=======
-      if(flag==true) {
->>>>>>> f537d4c1728d1a6ac87070de66405b014f6bda7f
         return cash[i];
       }
     }
