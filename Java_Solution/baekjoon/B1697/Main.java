@@ -5,32 +5,31 @@ import java.util.*;
 public class Main {
   static int N;
   static int K;
-  static int t;
   static int[] v;
 
-  static void BFS_odd(int w) {
-    LinkedList<Integer> qu = new LinkedList();
+  static int BFS(int w) {
+    LinkedList<Integer[]> qu = new LinkedList();
     int time = 0;
-    qu.add(w);
-    while(!qu.isEmpty()) {
-
+    Integer[] temp = new Integer[] {w, time};
+    int location = w;
+    qu.add(temp);
+    while(!qu.isEmpty() && location != K) {
+      location = qu.peek()[0];
+      time = qu.peek()[1];
+      qu.poll();
+      
+      if(location == K) return time;
+    
+      v[location]=1;
+      
+      if(location-1 <= 100000 && v[location-1] != 1)
+        qu.add(new Integer[] {location-1, time+1});
+      if(location*2 <= 100000 && v[location*2] != 1)
+        qu.add(new Integer[] {location*2, time+1});
+      if(location+1 >= 0 && v[location+1] != 1)
+        qu.add(new Integer[] {location+1, time+1});
     }
-  }
-
-  static void BFS_even(int w) {
-    LinkedList<Integer> qu = new LinkedList();
-    int time = 0;
-    qu.add(w);
-    while(!qu.isEmpty()) {
-      int p = qu.poll();
-      if(p==N) {
-        System.out.println("time: " + time);
-        return;
-      }
-      if(N <= p/2) {
-        
-      }
-    }
+    return time;
   }
 
   static public void main(String[] args) throws IOException {
@@ -39,10 +38,8 @@ public class Main {
 
     N = in.nextInt();
     K = in.nextInt();
-    t=0;
-    if(K%2==0)
-      BFS_even(K);
-    else
-      BFS_odd(K);
+    v = new int[100005];
+    int res = BFS(N);
+    System.out.println(res);
   }
 }
