@@ -22,11 +22,11 @@ public class Main {
     
       v[location]=1;
       
-      if(location-1 <= 100000 && v[location-1] != 1)
+      if(location-1 >= 0 && v[location-1] != 1)
         qu.add(new Integer[] {location-1, time+1});
       if(location*2 <= 100000 && v[location*2] != 1)
         qu.add(new Integer[] {location*2, time+1});
-      if(location+1 >= 0 && v[location+1] != 1)
+      if(location+1 <= 100000 && v[location+1] != 1)
         qu.add(new Integer[] {location+1, time+1});
     }
     return time;
