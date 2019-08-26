@@ -8,22 +8,12 @@ public class Main {
     static int[][] visit;
     static int[] v;
 
-    static void BFS(int start, int node) {
-        LinkedList<Integer[]> qu = new LinkedList();
-        Integer[] temp = new Integer[] {start, node};
-        qu.add(temp);
-
-        while(!qu.isEmpty()) {
-            int s = qu.peek()[0];
-            int n = qu.peek()[1];
-            // System.out.println(s + "," + n);
-            qu.poll();
-            for(int i=0; i<N; i++) {
-                if(table[n][i]==1) {
-                    if(visit[s][i] == 0) { 
-                        visit[s][i] = 1;
-                        qu.add(new Integer[] {s,i});
-                    }
+    static void DFS(int s) {
+        for(int i=0; i<N; i++) {
+            if(table[s][i]==1) {
+                if(v[i]==0) { 
+                    v[i] = 1;
+                    DFS(i);
                 }
             }
         }
@@ -35,7 +25,7 @@ public class Main {
         N = in.nextInt();
         table = new int[N][N];
         visit = new int[N][N];
-        v = new int[N];
+        
 
         for(int i=0; i<N; i++) {
             for(int j=0; j<N; j++) {
@@ -43,15 +33,17 @@ public class Main {
             }
         }
 
-        for(int t=0; t<N; t++) {
-            if(v[t]==0) {
-                BFS(t, t);
+        for(int x=0; x<N; x++) {
+            v = new int[N];
+            DFS(x);
+            for(int y=0; y<N; y++) {
+                visit[x][y] = v[y];
             }
         }
 
         for(int i=0; i<N; i++) {
             for(int j=0; j<N; j++) {
-                System.out.print(visit[i][j]);
+                System.out.print(visit[i][j] + " ");
             }
             System.out.println();
         }
