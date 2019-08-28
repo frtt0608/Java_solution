@@ -2,24 +2,18 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class Main2 {
   static int N;
   static int M;
   static int[][] graph;
-  static int[][] v;
   static int[] v_node;
   static int cnt;
-  static Boolean flag;
 
   static void DFS(int s) {
+    v_node[s] = 1;
     for(int i=1; i<N; i++) {
-      if(graph[s][i]==1) {
-        if(v[s][i]==0) {
-          flag = true;
-          v_node[s] = 1;
-          v[s][i] = 1;
-          DFS(i);
-        }
+      if(graph[s][i]==1 && v_node[i]==0) {
+        DFS(i);
       }
     }
   }
@@ -31,7 +25,6 @@ public class Main {
     N = in.nextInt()+1;
     M = in.nextInt();
     graph = new int[N][N];
-    v = new int[N][N];
     v_node = new int[N];
     cnt=0;
 
@@ -43,18 +36,12 @@ public class Main {
     }
 
     for(int i=1; i<N; i++) {
-      flag = false;
-      DFS(i);
-      if(flag==true) {
-        cnt += 1;
-      }
-    }
-    
-    for(int i=1; i<N; i++) {
       if(v_node[i]==0) {
-        cnt+=1;
+          DFS(i);
+          cnt++;
       }
     }
+
     System.out.println(cnt);
   }
 }
