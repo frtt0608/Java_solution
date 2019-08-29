@@ -81,9 +81,7 @@ class Node implements Comparable<Node> {
 
     @Override
     public int compareTo(Node node) {
-        if(this.val > node.getVal()) return 1;
-        else if(this.val == node.getVal()) return 0;
-        else return -1;
+        return (this.val > node.getVal()) ? 1 : -1;
     }
     
     public int getVal() {
