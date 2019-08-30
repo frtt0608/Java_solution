@@ -6,13 +6,6 @@
   "configurations": [
     {
       "type": "java",
-      "name": "CodeLens (Launch) - Main",
-      "request": "launch",
-      "mainClass": "Main",
-      "projectName": "B1504_db3f5929"
-    },
-    {
-      "type": "java",
       "name": "Debug (Launch) - Current File",
       "request": "launch",
       "mainClass": "${file}"
