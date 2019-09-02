@@ -34,16 +34,12 @@ public class Main {
     static int M;
     static int[][] maze;
     static int[][] v;
-    static int[][] visit;
     static int[] dr;
     static int[] dc;
-    static Boolean flag;
-    static int res;
 
     static void BFS(int x, int y, int cnt) {
         PriorityQueue<Wall> qu = new PriorityQueue();
         qu.add(new Wall(x, y, cnt));
-        flag = false;
         v[x][y] = 0;
 
         while(!qu.isEmpty()) {
@@ -85,7 +81,6 @@ public class Main {
         N = in.nextInt();
         maze = new int[N][M];
         v = new int[N][M];
-        visit = new int[N][M];
         for(int i=0; i<N; i++) {
             Arrays.fill(v[i], Integer.MAX_VALUE);
         }
@@ -97,8 +92,6 @@ public class Main {
                 maze[i][j] = Integer.parseInt(temp[j]);
             }
         }
-
-        res=99999;
         BFS(0,0,0);
     }
 }

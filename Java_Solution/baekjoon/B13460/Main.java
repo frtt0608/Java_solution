@@ -25,33 +25,33 @@ public class Main {
   static String[][] board;
   static int[] dr = { 0, 0, 1, -1 };
   static int[] dc = { 1, -1, 0, 0 };
-  static int[][] Rv;
-  static int[][] Bv;
-  static int cnt;
+  static int[][][][] v;
 
   static void Dij(int Rx, int Ry, int Bx, int By) {
-    LinkedList<Node> qu = new LinkedList();
+    Queue<Node> qu = new LinkedList();
     qu.add(new Node(Rx, Ry, Bx, By, 0));
-    Rv[Rx][Ry] = 1;
-    Bv[Bx][By] = 1;
-    cnt = 0;
+    v[Rx][Ry][Bx][By] = 1;
+
     while (!qu.isEmpty()) {
       Node n = qu.poll();
       int oRr = n.RX;
       int oRc = n.RY;
       int oBr = n.BX; 
       int oBc = n.BY;
-      cnt = n.cnt;
+      int cnt = n.cnt;
       // System.out.println(oRr + ", " + oRc + "  :  " + oBr + ", " + oBc);
-      if (board[oRr][oRc].equals("O") && !board[oBr][oBc].equals("O")) {
-        System.out.println(cnt);
-        return;
-      }
+      // System.out.println(cnt);
+      if(board[oBr][oBc].equals("O")) continue;
       if(cnt > 10) {
         System.out.println("-1");
         return;
       }
 
+      if (board[oRr][oRc].equals("O") && !board[oBr][oBc].equals("O")) {
+        System.out.println(cnt);
+        return;
+      }
+      
       // d = 0:오른쪽, 1:왼쪽, 2:아래쪽, 3:위쪽
       for (int i = 0; i < 4; i++) {
         int Rr = oRr;
@@ -64,7 +64,8 @@ public class Main {
           int nRc = Rc + dc[i];
           if(board[nRr][nRc].equals("#")) {
             break;
-          } else if(board[nRr][nRc].equals("O")) {
+          }
+          if(board[nRr][nRc].equals("O")) {
             Rr = nRr;
             Rc = nRc;
             break;
@@ -77,7 +78,8 @@ public class Main {
           int nBc = Bc + dc[i];
           if(board[nBr][nBc].equals("#")) {
             break;
-          } else if(board[nBr][nBc].equals("O")) {
+          }
+          if(board[nBr][nBc].equals("O")) {
             Br = nBr;
             Bc = nBc;
             break;
@@ -88,11 +90,8 @@ public class Main {
 
         // 빨간공 파란공이 붙어있는 경우
         if (Rr == Br && Rc == Bc) {
-          if(board[Rr][Rc].equals("O") && board[Br][Bc].equals("O")) {
-            System.out.println("-1");
-            return;
-          }
-          else if(Math.abs(oRr-Rr) + Math.abs(oRc-Rc) > Math.abs(oBr-Br) + Math.abs(oBc-Bc)) {
+          if(board[Rr][Rc].equals("O") && board[Br][Bc].equals("O")) continue;
+          if(Math.abs(oRr-Rr) + Math.abs(oRc-Rc) > Math.abs(oBr-Br) + Math.abs(oBc-Bc)) {
             Rr -= dr[i];
             Rc -= dc[i];
           } else {
@@ -102,17 +101,14 @@ public class Main {
         }
 
         // 방문체크
-        if(Rv[Rr][Rc]==1 && Bv[Br][Bc]==1) continue;
-        Rv[Rr][Rc] = 1;
-        Bv[Br][Bc] = 1;
-        qu.add(new Node(Rr, Rc, Br, Bc, cnt+1));
+        if(v[Rr][Rc][Br][Bc]==1) continue;
+        v[Rr][Rc][Br][Bc] = 1;
+        qu.add(new Node(Rr, Rc, Br, Bc, n.cnt+1));
         
       }
     }
-    if(cnt >= 10) {
-      System.out.println("-1");
-      return;
-    }
+    System.out.println("-1");
+    return;
   }
 
   static public void main(String[] args) throws IOException {
@@ -122,8 +118,7 @@ public class Main {
     N = in.nextInt();
     M = in.nextInt();
     board = new String[N][M];
-    Rv = new int[N][M];
-    Bv = new int[N][M];
+    v = new int[N][M][N][M];
     int rr = 0, rc = 0, br = 0, bc = 0;
 
     for (int i = 0; i < N; i++) {
