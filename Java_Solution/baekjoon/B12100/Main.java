@@ -5,7 +5,6 @@ import java.util.*;
 public class Main {
   static int N;
   static int[][] board;
-  static int[] dr={0,0,1,-1}, dc={1,-1,0,0};
   static int[][] v;
   static int res;
 
@@ -32,10 +31,6 @@ public class Main {
       }
       return;
     }
-    if(max(map) == 2048) {
-      res = 2048;
-      return;
-    }
 
     for(int dir=0; dir<4; dir++) {
       int[][] table = new int[N][N];
@@ -43,128 +38,146 @@ public class Main {
         System.arraycopy(map[c], 0, table[c], 0, N);
         // System.out.println(Arrays.toString(table[c]));
       }
-      // System.out.println(max(table));
+      // System.out.println(cnt);
       // System.out.println("**************************");
       if(dir==0) {
-        Boolean Rflag = false;
         for(int i=0; i<N; i++) {
           v = new int[N][N];
           for(int j=N-2; j>=0; j--) {
-            int temp_t = table[i][j];
-            if(temp_t==0) continue;
-            for(int z=j+1; z<N; z++) {
-              if(table[i][z]==0) {
-                Rflag = true;
-                table[i][z] = temp_t;
-                table[i][z-1] = 0;
+            if(table[i][j]==0) continue;
+            int z = j+1;
+
+            while(table[i][z]==0) {
+              if(z == N-1) break;
+              z++;
+            }
+            if(table[i][z] == table[i][j] && v[i][z]==0) {
+              table[i][z] += table[i][j];
+              table[i][j] = 0;
+              v[i][z] = 1;
+            }
+            else if(table[i][z] == table[i][j] && v[i][z]==1) {
+              if(z-1 != j) {
+                table[i][z-1] = table[i][j];
+                table[i][j] = 0;
               }
-              else if(table[i][z]==temp_t) {
-                if(v[i][z]==0) {
-                  Rflag = true;
-                  table[i][z] += temp_t;
-                  table[i][z-1] = 0;
-                  v[i][z] = 1;
-                }
-              }
-              else break;
+            }
+            else if(table[i][z]==0) {
+              table[i][z] = table[i][j];
+              table[i][j] = 0;
+            }
+            else if(table[i][z] != table[i][j]) {
+              table[i][z-1] = table[i][j];
+              if(z-1 != j)
+                table[i][j] = 0;
             }
           }
-        }
-        if(Rflag==false) continue;
-        if(Rflag==true){
-          DFS(table, cnt+1);
         }
       }
       else if(dir==1) {
-        Boolean Lflag = false;
         for(int i=0; i<N; i++) {
           v = new int[N][N];
           for(int j=1; j<N; j++) {
-            int temp_t = table[i][j];
-            if(temp_t==0) continue;
-            for(int z=j-1; z>=0; z--) {
-              if(table[i][z]==0) {
-                Lflag = true;
-                table[i][z] = temp_t;
-                table[i][z+1] = 0;
+            if(table[i][j]==0) continue;
+            int z = j-1;
+
+            while(table[i][z]==0) {
+              if(z == 0) break;
+              z--;
+            }
+            if(table[i][z] == table[i][j] && v[i][z]==0) {
+              table[i][z] += table[i][j];
+              table[i][j] = 0;
+              v[i][z] = 1;
+            }
+            else if(table[i][z] == table[i][j] && v[i][z]==1) {
+              if(z+1 != j) {
+                table[i][z+1] = table[i][j];
+                table[i][j] = 0;
               }
-              else if(table[i][z] == temp_t) {
-                if(v[i][z]==0) {
-                  Lflag = true;
-                  table[i][z] += temp_t;
-                  table[i][z+1] = 0;
-                  v[i][z] = 1;
-                }
-              }
-              else break;
+            }
+            else if(table[i][z]==0) {
+              table[i][z] = table[i][j];
+              table[i][j] = 0;
+            }
+            else if(table[i][z] != table[i][j]) {
+              table[i][z+1] = table[i][j];
+              if(z+1 != j)
+                table[i][j] = 0;
             }
           }
-        }
-        if(Lflag==false) continue;
-        if(Lflag==true){
-          DFS(table, cnt+1);
         }
       }
       else if(dir==2) {
-        Boolean Bflag = false;
         for(int i=0; i<N; i++) {
           v = new int[N][N];
           for(int j=N-2; j>=0; j--) {
-            int temp_t = table[j][i];
             if(table[j][i]==0) continue;
-            for(int z=j+1; z<N; z++) {
-              if(table[z][i]==0) {
-                Bflag = true;
-                table[z][i] = temp_t;
-                table[z-1][i] = 0;
+            int z = j+1;
+            
+            while(table[z][i]==0) {
+              if(z==N-1) break;
+              z++;
+            }
+            if(table[z][i]==table[j][i] && v[z][i]==0) {
+              table[z][i] += table[j][i];
+              table[j][i] = 0;
+              v[z][i] = 1;
+            }
+            else if(table[z][i]==table[j][i] && v[z][i]==1) {
+              if(z-1 != j) {
+                table[z-1][i] = table[j][i];
+                table[j][i] = 0;
               }
-              else if(table[z][i]==temp_t) {
-                if(v[z][i]==0) {
-                  Bflag = true;
-                  table[z][i] += temp_t;
-                  table[z-1][i] = 0;
-                  v[z][i] = 1;
-                }
-              }
-              else break;
+            }
+            else if(table[z][i] == 0) {
+              table[z][i] = table[j][i];
+              table[j][i] = 0;
+            }
+            else if(table[z][i] != table[j][i]) {
+              table[z-1][i] = table[j][i];
+              if(z-1 != j)
+                table[j][i] = 0;
             }
           }
-        }
-        if(Bflag==false) continue;
-        if(Bflag==true) {
-          DFS(table, cnt+1);
         }
       }
       else if(dir==3) {
-        Boolean Tflag = false;
         for(int i=0; i<N; i++) {
           v = new int[N][N];
           for(int j=1; j<N; j++) {
-            int temp_t = table[j][i];
             if(table[j][i]==0) continue;
-            for(int z=j-1; z>=0; z--) {
-              if(table[z][i] == 0) {
-                Tflag = true;
-                table[z][i] = temp_t;
-                table[z+1][i] = 0;
+            int z = j-1;
+
+            while(table[z][i]==0) {
+              if(z==0) break;
+              z--;
+            }
+            if(table[z][i] == table[j][i] && v[z][i]==0) {
+              table[z][i] += table[j][i];
+              table[j][i] = 0;
+              v[z][i] = 1;
+            }
+            else if(table[z][i] == table[j][i] && v[z][i]==1) {
+              if(z+1 != j) {
+                table[z+1][i] = table[j][i];
+                table[j][i] = 0;
               }
-              else if(table[z][i] == temp_t) {
-                if(v[z][i]==0) {
-                  Tflag = true;
-                  table[z][i] += temp_t;
-                  table[z+1][i] = 0;
-                  v[z][i] = 1;
-                }
-              }
-              else break;
+            }
+            else if(table[z][i] == 0) {
+              table[z][i] = table[j][i];
+              table[j][i] = 0;
+            }
+            else if(table[z][i] != table[j][i]) {
+              table[z+1][i] = table[j][i];
+              if(z+1 != j)
+                table[j][i] = 0;
             }
           }
         }
-        if(Tflag==false) continue;
-        if(Tflag==true) {
-          DFS(table,cnt+1);
-        }
       }
+      // if(cnt==1) return;
+      DFS(table,cnt+1);
     }
     if(res < max(map))
       res = max(map);
