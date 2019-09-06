@@ -9,11 +9,11 @@ public class Main {
   static int[] dr={0,0,1,-1}, dc={1,-1,0,0};
 
   static Boolean chkwall(int x, int y) {
-    if(x>=N || x<0 || y>=M || y<0 || v[x][y] == 1) return true;
+    if(x>=N || x<0 || y>=M || y<0) return true;
     return false;
   }
   static int DFS(int x, int y, int cnt) {
-    if(cnt>3) {
+    if(cnt>=4) {
       return 0;
     }
     int res = 0;
@@ -21,11 +21,12 @@ public class Main {
       int nr = x + dr[i];
       int nc = y + dc[i];
       if(chkwall(nr,nc)) continue;
-      v[nr][nc] = 1;
-      res = Math.max(res, DFS(nr,nc,cnt+1) + map[nr][nc]);
-      v[nr][nc] = 0;
+      if(v[nr][nc]==1) continue;
+      // System.out.println(nr+", " +nc + ": "+ map[nr][nc] + "," + cnt);
+      v[x][y] = 1;
+      res = Math.max(res, DFS(nr,nc,cnt+1) + map[x][y]);
+      v[x][y] = 0;
     }
-    
     return res;
   }
 
@@ -55,18 +56,16 @@ public class Main {
     if(x==N-1 && y==0) return 0;
     if(x==N-1 && y==M-1) return 0;
 
-    if(y>=1 && y<=M-2) {
-      if(x==0) 
-        res = Math.max(res, O(x,y,2));
-      else if(x==N-1) 
-        res = Math.max(res, O(x,y,1));
-    } else if(x>=1 && x<=N-2) {
-      if(y==0) {
-        res = Math.max(res, O(x,y,3));
-      }
-      else if(y==M-1) {
-        res = Math.max(res, O(x,y,4));
-      }
+    
+    // ㅗ ㅜ ㅏ ㅓ
+    if((y>=1 && y<=M-2) && x==0) {
+      res = Math.max(res, O(x,y,2));      
+    } else if((y>=1 && y<=M-2) && x==N-1) {
+      res = Math.max(res, O(x,y,1));
+    } else if((x>=1 && x<=N-2) && y==0) {
+      res = Math.max(res, O(x,y,3));
+    } else if((x>=1 && x<=N-2) && y==M-1) {
+      res = Math.max(res, O(x,y,4));
     } else {
       res = Math.max(res, O(x,y,1));
       res = Math.max(res, O(x,y,2));
@@ -87,21 +86,18 @@ public class Main {
 
 
     for(int i=0; i<N; i++) {
-      for(int j=0; j<N; j++) {
+      for(int j=0; j<M; j++) {
         map[i][j] = in.nextInt();
       }
     }
 
     for(int i=0; i<N; i++) {
       for(int j=0; j<M; j++) {
-        int temp = DFS(i,j,0);
-        if(cnt < temp)
+        int temp = Math.max(DFS(i,j,0), side(i,j));
+        if(cnt<temp)
           cnt = temp;
-        int temp1 = side(i,j);
-        if(cnt < temp1)
-          cnt = temp1;
       }
-    }
+    } 
     System.out.println(cnt);
   }
 }
