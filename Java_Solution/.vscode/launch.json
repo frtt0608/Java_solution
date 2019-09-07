@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - PCpratice",
+            "request": "launch",
+            "mainClass": "PCpratice",
+            "projectName": "Java_Solution_5fb64899"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - CarTest",
             "request": "launch",
             "mainClass": "CarTest",

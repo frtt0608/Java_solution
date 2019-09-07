@@ -1,5 +1,3 @@
-package swea.ÃÖ´ë»ó±Ý;
-
 import java.io.FileInputStream;
 
 import java.util.Scanner;
@@ -11,7 +9,7 @@ public class Solution {
 	static int max;
 	public static void main(String[] args) throws Exception {
 	
-		System.setIn(new FileInputStream("./src/swea/ÃÖ´ë»ó±Ý/input.txt"));
+		System.setIn(new FileInputStream("./src/swea/ï¿½Ö´ï¿½ï¿½ï¿½/input.txt"));
 		Scanner sc = new Scanner(System.in);
 		
 		int T = sc.nextInt();
