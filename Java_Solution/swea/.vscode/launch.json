@@ -2,6 +2,27 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - S7510",
+            "request": "launch",
+            "mainClass": "S7510",
+            "projectName": "swea_fc5b605b"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - S3954",
+            "request": "launch",
+            "mainClass": "S3954",
+            "projectName": "swea_fc5b605b"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - S7227",
+            "request": "launch",
+            "mainClass": "S7227",
+            "projectName": "swea_fc5b605b"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - S2817",
             "request": "launch",
             "mainClass": "S2817",

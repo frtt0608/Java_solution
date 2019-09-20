@@ -31,7 +31,7 @@ public class S7732 {
     public static void main(String[] args) throws Exception {
         System.setIn(new FileInputStream("input.txt"));
         Scanner in = new Scanner(System.in);
-
+        
         int T = in.nextInt();
         for(int tc=1; tc<=T; tc++) {
             current_time = in.next();
@@ -65,7 +65,7 @@ public class S7732 {
                     res_time[j] = "0" + Integer.toString(res[j]);
                 }
             }
-
+            in.close();
             System.out.println("#"+ tc + " " + res_time[0] + ":" + res_time[1] + ":" + res_time[2]);
         }
     }

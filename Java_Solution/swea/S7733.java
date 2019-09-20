@@ -90,6 +90,7 @@ public class S7733 {
                     }
                 }
             }
+            in.close();
             System.out.println("#" + (tc) + " " + (max_cnt));
         }
     }
