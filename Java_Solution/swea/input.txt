@@ -1,3 +1,7 @@
-2
-1 2
-100000000000000000000000001 9
+6
+north
+west
+northwest
+northnorthwest
+westwestwestnorth
+westnorthnorthwest
