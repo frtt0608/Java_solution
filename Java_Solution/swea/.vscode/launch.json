@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - S4789",
+            "request": "launch",
+            "mainClass": "S4789",
+            "projectName": "swea_e6d891b6"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - S8556",
             "request": "launch",
             "mainClass": "S8556",
