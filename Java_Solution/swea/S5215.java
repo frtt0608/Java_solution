@@ -6,11 +6,11 @@ public class S5215 {
   static int N, L, max, score[], kal[];
   static void comb(int k, int s, int index) {
     if(k>L) return;
-    if(index>=N) return;
-    if(k<=L) {
-      if(max < s) {
-        max = s;
+    if(index>=N) {
+      if(k<=L) {
+        if(max < s) max = s;
       }
+      return;
     }
     s += score[index];
     k += kal[index];
