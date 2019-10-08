@@ -18,7 +18,7 @@ public class S3307 {
       res = 0;
       for(int n=0; n<N; n++) {table[n] = sc.nextInt();}
       for(int i=0; i<N; i++) {
-        if(N-i<res) break;
+        if((N-i)*11<res) break;
         for(int j=i+1; j<N; j++) {
           if(table[i] > table[j]) continue;
           if(count[i]+1 <= count[j]) continue;
