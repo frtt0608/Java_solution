@@ -15,33 +15,33 @@ public class S1860 {
             int M = sc.nextInt();
             int K = sc.nextInt();
             table = new int[N]; 
-            int time = 0, cnt=0, index=0;
+            int time = 0, cnt=0, index=0; int max=0;
             String res = "Impossible";
             for(int i=0; i<N; i++) {
                 table[i] = sc.nextInt();
+                if(max<table[i]) max=table[i];
             }
             Arrays.sort(table);
             while(true) {
-                time+=1;
-                if(time%M==0) cnt+=K;
+                if(time%M==0 && time!=0) {cnt+=K;}
                 if(table[index]==time) {
                     for(int i=index; i<table.length; i++) {
-                        if(table[index]==table[i]) {
+                        if(time==table[i]) {
                             index += 1;
                             cnt -= 1;
                         }
-                        else break;
+                        else {break;}
                     }
-                }
-                if(time >= table[table.length-1]) {
-                    System.out.println(index);
-                    res = "Possible";
-                    break;
                 }
                 if(cnt<0) {
                     res="Impossible";
                     break;
                 }
+                if(time==max && cnt>=0) {
+                    res="Possible";
+                    break;
+                }
+                time+=1;
             }
             System.out.println("#" + tc + " " + res);
         }   
