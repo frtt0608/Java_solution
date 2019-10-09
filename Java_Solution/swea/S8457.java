@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class S8457 {
-    static int N,B,E,x[];
+    static int N,B,E;
     public static void main(String[] args) throws IOException {
         System.setIn(new FileInputStream("input.txt"));
         Scanner sc = new Scanner(System.in);
@@ -14,7 +14,6 @@ public class S8457 {
             N=sc.nextInt();
             B=sc.nextInt();
             E=sc.nextInt();
-            x=new int[N];
             int cnt=0, temp=0, time=0;
             for(int i=0; i<N; i++) {
                 time = sc.nextInt();
