@@ -98,7 +98,7 @@ public class S5650 {
             int nc = c + dc[dir];
             // if(check(nr,nc) && map[r][c]>=1 && map[r][c]<=4)
             //     qu.add(new Go(r,c,triangle(square(dir), map[r][c]),go.cnt+2));
-            if(check(nr,nc)) qu.add(new Go(r,c,square(dir),go.cnt+1));
+            if(check(nr,nc)) qu.add(new Go(nr,nc,square(dir),go.cnt+1));
             else if(map[nr][nc] == -1) return go.cnt;
             else if(nr==x && nc==y) return go.cnt;
             else if(map[nr][nc] == 0) qu.add(new Go(nr,nc,dir,go.cnt));
