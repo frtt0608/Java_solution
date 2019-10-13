@@ -96,8 +96,7 @@ public class S5650 {
             int dir = go.dir;
             int nr = r + dr[dir];
             int nc = c + dc[dir];
-            // if(check(nr,nc) && map[r][c]>=1 && map[r][c]<=4)
-            //     qu.add(new Go(r,c,triangle(square(dir), map[r][c]),go.cnt+2));
+            
             if(check(nr,nc)) qu.add(new Go(nr,nc,square(dir),go.cnt+1));
             else if(map[nr][nc] == -1) return go.cnt;
             else if(nr==x && nc==y) return go.cnt;
@@ -107,11 +106,7 @@ public class S5650 {
             else if(map[nr][nc] >= 6) {
                 Node node = wormhole(nr,nc,map[nr][nc]);
                 qu.add(new Go(node.X, node.Y, dir, go.cnt));
-                
             }
-            // else {
-            //     if(map[r][c] < 5) qu.add(new Go(r, c, triangle(dir, map[r][c]), go.cnt+1));
-            // }
         }
         return temp;
     }
@@ -142,7 +137,6 @@ public class S5650 {
                 for(int j=0; j<N; j++) {
                     if(map[i][j]==0) {
                         for(int dir=0; dir<4; dir++) {
-                            // System.out.println(i+","+j+"  dir: "+dir);
                             if(check(i+dr[dir], j+dc[dir])) continue;
                             int bfs = BFS(i,j,dir);
                             if(res < bfs) res=bfs;
