@@ -21,11 +21,12 @@ class Atom {
 }
 
 class Node {
-    int x,y;
+    int X,Y,E;
 
-    Node(int x, int y) {
-        this.x = x;
-        this.y = y;
+    Node(int X, int Y, int E) {
+        this.X = X;
+        this.Y = Y;
+        this.E = E;
     }
 }
 
@@ -51,12 +52,11 @@ public class S5648 {
             
             int nx = x + dx[dir];
             int ny = y + dy[dir];
-            System.out.println("x:"+x+", "+"y:"+y);
+            // System.out.println("x:"+x+", "+"y:"+y);
             v[x][y] = 0;
             if(check(nx,ny)) continue;
             if(v[nx][ny]!=0) {
-                res += atom.e;
-                Node node = new Node(nx,ny);
+                Node node = new Node(nx,ny,atom.e);
                 if(!smash.contains(node)) smash.add(node);
                 continue;
             }
@@ -85,12 +85,11 @@ public class S5648 {
             }
             while(!map.isEmpty()) {
                 map = BFS(map);
-                if(res!=0) System.out.println(res);
                 if(smash.isEmpty()) continue;
                 for(int i=0; i<smash.size(); i++) {
                     Node node = smash.poll();
-                    System.out.println(node.x+", "+node.y);
-                    v[node.x][node.y]=0;
+                    res += v[node.X][node.Y];
+                    v[node.X][node.Y]=0;
                 }
             }
             System.out.println("#" + tc + " " + res);

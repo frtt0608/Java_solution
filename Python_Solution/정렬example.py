@@ -10,7 +10,7 @@ def selection_sort(arr):
     max_x=0
     for i in range(1, size+1):
       if arr[i] > arr[max_x]:
-        max_x = i;
+        max_x = i
     arr[max_x], arr[size] = arr[size], arr[max_x]
   return arr
 # 선택정렬
@@ -49,13 +49,13 @@ def pivot(arr, left, right):
   pivot_idx = left
   while left <= right:
     while left <= right and arr[left] <= pivot_val:
-      left += 1;
+      left += 1
     while left <= right and arr[right] >= pivot_val:
-      right -= 1;
+      right -= 1
     if left <= right:
       arr[left], arr[right]=arr[right],arr[left]
-      left += 1;
-      right -= 1;
+      left += 1
+      right -= 1
   arr[pivot_idx], arr[right] = arr[right], arr[pivot_idx]
   return right
 
