@@ -8,7 +8,7 @@ class S5648go{
 	static int[] dr = {1, -1, 0, 0};
 	static int[] dc = {0, 0, -1, 1};
 	static int[][] visit;
-  static int[][] newArr = new int[4003][4003];
+    static int[][] newArr = new int[4003][4003];
   
 	static int solution(int n, int[][] ar, int[][] ats) {
 		N = n;
@@ -54,7 +54,7 @@ class S5648go{
 			if (cnt == n) return result;
 			tmp = arr;
 			arr = newArr;
-			newArr = arr;
+			newArr = tmp;
 		}
 		return result;
 	}
