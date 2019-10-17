@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.LinkedList;
-import java.util.Queue;
 
 class Atom {
     int x,y,dir,e;
@@ -21,50 +20,64 @@ class Atom {
 }
 
 class Node {
-    int X,Y,E;
+    int X,Y;
 
-    Node(int X, int Y, int E) {
+    Node(int X, int Y) {
         this.X = X;
         this.Y = Y;
-        this.E = E;
     }
 }
 
 public class S5648 {
     static int N, res;
-    static int[][] v;
-    static int dx[]={0,0,-1,1}, dy[]={1,-1,0,0};
-    static Queue<Atom> map;
+    static int v[][];
+    static int dr[]={0,0,-1,1}, dc[]={1,-1,0,0};
+    static Atom map[];
     static LinkedList<Node> smash;
     
     static Boolean check(int x, int y) {
-        if(x>=2001 || x<0 || y>=2001 || y<0) return true;
+        if(x>=4001 || x<0 || y>=4001 || y<0) return true;
         return false;
     }
-    static Queue<Atom> BFS(Queue<Atom> map) {
-        Queue<Atom> rmap = new LinkedList<>();
-        smash = new LinkedList<Node>();
-        while(!map.isEmpty()) {
-            Atom atom = map.poll();
-            int x = atom.x;
-            int y = atom.y;
-            int dir = atom.dir;
-            
-            int nx = x + dx[dir];
-            int ny = y + dy[dir];
-            // System.out.println("x:"+x+", "+"y:"+y);
-            v[x][y] = 0;
-            if(check(nx,ny)) continue;
-            if(v[nx][ny]!=0) {
-                Node node = new Node(nx,ny,atom.e);
-                if(!smash.contains(node)) smash.add(node);
-                continue;
+    static void crush() {
+        int cnt = 0;
+        int r,c,nr,nc;
+        int new_v[][] = new int[4001][4001];
+        
+        for(int i=0; i<4001; i++) {
+            for(Atom atom:map) {
+                if(!atom.live) continue;
+                r=atom.x;
+                c=atom.y;
+                // System.out.println("r:" + r + " " + "c:" + c +" dir: "+atom.dir);
+                nr = r + dr[atom.dir];
+                nc = c + dc[atom.dir];
+                v[r][c] = 0;
+                if(check(nr,nc)) {cnt+=1; atom.live = false; continue;}
+                if(v[nr][nc] != 0) {
+                    smash.add(new Node(nr,nc));
+                    v[nr][nc] += atom.e;
+                    cnt += 1;
+                    atom.live = false;
+                    continue;
+                }
+                atom.x=nr; atom.y=nc;
+                v[nr][nc] = atom.e;
             }
-            v[nx][ny] = atom.e;
-            rmap.add(new Atom(nx, ny, dir, atom.e, true));
+            while(!smash.isEmpty()) {
+                Node node = smash.poll();
+                if(v[node.X][node.Y]==0) continue;
+                res += v[node.X][node.Y];
+                v[node.X][node.Y] = 0;
+                cnt += 1;
+                // System.out.println(node.X +", "+node.Y+" cnt: "+cnt);
+            }
+            if(cnt>=N) {
+                return;
+            }
         }
-        return rmap;
     }
+    
     public static void main(String[] args) throws IOException {
         System.setIn(new FileInputStream("input.txt"));
         Scanner sc = new Scanner(System.in);
@@ -72,27 +85,21 @@ public class S5648 {
         int T = sc.nextInt();
         for(int tc=1; tc<=T; tc++) {
             N = sc.nextInt();
-            map = new LinkedList<Atom>();
-            v = new int[2001][2001];
+            map = new Atom[N];
+            v = new int[4001][4001];
+            smash = new LinkedList<Node>();
             res = 0;
             for(int i=0; i<N; i++) {
-                int x = sc.nextInt()+1000; // x
-                int y = sc.nextInt()+1000; // y
+                int x = (sc.nextInt()+1000)*2; // x
+                int y = (sc.nextInt()+1000)*2; // y
                 int dir = sc.nextInt(); // 방향
                 int e = sc.nextInt(); // 에너지
-                map.add(new Atom(x,y,dir,e,true));
+                map[i] = new Atom(x,y,dir,e,true);
                 v[x][y] = e;
             }
-            while(!map.isEmpty()) {
-                map = BFS(map);
-                if(smash.isEmpty()) continue;
-                for(int i=0; i<smash.size(); i++) {
-                    Node node = smash.poll();
-                    res += v[node.X][node.Y];
-                    v[node.X][node.Y]=0;
-                }
-            }
+            crush();
             System.out.println("#" + tc + " " + res);
         }
+        sc.close();
     }
 }
