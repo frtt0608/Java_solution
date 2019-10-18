@@ -7,83 +7,89 @@ import java.util.Scanner;
 
 class Atom {
     int x,y,dir,e;
-    Boolean live;
 
-    Atom(int x, int y, int dir, int e, Boolean live) {
+    Atom(int x, int y, int dir, int e) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.e = e;
-        this.live = live;
     }
 }
 
-
 public class S5648 {
-    static int N, res;
-    static int v[][];
+    static int N, res, v[][];
+    static int arr[][], new_v[][] = new int[4001][4001];
     static int dr[]={0,0,-1,1}, dc[]={1,-1,0,0};
-    static Atom map[];
+    static Atom map[], atoms[];
     
     static Boolean check(int x, int y) {
         if(x>=4001 || x<0 || y>=4001 || y<0) return true;
         return false;
     }
-    static void crush() {
-        int cnt = 0;
-        int r,c,nr,nc;
-        int new_v[][] = new int[4001][4001];
-        
+    static void crush(int n, int[][] arr, Atom[] map) {
+        int r,c,nr,nc,e;
+        int tmp[][];
+
+        v = arr;
+        atoms = map;
+
         for(int i=0; i<4001; i++) {
-            for(Atom atom:map) {
+            int cnt = 0;
+            for(Atom atom:atoms) {
                 r=atom.x;
                 c=atom.y;
-                if(atom.live==false) continue;
+                e=atom.e;
+                if(e==0) {cnt+=1; continue;}
+                if(v[r][c]==0) {atom.e=0; continue;}
                 // System.out.println("r:" + r + " " + "c:" + c +" dir: "+atom.dir);
-                if(v[r][c] != atom.e) {
-                    v[r][c] = 0;
-                    res += atom.e;
-                    cnt += 1;
-                    atom.live = false;
-                    // System.out.println(res);
+                if(v[r][c] != e) {
+                    res += v[r][c];
+                    v[r][c]=0;
+                    atom.e=0;
                     continue;
                 }
                 nr = r + dr[atom.dir];
                 nc = c + dc[atom.dir];
                 v[r][c] = 0;
                 if(check(nr,nc)) {
-                    cnt+=1; 
-                    atom.live = false; 
+                    atom.e=0;
                     continue;
                 }
                 atom.x=nr; atom.y=nc;
-                new_v[nr][nc] += atom.e;
+                new_v[nr][nc] += e;
             }
-            if(cnt>=N) return;
+            if(cnt==n) return;
+            tmp = v;
             v = new_v;
+            new_v = tmp;
         }
+        return;
     }
     
     public static void main(String[] args) throws IOException {
         System.setIn(new FileInputStream("input.txt"));
         Scanner sc = new Scanner(System.in);
-        
+
         int T = sc.nextInt();
         for(int tc=1; tc<=T; tc++) {
+            long start = System.currentTimeMillis();
             N = sc.nextInt();
             map = new Atom[N];
-            v = new int[4001][4001];
+            arr = new int[4001][4001];
             res = 0;
+            int x,y,dir,e;
             for(int i=0; i<N; i++) {
-                int x = (sc.nextInt()+1000)*2; // x
-                int y = (sc.nextInt()+1000)*2; // y
-                int dir = sc.nextInt(); // 방향
-                int e = sc.nextInt(); // 에너지
-                map[i] = new Atom(x,y,dir,e,true);
-                v[x][y] = e;
+                x = (sc.nextInt()+1000)*2; // x
+                y = (sc.nextInt()+1000)*2; // y
+                dir = sc.nextInt(); // 방향
+                e = sc.nextInt(); // 에너지
+                map[i] = new Atom(x,y,dir,e);
+                arr[x][y] = e;
             }
-            crush();
+            crush(N, arr, map);
             System.out.println("#" + tc + " " + res);
+            long end = System.currentTimeMillis();
+            System.out.println( "실행 시간 : " + ( end - start )/1000.0 +"초");
         }
         sc.close();
     }

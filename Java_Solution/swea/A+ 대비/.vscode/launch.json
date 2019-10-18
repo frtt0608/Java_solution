@@ -5,6 +5,13 @@
             "name": "CodeLens (Launch) - S5648go",
             "request": "launch",
             "mainClass": "S5648go",
+            "projectName": "A+ 대비_841c9c66"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - S5648go",
+            "request": "launch",
+            "mainClass": "S5648go",
             "projectName": "A+ 대비_bc081d81"
         },
         {

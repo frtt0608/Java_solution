@@ -8,7 +8,7 @@ class S5648go{
 	static int[] dr = {1, -1, 0, 0};
 	static int[] dc = {0, 0, -1, 1};
 	static int[][] visit;
-    static int[][] newArr = new int[4003][4003];
+  static int[][] newArr = new int[4003][4003];
   
 	static int solution(int n, int[][] ar, int[][] ats) {
 		N = n;
@@ -18,7 +18,7 @@ class S5648go{
 		int result = 0;
 		int cnt;
 		int[][] tmp;
-		for(int i=0; i< 4001; i++) {
+		for(int i=0; i<4001; i++) {
 			cnt = 0;
 			for(int[] atom: atoms) {
 				r = atom[0];
@@ -51,10 +51,10 @@ class S5648go{
 				atom[1] = nc;
 				newArr[nr][nc] += e;
 			}
-			if (cnt == n) return result;
-			tmp = arr;
+			if(cnt==N) {
+				return result;
+			}
 			arr = newArr;
-			newArr = tmp;
 		}
 		return result;
 	}
@@ -64,10 +64,11 @@ class S5648go{
 		Scanner sc = new Scanner(System.in);
 		int T = sc.nextInt();
 		int N;
-		int[][] arr = new int[4003][4003];
-		int[][] atoms;
+		
 		for (int test_case = 1; test_case <= T; test_case++) {
+			long start = System.currentTimeMillis();
 			N = sc.nextInt();
+			int[][] arr = new int[4003][4003];
 			atoms = new int[N][4];
 			
 			for (int i=0; i< N; i++) {
@@ -80,6 +81,8 @@ class S5648go{
 			}
 			
 			System.out.println("#" + test_case + " " + solution(N, arr, atoms));
+			long end = System.currentTimeMillis();
+			System.out.println( "실행 시간 : " + ( end - start )/1000.0 +"초");
 		}
 		
 		sc.close();
