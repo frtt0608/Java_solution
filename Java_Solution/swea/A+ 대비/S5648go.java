@@ -64,11 +64,11 @@ class S5648go{
 		Scanner sc = new Scanner(System.in);
 		int T = sc.nextInt();
 		int N;
-		
+		int[][] arr = new int[4003][4003];
 		for (int test_case = 1; test_case <= T; test_case++) {
 			long start = System.currentTimeMillis();
 			N = sc.nextInt();
-			int[][] arr = new int[4003][4003];
+			
 			atoms = new int[N][4];
 			
 			for (int i=0; i< N; i++) {

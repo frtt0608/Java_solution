@@ -26,11 +26,11 @@ public class S5648 {
         if(x>=4001 || x<0 || y>=4001 || y<0) return true;
         return false;
     }
-    static void crush(int n, int[][] arr, Atom[] map) {
+
+    static void crush(int n, int[][] v, Atom[] map) {
         int r,c,nr,nc,e;
         int tmp[][];
 
-        v = arr;
         atoms = map;
 
         for(int i=0; i<4001; i++) {
@@ -51,7 +51,7 @@ public class S5648 {
                 nr = r + dr[atom.dir];
                 nc = c + dc[atom.dir];
                 v[r][c] = 0;
-                if(check(nr,nc)) {
+                if(nr>=4001 || nr<0 || nc>=4001 || nc<0) {
                     atom.e=0;
                     continue;
                 }
@@ -69,15 +69,19 @@ public class S5648 {
     public static void main(String[] args) throws IOException {
         System.setIn(new FileInputStream("input.txt"));
         Scanner sc = new Scanner(System.in);
-
+        arr = new int[4001][4001];
         int T = sc.nextInt();
         for(int tc=1; tc<=T; tc++) {
             long start = System.currentTimeMillis();
             N = sc.nextInt();
             map = new Atom[N];
-            arr = new int[4001][4001];
             res = 0;
             int x,y,dir,e;
+            for(int i=0; i<4001; i++) {
+                for(int j=0; j<4001; j++) {
+                    arr[i][j] = 0;
+                }
+            }
             for(int i=0; i<N; i++) {
                 x = (sc.nextInt()+1000)*2; // x
                 y = (sc.nextInt()+1000)*2; // y
