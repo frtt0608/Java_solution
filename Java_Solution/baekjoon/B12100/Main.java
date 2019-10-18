@@ -2,9 +2,19 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-  static int N, res=0, idx=0;
+  static int N, res=0, idx=0, temp=0;
   static int[][] board;
-  static int[][] chk;
+  static int[][] chk, table;
+
+  static int[][] copy_array(int copy[][]) {
+        int arr[][] = new int[N][N];
+        for(int i=0; i<N; i++) {
+            for(int j=0; j<N; j++) {
+                arr[i][j] = copy[i][j];
+            }
+        }
+        return arr;
+    }
 
   static int max(int[][] V) {
     int result = 0;
@@ -17,25 +27,27 @@ public class Main {
     }
     return result;
   }
+  static void init_visit() {
+    for(int i=0; i<N; i++) {
+      for(int j=0; j<N; j++) {
+        chk[i][j] = 0;
+      }
+    }
+  }
+
 
   static void DFS(int[][] map, int cnt) {
     if(cnt>=5) {
-      if(res < max(map)) {
-        res = max(map);
-      }
+      temp = max(map);
+      if(res < temp) res = temp;
       return;
     }
 
     for(int dir=0; dir<4; dir++) {
-      int[][] table = new int[N][N];
-      for(int copy=0; copy<N; copy++) {
-        System.arraycopy(map[copy], 0, table[copy], 0, N);
-        // System.out.println(Arrays.toString(table[copy]));
-      }
-      // System.out.println("**********************************");
-      // 오른쪽
+      table = copy_array(map);
+      init_visit();
+
       if(dir==0) {
-        chk = new int[N][N];
         for(int i=0; i<N; i++) {
           for(int j=N-2; j>=0; j--) {
             if(table[i][j]==0) continue;
@@ -48,25 +60,21 @@ public class Main {
               if(chk[i][idx]==0) {
                 chk[i][idx] = 1;
                 table[i][idx] *= 2;
-                table[i][j] = 0;
               } else {
                 table[i][idx-1] = table[i][j];
-                table[i][j] = 0;
-              }
+              } table[i][j] = 0;
             } else if(table[i][idx] == 0) {
               table[i][idx] = table[i][j];
               table[i][j] = 0;
             } else if(table[i][idx] != table[i][j]) {
               table[i][idx-1] = table[i][j];
-              if(idx-1 != j)
-                table[i][j] = 0;
+              if(idx-1 != j) table[i][j] = 0;
             }
           }
         }
       }
       // 왼쪽
       else if(dir==1) {
-        chk = new int[N][N];
         for(int i=0; i<N; i++) {
           for(int j=1; j<N; j++) {
             if(table[i][j]==0) continue;
@@ -79,26 +87,21 @@ public class Main {
               if(chk[i][idx]==0) {
                 chk[i][idx] = 1;
                 table[i][idx] *= 2;
-                table[i][j] = 0;
               } else {
                 table[i][idx+1] = table[i][j];
-                table[i][j] = 0;
-              }
+              } table[i][j] = 0;
             } else if(table[i][idx]==0) {
               table[i][idx] = table[i][j];
               table[i][j] = 0;
             } else if(table[i][idx] != table[i][j]) {
               table[i][idx+1] = table[i][j];
-              if(idx+1 != j) {
-                table[i][j] = 0;
-              }
+              if(idx+1 != j) table[i][j] = 0;
             } 
           }
         }
       }
       // 아래
       else if(dir==2) {
-        chk = new int[N][N];
         for(int i=0; i<N; i++) {
           for(int j=N-2; j>=0; j--) {
             if(table[j][i]==0) continue;
@@ -111,26 +114,22 @@ public class Main {
               if(chk[idx][i]==0) {
                 chk[idx][i] = 1;
                 table[idx][i] *= 2;
-                table[j][i] = 0;
               } else {
                 table[idx-1][i] = table[j][i];
-                table[j][i] = 0;
-              }
+              } 
+              table[j][i] = 0;
             } else if(table[idx][i] == 0) {
               table[idx][i] = table[j][i];
               table[j][i] = 0;
             } else if(table[idx][i] != table[j][i]) {
               table[idx-1][i] = table[j][i];
-              if(idx-1 != j) {
-                table[j][i] = 0;
-              }
+              if(idx-1 != j) table[j][i] = 0;
             } 
           }
         }
       }
       // 위
       else {
-        chk = new int[N][N];
         for(int i=0; i<N; i++) {
           for(int j=1; j<N; j++) {
             if(table[j][i]==0) continue;
@@ -143,27 +142,21 @@ public class Main {
               if(chk[idx][i]==0) {
                 chk[idx][i]=1;
                 table[idx][i]*=2;
-                table[j][i]=0;
               } else {
                 table[idx+1][i] = table[j][i];
-                table[j][i]=0;
               }
+              table[j][i]=0;
             } else if(table[idx][i]==0) {
               table[idx][i] = table[j][i];
               table[j][i] = 0;
             } else if(table[idx][i]!=table[j][i]) {
               table[idx+1][i] = table[j][i];
-              if(idx+1 != j) {
-                table[j][i] = 0;
-              }
+              if(idx+1 != j) table[j][i] = 0;
             } 
           }
         }
       }
       DFS(table, cnt+1);
-    }
-    if(res < max(map)) {
-      res = max(map);
     }
   }
 
@@ -174,6 +167,7 @@ public class Main {
     N=in.nextInt();
     board=new int[N][N];
     chk=new int[N][N];
+    table=new int[N][N];
 
     for(int i=0; i<N; i++) {
       for(int j=0; j<N; j++) {
