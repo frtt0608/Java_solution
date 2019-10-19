@@ -82,7 +82,6 @@ public class Main {
       }
 
       int dir = heading(qu.peek().D, n.D);
-      // System.out.println(dir);
       Snake s = qu.poll();
       v_dir[s.X][s.Y] = dir;
       s.D = dir;
