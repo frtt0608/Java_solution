@@ -2,6 +2,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - S5658",
+            "request": "launch",
+            "mainClass": "S5658",
+            "projectName": "A+ 대비_bc081d81"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - S5644",
+            "request": "launch",
+            "mainClass": "S5644",
+            "projectName": "A+ 대비_bc081d81"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - S5648go",
             "request": "launch",
             "mainClass": "S5648go",
