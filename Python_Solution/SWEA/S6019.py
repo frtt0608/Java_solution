@@ -14,5 +14,6 @@ for tc in range(1,T+1):
   while D>0:
     t+=1
     move_train = t*(A+B)
-    move_fly = t*(F+B)
+    if flag:
+      move_fly = t*(F+B)
       
