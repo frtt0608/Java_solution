@@ -1,3 +1,5 @@
+# 기차 사이의 파리
+# 수학적으로 접근.. 거리=시간*속력
 import sys
 sys.stdin = open("input.txt")
 
