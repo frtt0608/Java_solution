@@ -21,4 +21,4 @@ for tc in range(1,T+1):
   data = list(map(int, input().split()))
   res = 0
   DFS(0,0)
-  print('#%d %d' %(tc, res))
+  print('#%d %d' %(tc, res)) 
