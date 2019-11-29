@@ -8,7 +8,7 @@ for tc in range(1,T+1):
   data=list(map(int, input().split()))
   N,A,B = data[0], data[1], data[2]
   res=9999999
-  maxR = math.ceil(N**0.5)+1
+  maxR = math.floor(N**0.5)+1
 
   for R in range(1, maxR):
     maxC = math.floor(N/R)+1
