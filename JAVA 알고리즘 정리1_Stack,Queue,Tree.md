@@ -70,7 +70,7 @@ Deque<Integer> qu = new ArrayDeque<Integer>();
 static void BFS(String x) {
     LinkedList<String> qu = new LinkedList<String>();
     qu.add(x);
-    while(!qu.empty()) {
+    while(!qu.isEmpty()) {
         String temp = qu.poll();
         ...
     }
