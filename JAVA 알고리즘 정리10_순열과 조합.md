@@ -9,7 +9,7 @@
    1. 순열 : 순서있게 배열
 
       ```java
-      private static void perm(int n, int r, LinkedList<Integer> perArr, int perCheck) {
+      private static void perm(int n, int r, LinkedList<Integer> perArr, int[] perCheck) {
           if(perArr.size() == r) {
               for(int i : perArr) {
                   System.out.print(i+" ");
