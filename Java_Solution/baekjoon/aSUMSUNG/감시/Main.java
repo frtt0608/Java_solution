@@ -27,39 +27,40 @@ class XY {
  * Main
  */
 public class Main {
-    static int N, M, office[][], min_square, camCnt, copy_office[][];
+    static int N, M, office[][], min_square, copy_office[][];
     static ArrayList<XY> camList;
     static int spin_cam1[][] = {{0,1,0,-1},{1,0,-1,0}};
+    static ArrayList<int[]> camSpinList;
 
     static Boolean WALL(int x, int y) {
         if(x>=N || x<0 || y>=M || y<0) return true;
         return false;
     }
 
-    static void perm(int cam_idx, int visited[]) {
-        if(camCnt == cam_idx) {
+    static void perm(int cam_idx, int visited[][]) {
+        if(camList.size() == cam_idx) {
             for(int i=0; i<N; i++) System.arraycopy(office[i], 0, copy_office[i], 0, M);
-            for(int i=0; i<camCnt; i++) {
+            for(int i=0; i<camList.size(); i++) {
                 XY xy = camList.get(i);
-                spin_cam(xy.x, xy.y, visited[i]);
+                spin_cam(xy.x, xy.y, visited[i][0], visited[i][1]);
             }
             int temp = Search_square();
             min_square = Math.min(min_square, temp);
             return;
         }
-        for(int i=1; i<5; i++) {
-            if(visited[cam_idx]!=0) continue;
-            visited[cam_idx] = i;
+        for(int i=1; i<camSpinList.get(cam_idx).length; i++) {
+            visited[cam_idx][0] = camSpinList.get(cam_idx)[0];
+            visited[cam_idx][1] = camSpinList.get(cam_idx)[i];
             perm(cam_idx+1, visited);
-            visited[cam_idx] = 0;
+            visited[cam_idx][0]=0;
+            visited[cam_idx][1]=0;
         }
     }
 
-    static void spin_cam(int x, int y, int dir) {
+    static void spin_cam(int x, int y, int camNum, int dir) {
         int nx=x; int ny=y;
         dir+=3;
-        //System.out.println(copy_office[x][y]+","+dir);
-        if(copy_office[x][y]==1) {
+        if(camNum==1) {
             while(true) {
                 nx = nx + spin_cam1[0][dir%4];
                 ny = ny + spin_cam1[1][dir%4];
@@ -67,7 +68,7 @@ public class Main {
                 if(copy_office[nx][ny]>=1 && copy_office[nx][ny] <=4) continue;
                 copy_office[nx][ny]=1;
             }
-        } else if(copy_office[x][y]==2) {
+        } else if(camNum==2) {
             while(true) {
                 nx=nx+spin_cam1[0][dir%4];
                 ny=ny+spin_cam1[1][dir%4];
@@ -82,7 +83,7 @@ public class Main {
                 if(copy_office[nx][ny]>=1 && copy_office[nx][ny] <=4) continue;
                 copy_office[nx][ny]=1;
             }
-        } else if(copy_office[x][y]==3) {
+        } else if(camNum==3) {
             for(int i=0; i<=1; i++) {
                 nx=x; ny=y;
                 while(true) {
@@ -93,7 +94,7 @@ public class Main {
                     copy_office[nx][ny]=1;
                 }
             }
-        } else if(copy_office[x][y]==4) {
+        } else if(camNum==4) {
             for(int i=-1; i<=1; i++) {
                 nx=x; ny=y;
                 while(true) {
@@ -116,12 +117,6 @@ public class Main {
                 }
             }
         }
-        // for(int i=0; i<N; i++) {
-        //     for(int j=0; j<M; j++) {
-        //         System.out.print(copy_office[i][j]);
-        //     }
-        //     System.out.println();
-        // }
     }
 
     static int Search_square() {
@@ -131,7 +126,6 @@ public class Main {
                 if(copy_office[i][j]==0) res+=1;
             }
         }
-        //System.out.println(res);
         return res;
     }
 
@@ -144,18 +138,35 @@ public class Main {
         office = new int[N][M];
         copy_office = new int[N][M];
         camList = new ArrayList<>();
-        min_square = 100; camCnt = 0;
+        camSpinList = new ArrayList<>();
+        min_square = 100;
 
         for(int i=0; i<N; i++) {
             for(int j=0; j<M; j++) {
                 office[i][j] = sc.nextInt();
                 if(office[i][j]>=1 && office[i][j]<=5) {
                     camList.add(new XY(i,j));
-                    camCnt += 1;
+                    if(office[i][j]==2) {
+                        int caseList[] = {2,1,2};
+                        camSpinList.add(caseList);
+                    } else if(office[i][j]==5) {
+                        int caseList[] = {5,1};
+                        camSpinList.add(caseList);
+                    } else if(office[i][j]==1) {
+                        int caseList[] = {1,1,2,3,4};
+                        camSpinList.add(caseList);
+                    } else if(office[i][j]==3) {
+                        int caseList[] = {3,1,2,3,4};
+                        camSpinList.add(caseList);
+                    } else if(office[i][j]==4) {
+                        int caseList[] = {4,1,2,3,4};
+                        camSpinList.add(caseList);
+                    }
                 }
             }
         }
-        int visited[] = new int[camCnt];
+        
+        int visited[][] = new int[camList.size()][2];
         perm(0,visited);
         System.out.println(min_square);
     }
