@@ -74,12 +74,12 @@ public class Main {
             ladder[a][b] = 1;
         }
 
-        for(int i=1; i<=H; i++) {
-            for(int j=1; j<=N; j++) {
-                System.out.print(ladder[i][j]);
-            }
-            System.out.println();
-        }
+        // for(int i=1; i<=H; i++) {
+        //     for(int j=1; j<=N; j++) {
+        //         System.out.print(ladder[i][j]);
+        //     }
+        //     System.out.println();
+        // }
 
         for(int i=0; i<=3; i++) {
             minRes = i;
