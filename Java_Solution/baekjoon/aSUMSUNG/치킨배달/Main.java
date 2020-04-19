@@ -5,7 +5,9 @@
 // 최대 M개 치킨집, 나머지 폐업
 
 // 완탐, perm
-// BFS
+// BFS?
+// 13개 중에 12개를 선택 시, 항목마다 경우는 2가지 뿐이다.
+// for문을 쓰면서 섣불리 하나하나 선택하지 말것
 
 import java.util.*;
 import java.io.*;
@@ -40,7 +42,6 @@ public class Main {
         perm(dakCnt+1, dak_idx+1, visited);
         visited[dak_idx] = 0;
         perm(dakCnt, dak_idx+1, visited);
-        
     }
 
     static int findShortLength(Node Home, int visited[]) {
