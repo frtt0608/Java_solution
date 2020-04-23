@@ -23,94 +23,68 @@ class Node {
  * Main
  */
 public class Main {
-    static int N, L, R, map[][], resultCnt;
-    static int movePeople[][];
+    static int N, L, R, map[][], resultCnt, visited[][];
     static int dx[]={0,0,1,0,-1}, dy[]={0,1,0,-1,0};
     static Queue<Node> que;
+    static ArrayList<Node> movePeople;
 
     static boolean wall(int x, int y) {
         if(x>=N || x<0 || y>=N || y<0) return true;
         return false;
     }
 
-    static void BFS(int r, int c, int cnt) {
-        // 초기화
-        
-        int visited[][] = new int[N][N];     // 방문국가 체크
+    static int BFS(int r, int c) {
         visited[r][c] = 1;
-        if(movePeople[r][c]==0) movePeople[r][c] = cnt;
         que.offer(new Node(r,c));
-        int x=0; int y=0; int temp=0;
+        int temp=0;
+        int totalPeople=map[r][c];
+        movePeople.add(new Node(r,c));
+
         while(!que.isEmpty()) {
             Node node = que.poll();
-            x=node.x;
-            y=node.y;
             /*System.out.println(x+","+y);
             for(int i=0; i<N; i++) {
                 System.out.println(Arrays.toString(movePeople[i]));
             }*/
             for(int i=1; i<=4; i++) {
-                int nx = x+dx[i];
-                int ny = y+dy[i];
+                int nx = node.x + dx[i];
+                int ny = node.y + dy[i];
                 if(wall(nx,ny) || visited[nx][ny]==1) continue;
-                visited[nx][ny] = 1;
-                temp=(int)Math.abs(map[x][y]-map[nx][ny]);
+                temp = Math.abs(map[node.x][node.y]-map[nx][ny]);
                 if(temp>=L && temp<=R) {
+                    visited[nx][ny] = 1;
                     que.offer(new Node(nx,ny));
-                    if(movePeople[nx][ny]==0) movePeople[nx][ny] = movePeople[x][y];
-                    else movePeople[x][y] = movePeople[nx][ny];
+                    totalPeople+=map[nx][ny];
+                    movePeople.add(new Node(nx,ny));
                 }
             }
-        }   
+        }
+        return totalPeople;
     }
 
-    static boolean checkmovePeople() {
+    static boolean checkMove() {
         boolean flag = false;
-        int temp = 0;
+        int totalPeople=0;
         for(int i=0; i<N; i++) {
             for(int j=0; j<N; j++) {
-                if(movePeople[i][j]>0) {
-                    temp = findUnited(i, j);
-                    if(temp>1) flag = true;
+                if(visited[i][j]==1) continue;
+                movePeople = new ArrayList<>();
+                totalPeople = BFS(i, j);
+
+                if(movePeople.size()>1){
+                    updateMap(totalPeople);
+                    flag = true;
                 }
             }
         }
         return flag;
     }
 
-    static int findUnited(int x, int y) {
-        ArrayList<Node> stateList = new ArrayList<>();
-        stateList.add(new Node(x,y));
-        que.offer(new Node(x,y));
-        int v[][] = new int[N][N];
-        v[x][y] = 1;
-        int allPeople = map[x][y]; int cntState=1;
-
-        while(!que.isEmpty()) {
-            Node node = que.poll();
-
-            for(int i=1; i<=4; i++) {
-                int nx = node.x+dx[i];
-                int ny = node.y+dy[i];
-                if(wall(nx,ny) || v[nx][ny]==1) continue;
-                if(movePeople[nx][ny]==movePeople[x][y]) {
-                    v[nx][ny] = 1;
-                    que.offer(new Node(nx,ny));
-                    cntState++;
-                    allPeople+=map[nx][ny];
-                    stateList.add(new Node(nx,ny));
-                }
-            }
+    static void updateMap(int totalPeople) {
+        int people = totalPeople/movePeople.size();
+        for(Node node:movePeople) {
+            map[node.x][node.y] = people;
         }
-
-        int UnitedStatesPeoplecnt = allPeople/cntState;
-        for(Node state:stateList) {
-            map[state.x][state.y] = UnitedStatesPeoplecnt;
-            movePeople[state.x][state.y] = 0;
-        }
-        //System.out.println();
-        //System.out.println("연합국가 수:" + cntState + "/ 모든 인구 수:"+allPeople+"/인구이동후:"+UnitedStatesPeoplecnt);
-        return cntState;
     }
 
     static public void main(String args[]) throws IOException {
@@ -122,7 +96,6 @@ public class Main {
         L=sc.nextInt();
         R=sc.nextInt();
         map = new int[N][N];
-        movePeople = new int[N][N];
         que = new LinkedList<>();
 
         for(int i=0; i<N; i++) {
@@ -130,16 +103,10 @@ public class Main {
                 map[i][j] = sc.nextInt();
             }
         }
+
         while(flag) {
-            movePeople = new int[N][N];          // 연합국가 체크
-            int cnt=1;
-            for(int i=0; i<N; i++) {
-                for(int j=0; j<N; j++) {
-                    BFS(i, j, cnt);
-                    cnt++;
-                }
-            }
-            flag = checkmovePeople();
+            visited = new int[N][N];
+            flag = checkMove();
             if(flag) resultCnt++;
         }
         System.out.println(resultCnt);
