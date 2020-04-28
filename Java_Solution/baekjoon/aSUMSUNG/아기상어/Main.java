@@ -5,7 +5,7 @@
 // 먹을수 있는 물고기 없으면 엄마 요청
 // 1마리면 먹으러감
 // 1마리보다 많으면 가까운 물고기부터
-// 가까울 물고기가 많으면 가장 위에부터
+// 가까운 물고기가 많으면 가장 위에부터, 가장 왼쪽부터
 // 이동과 동시에 먹구 빈칸
 // 자신의 크기와 같은 수의 물고기 먹으면 크기 1증가
 
@@ -18,51 +18,89 @@ import java.io.*;
  * Main
  */
 public class Main {
-    static int N, map[][], shark_x, shark_y, shark_age, resTime;
-    static Deque<Fish> fishList;
+    static int N, map[][], shark_x, shark_y, shark_age, shark_feed, fishCnt, resTime;
+    static PriorityQueue<Fish> fishList;
     static int[] dx = {1,-1,0,0}, dy={0,0,1,-1};
 
-    static class Fish implements Comparable<Fish> {
+    static class Fish implements Comparable<Fish>{
         int x;
         int y;
-        int age;
-    
-        Fish(int x, int y, int age) {
-            this.x=x;
-            this.y=y;
-            this.age=age;
+
+        Fish(int x, int y) {
+            this.x = x;
+            this.y = y;
         }
-    
+
         @Override
         public int compareTo(Fish fish) {
-            int this_diff = Math.abs(this.x-shark_x) + Math.abs(this.y-shark_y);
-            int arg_diff = Math.abs(fish.x-shark_x) + Math.abs(fish.y-shark_y);
-            if(this.age > fish.age) return 1;
-            else if(this.age < fish.age) return -1;
-            else {
-                if(this_diff > arg_diff) return 1;
-                else if(this_diff < arg_diff) return -1;
-                else {
-                    if(this.x > fish.x) return 1;
-                    else if(this.x < fish.x) return -1;
-                    else {
-                        if(this.y > fish.y) return 1;
-                    }
-                }
+            if(this.x < fish.x) return -1;
+            else if(this.x == fish.x) {
+                if(this.y < fish.y) return -11;
+                else return 1;
             }
-            
-            return -1;
+            return 1;
         }
     }
 
     static boolean wall(int x, int y) {
-        if(x>=N || x<0 || y>=N || y<0) return true;
+        if(x>=N || x<0 || y>=N || y<0) return false;
+        return true;
+    }
+
+    static boolean catchFish() {
+        Queue<Fish> que = new LinkedList<>();
+        fishList = new PriorityQueue<>();
+        int visited[][] = new int[N][N];
+
+        que.offer(new Fish(shark_x, shark_y));
+        visited[shark_x][shark_y] = 1;
+        int moving = 0;
+
+        while(!que.isEmpty()) {
+            
+            moving++;
+
+            int qsize = que.size();
+            for(int i=0; i<qsize; i++) {
+                Fish fish = que.poll();
+                int x = fish.x;
+                int y = fish.y;
+
+                for(int dir=0; dir<4; dir++) {
+                    int nx = x+dx[dir];
+                    int ny = y+dy[dir];
+                    if(wall(nx,ny) && visited[nx][ny]==0 && map[nx][ny] <= shark_age) {
+                        visited[nx][ny] = 1;
+                        que.offer(new Fish(nx, ny));
+                        if(map[nx][ny] > 0 && map[nx][ny] < shark_age) {
+                            fishList.add(new Fish(nx, ny));
+                        }
+                    }
+                }
+            }
+
+            if(!fishList.isEmpty()) {
+                resTime += moving;
+                checkFish(fishList.poll());
+                
+                return true;
+            }
+        }
         return false;
     }
 
-    static void BFS() {
-        
+    static void checkFish(Fish fish) {
+        map[fish.x][fish.y] = 0;
+        shark_x = fish.x;
+        shark_y = fish.y;
+        shark_feed++;
+
+        if(shark_feed == shark_age) {
+            shark_age++;
+            shark_feed=0;
+        }
     }
+
 
     static public void main(String args[]) throws IOException {
         System.setIn(new FileInputStream("input.txt"));
@@ -71,32 +109,28 @@ public class Main {
 
         N=Integer.parseInt(st.nextToken());
         map = new int[N][N];
-        LinkedList<Fish> tempList = new LinkedList<>();
-        fishList = new LinkedList<>();
+        shark_feed = 0;
+        resTime = 0;
+        shark_age = 2;
+        fishCnt = 0;
     
         for(int i=0; i<N; i++) {
             st = new StringTokenizer(br.readLine());
             for(int j=0; j<N; j++) {
-                map[i][j] = Integer.parseInt(st.nextToken());
-                if(map[i][j]>=1 && map[i][j]<=6) {
-                    if(map[i][j]==1) tempList.addFirst(new Fish(i,j,map[i][j]));
-                    else tempList.addLast(new Fish(i,j,map[i][j]));
-                } else if(map[i][j]==9) {
+                int age = Integer.parseInt(st.nextToken());
+                if(age==9) {
                     shark_x = i;
                     shark_y = j;
-                    shark_age = 2;
+                } else if(age>0 && age<=6) {
+                    map[i][j] = age;
+                    fishCnt++;
                 }
             }
         }
-        if(tempList.size()==0) {
-            System.out.println(0);
-        } else {
-            Collections.sort(tempList);
-            fishList.addAll(tempList);
-            
-            
-            
-            System.out.println(resTime);
+        boolean flag = true;
+        while(flag && fishCnt>0) {
+            flag = catchFish();
         }
+        System.out.println(resTime);
     }
 }
