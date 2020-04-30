@@ -65,44 +65,48 @@ public class Main {
     }
 
     static Shark[][] moveShark() {
-        Queue<Shark> que = new LinkedList<>();
         Shark copy_map[][] = new Shark[R+1][C+1];
         copy_map = init_map(copy_map);
+        int temp = 0;
     
         for(int i=1; i<=R; i++) {
             for(int j=1; j<=C; j++) {
                 if(map[i][j].zip > 0) {
-                    que.offer(map[i][j]);
+                    int r = map[i][j].r;
+                    int c = map[i][j].c;
+                    int speed = map[i][j].speed;
+                    int dir = map[i][j].dir;
+                    int zip = map[i][j].zip;
+
+                    if(speed > 0) {
+                        if(dir==0 || dir==1) {
+                            temp = 2*R - 2;
+                        } else {
+                            temp = 2*C - 2;
+                        }
+                        speed %= temp;
+
+                        for(int s=0; s<speed; s++) {
+                            int nr = r + dr[dir];
+                            int nc = c + dc[dir];
+                            if(wall(nr,nc)) {
+                                dir = changeDir(dir);
+                                r += dr[dir];
+                                c += dc[dir];
+                            } else {
+                                r=nr;
+                                c=nc;
+                            }
+                        }
+                    }
+        
+                    if(copy_map[r][c].zip == 0 || copy_map[r][c].zip < zip) {
+                        copy_map[r][c] = new Shark(r,c,speed,dir,zip);
+                    }
                 }
             }
         }
 
-        while(!que.isEmpty()) {
-            Shark shark = que.poll();
-            int r = shark.r;
-            int c = shark.c;
-            int speed = shark.speed;
-            int dir = shark.dir;
-            int zip = shark.zip;
-
-            if(dir==-1) continue;
-
-            for(int i=0; i<speed; i++) {
-                int nr = r + dr[dir];
-                int nc = c + dc[dir];
-                if(wall(nr,nc)) {
-                    dir = changeDir(dir);
-                    r -= dr[dir];
-                    c -= dc[dir];
-                } else {
-                    r=nr;
-                    c=nc;
-                }
-            }
-            if(copy_map[r][c].zip == 0 || copy_map[r][c].zip < zip) {
-                copy_map[r][c] = new Shark(r,c,speed,dir,zip);
-            }
-        }
         return copy_map;
     }
 
@@ -130,7 +134,7 @@ public class Main {
             map[r][c] = new Shark(r,c,s,d,z);
         }
 
-        for(int i=1; i<=R; i++) {
+        for(int i=1; i<=C; i++) {
             captureShark(i);
             map = moveShark();
             for(int j=1; j<=R; j++) {
