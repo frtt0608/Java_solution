@@ -21,7 +21,7 @@ class Node {
  * Main
  */
 public class Main {
-    static int N, M, office[][], copy_office[][], emptyCnt, virusListsize, minTime;
+    static int N, M, office[][], emptyCnt, virusListsize, minTime;
     static int[] dx={1,-1,0,0}, dy={0,0,1,-1};
     static ArrayList<Node> virusList;
     static boolean  perm_v[];
@@ -38,14 +38,14 @@ public class Main {
         return copy_office;
     }
 
-    static int BFS(boolean virusArr[]) {
+    static void BFS(boolean virusArr[]) {
         Queue<Node> que = new LinkedList<>();
         boolean visited[][] = new boolean[N+1][N+1];
-        
+        int copy_office[][] = new int[N+1][N+1];
         copy_office = deep_copy(copy_office);
+
         int time = 0;
         int zeroCnt = 0;
-
         
         for(int i=0; i<virusListsize; i++) {
             Node node = virusList.get(i);
@@ -82,15 +82,13 @@ public class Main {
             }
         }
 
-        if(zeroCnt!=emptyCnt) return -1;
-        return time;
+        if(zeroCnt!=emptyCnt) return;
+        else minTime = Math.min(minTime, time);
     }
 
     static void perm(int idx, int cnt, boolean virusArr[]) {
         if(cnt==M) {
-            int tempTime = BFS(virusArr);
-            if(tempTime!=-1)
-                minTime = Math.min(minTime, tempTime);
+            BFS(virusArr);
             return;
         }
 
@@ -110,7 +108,6 @@ public class Main {
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
         office = new int[N+1][N+1];
-        copy_office = new int[N+1][N+1];
         virusList = new ArrayList<>();
         minTime = 999999;
         
@@ -120,11 +117,8 @@ public class Main {
                 office[i][j] = Integer.parseInt(st.nextToken());
 
                 if(office[i][j]==1) office[i][j] = -1;
-                else if(office[i][j]==2) {
-                    virusList.add(new Node(i,j));       
-                } else {
-                    emptyCnt += 1;
-                }
+                else if(office[i][j]==2) virusList.add(new Node(i,j));       
+                else emptyCnt += 1;
             }
         }
 
@@ -135,7 +129,9 @@ public class Main {
         if(emptyCnt!=0) {
             perm(0, 0, virusArr);
             if(minTime==999999) minTime=-1;
-        } else minTime = 0;
+        } else {
+            minTime = 0;
+        }
 
         System.out.println(minTime);
     }
