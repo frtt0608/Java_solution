@@ -113,11 +113,7 @@ public class Main {
         } else {
             chessList.set(idx, new Node(x, y, dir));
         }
-
-        // for(Integer chess: chessMap[nx][ny]) {
-        //     System.out.print(chess+", ");
-        // }
-        // System.out.println();
+        
         return chessMap[x][y].size();
     }
 
@@ -164,13 +160,7 @@ public class Main {
                 break;
             }
         }
-
-        // for(int i=1; i<=K; i++) {
-        //     if(moveChess(i) >= 4) {
-        //         break;
-        //     }
-        // }
-
+        
         System.out.println(resTurn);
     }
 }
