@@ -1,6 +1,6 @@
 # JAVA method 정리
 
-## Arrays 메소드
+### Arrays 메소드
 
 1. `.asList(a)`
 
@@ -53,6 +53,18 @@
    int[] b = new int[n];
    System.arraycopy(b, 0, d, n);
    ```
+
+
+
+### List 메소드
+
+1. contain
+
+   ```java
+   ArrayList.contain(Object value); // t/f
+   ```
+
+   
 
 
 
@@ -135,6 +147,7 @@ Integer.toString(); // (int -> String)
 Float.toString(); // (Float -> String)
 Double.toString(); // (Double -> String)
 Character.toString(); // (Character -> String)
+Character.getNumericeValue(); // (Character -> int)
 
 Integer.valueof(); // (String -> int)
 Integer.parseInt(); // (String -> int)
@@ -252,289 +265,105 @@ Math.random()*100+1; // 1~100
 
 
 
-class Solution {
-    public int solution(String inputString) {
-        int answer = 0;
-        int garo[] = new int[4];
-        char chr;
-        for(int i=0; i<inputString.length(); i++) {
-            chr = inputString.charAt(i);
-            if(chr == '(') garo[0]++;
-            else if(chr == '{') garo[1]++;
-            else if(chr == '[') garo[2]++;
-            else if(chr == '<') garo[3]++;
-            
-            if(chr == ')') {
-                if(garo[0] <= 0) return -1;
-                garo[0]--; answer++;
-            } else if(chr == '}') {
-                if(garo[1] <= 0) return -1;
-                garo[1]--; answer++;
-            } else if(chr == ']') {
-                if(garo[2] <= 0 ) return -1;
-                garo[2]--; answer++;
-            } else if(chr == '>') {
-                if(garo[3] <= 0) return -1;
-                garo[3]--; answer++;
-            }
-        }
-        return answer;
-    }
-}
+### Hash
 
+1. HashMap
 
+   ```java
+   HashMap<Integer, Integer> map = new HashMap<>();
+   HashMap<Integer, Integer tempMap = new HashMap<>();
+   
+   map.clear();
+   tempMap = map.clone;
+   map.containsKey(Object key); // map에 key가 있는지 t/f 반환
+   map.containsValue(Object value); // map에 value가 있는지 t/f반환
+   
+   Set set = map.entrySet(); // key-value값을 set에 저장
+   map.get(Object key);
+   map.isEmpty();
+   Set keySet = map.keySet(); // key를 set에 저장
+   map.put(key, value);
+   map.putAll(tempMap m); // tempMap에 있는 모든 요소를 저장
+   
+   map.remove(Object key);
+   map.size();
+   map.values(); // value를 collections형태로 저장
+   ```
 
+2. 응용 메소드
 
+   ```java
+   // 예를들어
+   Map<String, Integer> map = new HashMap<>();
+   map.put("Java", 0);
+   map.put("Jakarta", 0);
+   map.put("Eclipse", 0);
+   
+   public void read(String text) {
+       for (String word : text.split(" ")) {
+           if (map.containsKey(word)) {
+               Integer value = map.get(word);
+               map.put(word, ++value);
+           }
+       }
+   }
+   
+   // 이 메소드를
+   
+   public void read(String text) {
+     for (String word : text.split(" ")) {
+       map.computeIfPresent(word, (String key, Integer value) -> ++value);
+     }
+   }
+   
+   // 이와같이 변경 가능
+   // computeIfPresent는 key를 받고 key가 존재하는 경우에만 반복적으로 value를 계산하는 함수로 다시 매핑한다
+   ```
 
+3. 피보나치의 메모이제이션 기법
 
+   ```java
+   // HashMap에 피보나치 번호가 있는지 확인하고 있으면 get, 없다면 계산한다.
+   // 이를 조건문으로 하나하나 확인할 수 있지만, 대신에 다른 메소드를 사용할 것이다.
+   Map<Integer, BigInteger> memoizeHashMap = new HashMap<>();
+   
+   private BigInteger fibonacci (int n) {
+     return memoizeHashMap.computeIfAbsent(n, 
+               (key) -> fibonacci(n - 1).add(fibonacci(n - 2)));
+   }
+   
+   // 이 메소드는 두개의 입력값을 받는다. 첫번째는 key, 두번째는 key를 사용하여 차례대로 value반환
+   // map에 key가 있으면 값을 반환한다는 뜻이다.
+   // map에 key가 없으면 value를 계산하고 map에 추가한 후, value를 돌려준다.
+   ```
 
-import java.util.*;
+4. key와 value출력하기
 
-class Solution {
-    int person_len, question_len;
-    int result[][];
-    
-    public int Calculater_cheating(int num1, int num2) {
-        return num1 + (int)Math.pow(num2, 2);
-    }
-    
-    public int solution(String answer_sheet, String[] sheets) {
-        int answer = 0;
-        int all_cheating = 0;
-        int long_cheating = 0;
-        int temp_cheating = 0;
-        
-        person_len = sheets.length;
-        question_len = answer_sheet.length();
-        
-        result = new int[person_len][question_len];
-        
-        for(int i=0; i<person_len; i++) {
-            for(int j=0; j<question_len; j++) {
-                if(answer_sheet.charAt(j) == sheets[i].charAt(j)) result[i][j]=0;
-                else result[i][j] = Character.getNumericValue(sheets[i].charAt(j));
-            }
-        }
-        
-        for(int i=0; i<person_len-1; i++) {
-            for(int j=i+1; j<person_len; j++) {
-                temp_cheating = 0;
-                all_cheating = 0;
-                long_cheating = 0;
-                for(int sol=0; sol<question_len; sol++) {
-                    if((result[i][sol]==0 || result[j][sol]==0) || (result[i][sol] != result[j][sol])) {
-                        long_cheating = Math.max(long_cheating, temp_cheating);
-                        temp_cheating = 0;
-                        continue;
-                    } else if(result[i][sol] == result[j][sol]) {
-                        temp_cheating++;
-                        all_cheating++;
-                    }
-                }
-                long_cheating = Math.max(long_cheating, temp_cheating);
-                if(answer==0) answer = Calculater_cheating(all_cheating, long_cheating);
-                else answer = Math.max(answer, Calculater_cheating(all_cheating, long_cheating));
-                //System.out.println(all_cheating +", "+long_cheating+", "+answer);
-            }
-        }
-        
-        return answer;
-    }
-}
+   ```java
+   // Iterator 또는 Collections 또는 Set을 통해 출력할 수 있다.
+   import java.util.Map;
+   import java.util.Iterator;
+   
+   HashMap<Key, value> map = new HashMap<>();
+   
+   for(Object Key : map.keySet()) {
+       Object value = map.get(key);
+       System.out.println(key+", "+value);
+   }
+   
+   for(Map.entry<Key, value> elem : map.entrySet()) {
+   	Object key = elem.getKey();
+       Object value = elem.getValue();
+       System.out.println(key+", "+value);
+   }
+   
+   Iterator<Key> mapIter = map.keySet().iterator();
+   while(mapIter.hasNext()) {
+       Object key = mapIter.next();
+       Object value = map.get(key);
+       System.out.println(key+", "+value);
+   }
+   ```
 
-
-
-
-
-
-
-import java.util.*;
-
-class Solution {
-    int road_len, roads[];
-    Queue<Integer> que;
-    
-    public int Work(int index, int n) {
-        int one=0;
-        for(int i=index; i<road_len; i++) {
-            if(roads[i]==0) one++;
-            else {
-                if(n>0) {one++; n--;}
-                else break;
-            }
-        }
-        return one;
-    }
-        
-    public int solution(String road, int n) {
-        int answer = 0;
-        road_len = road.length();
-        roads = new int[road_len];
-        char roadd[] = road.toCharArray();
-        que = new LinkedList<Integer>();
-        que.offer(0);
-        
-        for(int i=0; i<road_len; i++) {
-            if(road.charAt(i) == '0') {
-                roads[i] = -1;
-                if(i < road_len-1) que.offer(i+1);
-            }
-        }
-        
-        while(!que.isEmpty()) {
-            //System.out.println(que.peek());
-            answer = Math.max(answer, Work(que.poll(), n));
-        }    
-        
-        return answer;
-    }
-}
-
-
-
-
-
-
-
-//트랜잭션 중복적용 x (ID확인)
-// ID동일시 로그내용도 동일
-// SAVE 입금 정보
-// WITHDRAW 출금정보
-// 잔액 음수x
-
-import java.util.*;
-
-class Solution {
-    HashMap<String, Integer> bank;
-    HashSet<String> trans;
-    
-    public void SAVE(String account, int money) {
-        bank.put(account, bank.get(account) + money);
-    }
-    
-    public void WITHDRWA(String account, int money) {
-        bank.put(account, bank.get(account) - money);
-    }
-    
-    public String[][] solution(String[][] snapshots, String[][] transactions) {
-        bank = new HashMap<>();
-        trans = new HashSet<>();
-        
-        String id = "0";
-        String accout = "";
-        int money = 0;
-        
-        for(int i=0; i<snapshots.length; i++) {
-            money = Integer.parseInt(snapshots[i][1]);
-            bank.put(snapshots[i][0], money);
-        }
-        
-        for(int i=0; i<transactions.length; i++) {
-            id = transactions[i][0];
-            if(!trans.contains(id)) {
-                trans.add(id);
-                accout = transactions[i][2];
-                money = Integer.parseInt(transactions[i][3]);
-                
-                if(!bank.containsKey(accout)) bank.put(accout, 0);
-                if(transactions[i][1].equals("SAVE")) {
-                    SAVE(accout, money);
-                } else {
-                    WITHDRWA(accout, money);
-                }
-            }
-        }
-        Iterator<String> bank_iter = bank.keySet().iterator();
-        String[][] answer = new String[bank.size()][2];
-        
-        int answer_i = 0;
-        while(bank_iter.hasNext()) {
-            String key = bank_iter.next();
-            answer[answer_i][0] = key;
-            answer[answer_i][1] = Integer.toString(bank.get(key));
-            answer_i++;
-        }
-        
-        Arrays.sort(answer, new Comparator<String[]>() {
-            @Override
-            public int compare(String str1[], String str2[]) {
-                return str1[0].compareTo(str2[0]);
-            }
-        });
-        return answer;
-    }
-}
-
-
-
-
-
-
-
-// 중복태그x
-// 서로 다른 문서가 같은 태그 가능
-// 문서 1~ 십만
-// 태그 0 ~ 십만
-// 태그는 검색에 사용
-// 태그 중 하나 이상 동일한 태그를 가지는 문서 반환
-// 주어진 태그가 많으면 앞에 (내림차순)
-// 태그 수 동일시 사전 순서
-// 상위 10건만 반환
-
-// 검색에 사용될 태그 갯수는 1~만개
-
-import java.util.*;
-
-class DOC {
-    String doc;
-    int tag_cnt;
-    
-    DOC(String doc, int tag_cnt) {
-        this.doc = doc;
-        this.tag_cnt = tag_cnt;
-    }
-}
-
-class Solution {
-    HashMap<String, HashSet<String>> docMap;
-    
-    public String[] solution(String[][] dataSource, String[] tags) {
-        docMap = new HashMap<>();
-        HashSet<String> tagSet;
-        ArrayList<DOC> return_array = new ArrayList<>();
-        
-        for(int i=0; i<dataSource.length; i++) {
-            tagSet = new HashSet<>();
-            for(int j=1; j<dataSource[i].length; j++) {
-                tagSet.add(dataSource[i][j]);
-            }
-            docMap.put(dataSource[i][0], tagSet);
-        }
-        
-        for(String key: docMap.keySet()) {
-            tagSet = docMap.get(key);
-            int include_tags = 0;
-            for(int idx=0; idx<tags.length; idx++) {
-                if(tagSet.contains(tags[idx])) include_tags++;
-            }
-            if(include_tags>0) return_array.add(new DOC(key, include_tags));
-        }
-        Collections.sort(return_array, new Comparator<DOC>() {
-            @Override
-            public int compare(DOC doc1, DOC doc2) {
-                if(doc1.tag_cnt < doc2.tag_cnt) return 1;
-                else return -1;
-            }
-        });
-        
-        
-        
-        String[] answer = new String[return_array.size()];
-        
-        for(int i=0; i<return_array.size(); i++) {
-            answer[i] = return_array.get(i).doc;
-        }
-        return answer;
-    }
-}
+   
 
