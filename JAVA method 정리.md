@@ -367,3 +367,155 @@ Math.random()*100+1; // 1~100
 
    
 
+
+
+
+
+```java
+import java.util.*;
+
+class Car implements Comparable<Car> {
+    int x;
+    int y;
+    int dir;
+    int price;
+    boolean visited[][];
+    
+    Car(int x, int y, int dir, int street, boolean visited[][]) {
+        this.x = x;
+        this.y = y;
+        this.dir = dir;
+        this.price = price;
+        this.visited = visited;
+    }
+    
+    @Override
+    public int compareTo(Car car) {
+        if(this.price > car.price) return 1;
+        return -1;
+    }
+}
+
+class Solution {
+    int[] dx = {0,1,0,-1}, dy={1,0,-1,0};
+    int N, answer;
+    private int[][] board;
+    
+    public boolean wall(int x, int y) {
+        if(x>=N || x<0 || y>=N || y<0) return true;
+        return false;
+    }
+    
+    public void BFS() {
+        PriorityQueue<Car> que = new PriorityQueue<>();
+        boolean visit[][] = new boolean[N][N];
+        visit[0][0] = true;
+        visit[0][1] = true;
+        que.offer(new Car(0,1,0,100, visit));
+        visit[0][1] = false;
+        visit[1][0] = true;
+        que.offer(new Car(1,0,1,100, visit));
+        
+        while(!que.isEmpty()) {
+            Car car = que.poll();
+            int x = car.x;
+            int y = car.y;
+            int dir = car.dir;
+            int price = car.price;
+            boolean[][] visited = car.visited;
+            
+            if(x==N-1 && y==N-1) {
+                answer = Math.min(answer, price);
+                continue;
+            }
+            
+            if(answer <= price) continue;
+            
+            for(int i=0; i<4; i++) {
+                int nx = x + dx[i];
+                int ny = y + dy[i];
+                if(wall(nx,ny) || board[nx][ny]==1 || visited[nx][ny]) continue;
+                visited[nx][ny] = true;
+                
+                if(i!=dir) {
+                    que.offer(new Car(nx, ny, i, price+600, visited));
+                } else {
+                    que.offer(new Car(nx, ny, i, price+100, visited));
+                }
+                
+                visited[nx][ny] = false;
+            }
+        }
+    }
+    
+    public int solution(int[][] board) {
+        answer = 10000000;
+        this.board = board;
+        N = board.length;
+        
+        BFS();
+        
+        return answer;
+    }
+}
+```
+
+```java
+import java.util.*;
+
+
+class Solution {
+    int[] dx = {0,1,0,-1}, dy={1,0,-1,0};
+    int N, answer;
+    private int[][] board;
+    
+    public boolean wall(int x, int y) {
+        if(x>=N || x<0 || y>=N || y<0) return true;
+        return false;
+    }
+    
+    public void construct(int x, int y, int dir, int price, boolean visited[][]) {
+        if(x==N-1 && y==N-1) {
+            answer = Math.min(answer, price);
+            return;
+        }
+        
+        if(answer <= price) return;
+        
+        for(int i=0; i<4; i++) {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+            if(wall(nx,ny) || board[nx][ny]==1 || visited[nx][ny]) continue;
+            
+            visited[nx][ny] = true;
+            if(i != dir) {
+                construct(nx, ny, i, price+600, visited);
+            } else {
+                construct(nx, ny, i, price+100, visited);
+            }
+            visited[nx][ny] = false;
+        }
+    }
+    
+    public int solution(int[][] board) {
+        answer = 10000000;
+        this.board = board;
+        N = board.length;
+        boolean visited[][] = new boolean[N][N];
+        visited[0][0] = true;
+        
+        visited[0][1] = true;
+        construct(0, 1, 0, 100, visited);
+        visited[0][1] = false;
+        visited[1][0] = true;
+        construct(1, 0, 1, 100, visited);
+        
+        return answer;
+    }
+}
+```
+
+```java
+
+```
+
