@@ -2,51 +2,51 @@
 
 ### Arrays 메소드
 
-1. `.asList(a)`
+1. .asList(a)
 
    ```java
    String[] a = {"a", "b", "c"};
    Arrays.asList(a);
    ```
 
-2. `.toString()`
+2. .toString()
 
    ```java
    System.out.println(Arrays.toString(a));
    ```
 
-3. `sort(array)`
+3. sort(array)
 
    ```java
    b = [1,5,4,7,3,8,9,6,2,3,1];
    Arrays.sort(b);
    ```
 
-4. `sort(array, Comparator)`
+4. sort(array, Comparator)
 
    ```java
    Arrays.sort(b, Collections.reverseOrder());
    ```
 
-5. `sort(array, int fromindex, int toindex)`
+5. sort(array, int fromindex, int toindex)
 
    ```java
    Arrays.sort(b, 2, 6);
    ```
 
-6. `sort(array, int fromindex, int toindex)`
+6. sort(array, int fromindex, int toindex)
 
    ```java
    Arrays.sort(b, 2, 6, Collections.reverseOrder());
    ```
 
-7. `copyOf(array, int newlength)`
+7. copyOf(array, int newlength)
 
    ```java
    int[] c = Arrays.copyOf(b, 5);
    ```
 
-8. `System.arraycopy(b, 0, d, n)`
+8. System.arraycopy(b, 0, d, n)
 
    ```java
    int n = 7;
@@ -56,12 +56,52 @@
 
 
 
+
+
 ### List 메소드
 
-1. contain
+1. contains
 
    ```java
-   ArrayList.contain(Object value); // t/f
+   List.contain(Object value); // 포함하면 true, 없으면 false
+   ```
+
+2. add
+
+   ```java
+   List.add(int index, Object value);
+   List.add(Object, value);
+   ```
+
+3. get
+
+   ```java
+   List.get(int index);
+   ```
+
+4. remove
+
+   ```java
+   List.remove(int index); // 삭제된 value 리턴
+   List.remove(Object value); // 삭제되면 true, 안되면 false
+   ```
+
+5. size
+
+   ```
+   List.size();
+   ```
+
+6. set
+
+   ```java
+   List.set(int index, Object value);
+   ```
+
+7. isEmpty()
+
+   ```java
+   List.isEmpty(); // 비어있으면 true, 아니면 false
    ```
 
    
@@ -263,6 +303,30 @@ Math.random()*100+1; // 1~100
 
 
 
+### Regular Expression
+
+https://offbyone.tistory.com/400
+
+1. matches
+
+   ```
+   
+   ```
+
+2. replaceAll
+
+   ```java
+   
+   ```
+
+3. split
+
+   ```java
+   
+   ```
+
+4. Pattern
+
 
 
 ### Hash
@@ -370,152 +434,4 @@ Math.random()*100+1; // 1~100
 
 
 
-
-```java
-import java.util.*;
-
-class Car implements Comparable<Car> {
-    int x;
-    int y;
-    int dir;
-    int price;
-    boolean visited[][];
-    
-    Car(int x, int y, int dir, int street, boolean visited[][]) {
-        this.x = x;
-        this.y = y;
-        this.dir = dir;
-        this.price = price;
-        this.visited = visited;
-    }
-    
-    @Override
-    public int compareTo(Car car) {
-        if(this.price > car.price) return 1;
-        return -1;
-    }
-}
-
-class Solution {
-    int[] dx = {0,1,0,-1}, dy={1,0,-1,0};
-    int N, answer;
-    private int[][] board;
-    
-    public boolean wall(int x, int y) {
-        if(x>=N || x<0 || y>=N || y<0) return true;
-        return false;
-    }
-    
-    public void BFS() {
-        PriorityQueue<Car> que = new PriorityQueue<>();
-        boolean visit[][] = new boolean[N][N];
-        visit[0][0] = true;
-        visit[0][1] = true;
-        que.offer(new Car(0,1,0,100, visit));
-        visit[0][1] = false;
-        visit[1][0] = true;
-        que.offer(new Car(1,0,1,100, visit));
-        
-        while(!que.isEmpty()) {
-            Car car = que.poll();
-            int x = car.x;
-            int y = car.y;
-            int dir = car.dir;
-            int price = car.price;
-            boolean[][] visited = car.visited;
-            
-            if(x==N-1 && y==N-1) {
-                answer = Math.min(answer, price);
-                continue;
-            }
-            
-            if(answer <= price) continue;
-            
-            for(int i=0; i<4; i++) {
-                int nx = x + dx[i];
-                int ny = y + dy[i];
-                if(wall(nx,ny) || board[nx][ny]==1 || visited[nx][ny]) continue;
-                visited[nx][ny] = true;
-                
-                if(i!=dir) {
-                    que.offer(new Car(nx, ny, i, price+600, visited));
-                } else {
-                    que.offer(new Car(nx, ny, i, price+100, visited));
-                }
-                
-                visited[nx][ny] = false;
-            }
-        }
-    }
-    
-    public int solution(int[][] board) {
-        answer = 10000000;
-        this.board = board;
-        N = board.length;
-        
-        BFS();
-        
-        return answer;
-    }
-}
-```
-
-```java
-import java.util.*;
-
-
-class Solution {
-    int[] dx = {0,1,0,-1}, dy={1,0,-1,0};
-    int N, answer;
-    private int[][] board;
-    
-    public boolean wall(int x, int y) {
-        if(x>=N || x<0 || y>=N || y<0) return true;
-        return false;
-    }
-    
-    public void construct(int x, int y, int dir, int price, boolean visited[][]) {
-        if(x==N-1 && y==N-1) {
-            answer = Math.min(answer, price);
-            return;
-        }
-        
-        if(answer <= price) return;
-        
-        for(int i=0; i<4; i++) {
-            int nx = x + dx[i];
-            int ny = y + dy[i];
-            if(wall(nx,ny) || board[nx][ny]==1 || visited[nx][ny]) continue;
-            
-            visited[nx][ny] = true;
-            if(i != dir) {
-                construct(nx, ny, i, price+600, visited);
-            } else {
-                construct(nx, ny, i, price+100, visited);
-            }
-            visited[nx][ny] = false;
-        }
-    }
-    
-    public int solution(int[][] board) {
-        answer = 10000000;
-        this.board = board;
-        N = board.length;
-        boolean visited[][] = new boolean[N][N];
-        visited[0][0] = true;
-        
-        visited[0][1] = true;
-        construct(0, 1, 0, 100, visited);
-        visited[0][1] = false;
-        visited[1][0] = true;
-        construct(1, 0, 1, 100, visited);
-        
-        return answer;
-    }
-}
-```
-
-```java
-
-```
 
