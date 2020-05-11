@@ -205,8 +205,26 @@
           }
       }
    ```
+   
+4. 방문체크를 하거나 숫자를 더해줄 때 (2019 카카오 인턴쉽 문제 응용)
 
+   ```java
+   public HashSet<Integer> set = new HashSet<>();
+   
+   public void Bitmasking(int idx, int num) {
+       if(idx==[특정숫자]) {
+   		set.add(num);
+           returnl
+       }
+       
+       for(int i=0; i<size; i++) {
+   		if(((num >> i) & i) == 1) continue; // &연산으로 방문체크
+           Bitmasking(idx+1, (num | (1<<i)));
+       }
+   }
+   ```
 
+   
 
 
 

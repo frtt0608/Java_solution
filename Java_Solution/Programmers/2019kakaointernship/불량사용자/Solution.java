@@ -13,7 +13,7 @@ class Solution2 {
             return;
         }
         
-        String reg = banned_id[idx].replaceAll("*", "[\\w\\d]");
+        String reg = banned_id[idx].replaceAll("*", "[\\w\\d]"); // 정규표현식. \w: 아무 문자, \d: 아무 숫자
 
         for(int i=0; i<user_id.length; i++) {
             if(!user_id[i].matches(reg) || ((num>>i) & 1) == 1) continue;
