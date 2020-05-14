@@ -18,9 +18,9 @@ public class Main {
         }
         
         checkOper(idx+2, 
-        operator(val, input[idx+1]-'0', input[idx]),
-        val, 
-        false);
+                operator(val, input[idx+1]-'0', input[idx]),
+                val, 
+                false);
         
         if(!flag && idx > 1) {
             checkOper(idx+2, 
