@@ -25,7 +25,7 @@ public class Main {
                     true);
         }
     }
-
+    
     static int calculator(char oper, int num1, int num2) {
         if(oper == '+') return num1+num2;
         else if(oper == '-') return num1-num2;
