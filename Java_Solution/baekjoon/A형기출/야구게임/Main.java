@@ -16,21 +16,23 @@ import java.io.*;
 
 
 public class Main {
-    static int N, player_input[][], maxScore;
+    static int N, player_input[][], playerArr[], maxScore;
+    static int visited[];
 
-    static public void setPlayer(int idx, int playerArr[], int visited[]) {
+    static public void setPlayer(int idx) {
         if(idx==10) {
-            //System.out.println(Arrays.toString(playerArr));
             // startGame
+            // playerArr[4] = 1;
             startGame(playerArr);
             return;
         }
 
-        for(int i=1; i<10; i++) {
+        for(int i=2; i<10; i++) {
             if(visited[i]==1) continue;
+            if(idx==4) idx++; 
             visited[i] = 1;
-            playerArr[i] = idx;
-            setPlayer(idx+1, playerArr, visited);
+            playerArr[idx] = i;
+            setPlayer(idx+1);
             visited[i] = 0;
         }
     }
@@ -81,13 +83,14 @@ public class Main {
     }
 
     static public void main(String args[]) throws IOException {
+        long start = System.currentTimeMillis();
         System.setIn(new FileInputStream("input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         
         N = Integer.parseInt(br.readLine());
         player_input = new int[N+1][10];
-        int playerArr[] = new int[] {0,0,0,0,1,0,0,0,0,0};
-        int visited[] = new int[] {0,0,0,0,1,0,0,0,0,0};
+        playerArr = new int[] {0,0,0,0,1,0,0,0,0,0};
+        visited = new int[] {0,0,0,0,0,0,0,0,0,0};
 
         for(int i=1; i<=N; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
@@ -96,8 +99,10 @@ public class Main {
             }
         }
 
-        setPlayer(2, playerArr, visited);
+        setPlayer(1);
 
+        long end = System.currentTimeMillis();
+        System.out.println(end - start + "ms");
         System.out.println(maxScore);
     }
 }
