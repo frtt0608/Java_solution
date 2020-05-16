@@ -52,39 +52,25 @@ public class Main {
                 if(res == 0) {
                     outCnt++;
                 } else if(res == 1) {
-                    for(int num=2; num>=0; num--) {
-                        if(bat[num] > 0) {
-                            bat[num] -= 1;
-                            if(num==2) score += 1;
-                            else bat[num+1] += 1;
-                        }
-                    }
-                    bat[0] += 1;
+                    score += bat[2];
+                    bat[2] = bat[1];
+                    bat[1] = bat[0];
+                    bat[0] = 1;
                 } else if(res == 2) {
-                    for(int num=2; num>=0; num--) {
-                        if(bat[num] > 0) {
-                            bat[num] -= 1;
-                            if(num>=1) score += 1;
-                            else bat[num+2] += 1;
-                        }
-                    }
-                    bat[1] += 1;
+                    score += bat[2] + bat[1];
+                    bat[2] = bat[0];
+                    bat[1] = 1;
+                    bat[0] = 0;
                 } else if(res == 3) {
-                    for(int num=2; num>=0; num--) {
-                        if(bat[num] > 0) {
-                            bat[num] -= 1;
-                            score += 1;
-                        }
-                    }
-                    bat[2] += 1;
+                    score += bat[2] + bat[1] + bat[0];
+                    bat[2] = 1;
+                    bat[1] = 0;
+                    bat[0] = 0;
                 } else if(res==4) {
-                    for(int num=2; num>=0; num--) {
-                        if(bat[num] > 0) {
-                            bat[num] -= 1;
-                            score += 1;
-                        }
-                    }
-                    score += 1;
+                    score += bat[2] + bat[1] + bat[0] + 1;
+                    bat[2] = 0;
+                    bat[1] = 0;
+                    bat[0] = 0;
                 }
 
                 order += 1;
