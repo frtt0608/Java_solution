@@ -1,5 +1,8 @@
-import java.util.*;
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 
 // 경기전 타순을 정한다.
@@ -20,16 +23,17 @@ public class Main {
     static int visited[];
 
     static public void setPlayer(int idx) {
-        if(idx==10) {
+        if(idx == 10) {
             // startGame
             // playerArr[4] = 1;
-            startGame(playerArr);
+            startGame();
             return;
         }
 
         for(int i=2; i<10; i++) {
             if(visited[i]==1) continue;
             if(idx==4) idx++; 
+
             visited[i] = 1;
             playerArr[idx] = i;
             setPlayer(idx+1);
@@ -37,20 +41,23 @@ public class Main {
         }
     }
 
-    static public void startGame(int number[]) {
+    static public void startGame() {
         int order = 1;
         int outCnt;
         int bat[] = new int[3];
         int score = 0;
+        int res = 0;
 
         for(int turn=1; turn<=N; turn++) {
             outCnt = 0;
-            bat = new int[3];
+            bat[0] = 0;
+            bat[1] = 0;
+            bat[2] = 0;
 
             while(outCnt < 3) {
-                if(order%10 == 0) order += 1;
+                if(order==10) order = 1;
 
-                int res = player_input[turn][number[order%10]];
+                res = player_input[turn][playerArr[order]];
                 if(res == 0) {
                     outCnt++;
                 } else if(res == 1) {
@@ -68,7 +75,7 @@ public class Main {
                     bat[2] = 1;
                     bat[1] = 0;
                     bat[0] = 0;
-                } else if(res==4) {
+                } else if(res == 4) {
                     score += bat[2] + bat[1] + bat[0] + 1;
                     bat[2] = 0;
                     bat[1] = 0;
@@ -90,11 +97,11 @@ public class Main {
         N = Integer.parseInt(br.readLine());
         player_input = new int[N+1][10];
         playerArr = new int[] {0,0,0,0,1,0,0,0,0,0};
-        visited = new int[] {0,0,0,0,0,0,0,0,0,0};
+        visited = new int[10];
 
         for(int i=1; i<=N; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
-            for(int j=1; j<10; j++) {
+            for(int j=1; j<=9; j++) {
                 player_input[i][j] = Integer.parseInt(st.nextToken());        
             }
         }
