@@ -26,6 +26,8 @@
 
    ```java
    Arrays.sort(b, Collections.reverseOrder());
+   // Primitive Type의 배열에는 적용불가!
+   // Integer같은 Wrapper Class를 이용해야한다.
    ```
 
 5. sort(array, int fromindex, int toindex)
@@ -115,7 +117,7 @@
    ```java
    arr = ["A", "G", "H", "E"];
    
-   Arrays.sort(arr, comparator<String>() {
+   Arrays.sort(arr, Comparator<String>() {
        @Override
        public int compareTo(String str1, String str2) {
            return arr.compare(str1, str2); 
