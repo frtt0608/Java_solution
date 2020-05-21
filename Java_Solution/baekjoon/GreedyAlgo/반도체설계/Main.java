@@ -1,6 +1,8 @@
 import java.io.*;
 import java.util.*;
 
+// LIS를 이용.. 알고리즘은 이해했으나 
+// else문에서 이진탐색으로 교체할 idx를 찾는 부분은 이해못함
 /**
  * Main
  */
