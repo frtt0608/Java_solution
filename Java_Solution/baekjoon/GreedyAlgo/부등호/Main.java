@@ -1,4 +1,3 @@
-import java.util.*;
 import java.io.*;
 
 /**
@@ -20,19 +19,18 @@ public class Main {
 
         for(int i=0; i<10; i++) {
             if(visited[i]) continue;
+
+            visited[i] = true;
             if(oper[idx] == '>') {
                 if(val > i) {
-                    visited[i] = true;
                     backTracking(i, idx+1, res+i);
-                    visited[i] = false;
                 }
             } else {
                 if(val < i) {
-                    visited[i] = true;
                     backTracking(i, idx+1, res+i);
-                    visited[i] = false;
                 }
             }
+            visited[i] = false;
         }
     }
 

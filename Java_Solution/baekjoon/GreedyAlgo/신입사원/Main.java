@@ -4,7 +4,7 @@ import java.util.*;
 /**
  * Main
  */
-// 정렬을 함으로써 서류성적 비교x
+// 서류성적으로 정렬하면, 서류성적을 비교할 필요가 없다!
 // 이제 나보다 높은 서류순위를 가진 사람들 중 가장 높은 면접순위를 firstScore라고 하자.
 // 이 때, firstScore보다 나의 면접순위가 높다면 선발!!, 그리고 firstScore를 갱신하자
 public class Main {
@@ -23,7 +23,7 @@ public class Main {
                 st = new StringTokenizer(br.readLine());
                 int documentScore = Integer.parseInt(st.nextToken())-1; // 서류 성적
                 int interviewScore = Integer.parseInt(st.nextToken()); // 면접 성적
-                applicant[documentScore] = interviewScore;
+                applicant[documentScore] = interviewScore; // 서류성적을 인덱스로 접근한다면? 입력만으로 자동 정렬!
             }
 
             // 비교
