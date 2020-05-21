@@ -22,27 +22,38 @@ public class Main {
                 connect[LIS_length] = target[port];
                 LIS_length += 1;
             } else {
-                int idx = Arrays.binarySearch(connect, 0, LIS_length, target[port]);
-                idx = idx<0? -idx-1:idx;
-
+                // int idx = Arrays.binarySearch(connect, 0, LIS_length, target[port]);
+                int idx = binarySearch(LIS_length-1, target[port], connect);
+                // idx = idx<0? -idx-1:idx;
+                
                 connect[idx] = target[port];
             }
+            // System.out.println(Arrays.toString(connect));
         }
 
         return LIS_length;
     }
 
-    // static void binarySearch(int max, int val) {
-    //     int min = 0;
-    //     int mid;
+    static int binarySearch(int max, int val, int connect[]) {
+        int min = 0;
+        int mid = 0;
 
-    //     while(max>=min) {
-    //         mid = (max+min)/2;
-            
-            
-    //     }
-    // }
+        while(max>=min) {
+            mid = (max+min)/2;
 
+            if(connect[mid] < val) {
+                min = mid+1;
+            } else if(connect[mid] > val) {
+                max = mid-1;
+            } else {
+                return mid;
+            }
+        }
+
+        return min;
+    }
+
+    
     static public void main(String args[]) throws IOException {
         System.setIn(new FileInputStream("input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
