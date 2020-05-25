@@ -10,15 +10,14 @@ public class Main {
         System.setIn(new FileInputStream("input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         
-        int totalScore = 0;
+        int N = Integer.parseInt(br.readLine());
+        int res = 1;
 
-        for(int i=0; i<5; i++) {
-            int score = Integer.parseInt(br.readLine());
-            if(score <= 40) {
-                totalScore += 40;
-            } else totalScore += score;
+        while(N > 0) {
+            res *= N;
+            N -= 1;
         }
 
-        System.out.println(totalScore/5);
+        System.out.println(res);
     }
 }
