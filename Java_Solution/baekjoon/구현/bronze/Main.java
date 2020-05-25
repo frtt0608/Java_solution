@@ -10,14 +10,20 @@ public class Main {
         System.setIn(new FileInputStream("input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         
-        int N = Integer.parseInt(br.readLine());
-        int res = 1;
+        int res = 0;
+        int minPrice = 2001;
+        int price = 0;
 
-        while(N > 0) {
-            res *= N;
-            N -= 1;
+        for(int i=0; i<5; i++ ) {
+            price = Integer.parseInt(br.readLine());
+            minPrice = Math.min(minPrice, price);
+
+            if(i==2) {
+                res += minPrice;
+                minPrice = 2001;
+            }
         }
-
+        res += minPrice - 50;
         System.out.println(res);
     }
 }
