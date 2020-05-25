@@ -9,18 +9,27 @@ public class Main {
     static public void main(String args[]) throws IOException {
         System.setIn(new FileInputStream("input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int N = Integer.parseInt(st.nextToken());
-        int X = Integer.parseInt(st.nextToken());
+        int salt = Integer.parseInt(br.readLine());
+        int temp = salt%5;
+        int cnt = 0;
 
-        int num = 0;
-        st = new StringTokenizer(br.readLine());
-        for(int i=0; i<N; i++) {
-            num = Integer.parseInt(st.nextToken());
-            if(num < X) {
-                System.out.print(num +" ");
+        if(salt >= 10) {
+            if(temp == 0) {
+                cnt = salt/5;
+            } else if(temp == 1 || temp == 3) {
+                cnt = salt/5 + 1;
+            } else if(temp == 2 || temp == 4) {
+                cnt = salt/5 + 2;
+            }
+        } else {
+            if(salt%5 == 0) cnt = salt/5;
+            else if(salt%3 == 0) cnt = salt/3;
+            else if(salt == 8) cnt = 2;
+            else {
+                cnt = -1;
             }
         }
+        System.out.println(cnt);
     }
 }
