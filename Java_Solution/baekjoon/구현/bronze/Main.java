@@ -9,27 +9,23 @@ public class Main {
     static public void main(String args[]) throws IOException {
         System.setIn(new FileInputStream("input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int input_num = 1;
+        int visited[] = new int[10];
+        int idx = 0;
 
-        int salt = Integer.parseInt(br.readLine());
-        int temp = salt%5;
-        int cnt = 0;
-
-        if(salt >= 10) {
-            if(temp == 0) {
-                cnt = salt/5;
-            } else if(temp == 1 || temp == 3) {
-                cnt = salt/5 + 1;
-            } else if(temp == 2 || temp == 4) {
-                cnt = salt/5 + 2;
-            }
-        } else {
-            if(salt%5 == 0) cnt = salt/5;
-            else if(salt%3 == 0) cnt = salt/3;
-            else if(salt == 8) cnt = 2;
-            else {
-                cnt = -1;
-            }
+        for(int i=0; i<3; i++) {
+            input_num *= Integer.parseInt(br.readLine());
         }
-        System.out.println(cnt);
+
+        while(input_num > 10) {
+            idx = input_num%10;
+            visited[idx] += 1;
+            input_num /= 10;
+        }
+        visited[input_num] += 1;
+
+        for(int v:visited) {
+            System.out.println(v);
+        }
     }
 }
