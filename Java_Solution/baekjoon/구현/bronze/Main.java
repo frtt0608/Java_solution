@@ -9,23 +9,29 @@ public class Main {
     static public void main(String args[]) throws IOException {
         System.setIn(new FileInputStream("input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int input_num = 1;
-        int visited[] = new int[10];
-        int idx = 0;
+        int mon[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+        String days[] = {"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"};
+        // 1월 1일은 월요일
+        String input[] = br.readLine().split(" ");
+        int x = Integer.parseInt(input[0]);
+        int y = Integer.parseInt(input[1]);
 
-        for(int i=0; i<3; i++) {
-            input_num *= Integer.parseInt(br.readLine());
+        int m = 1;
+        int d = 1;
+        String day = "MON";
+        int idx = d;
+
+        while(x != m || y != d) {
+            d++;
+            idx += 1;
+            if(mon[m] < d) {
+                m += 1;
+                d = 1;
+            }
+            day = days[idx%days.length];
+            // System.out.println(m+" / "+d + ", day:" + day);
         }
 
-        while(input_num > 10) {
-            idx = input_num%10;
-            visited[idx] += 1;
-            input_num /= 10;
-        }
-        visited[input_num] += 1;
-
-        for(int v:visited) {
-            System.out.println(v);
-        }
+        System.out.println(day);
     }
 }
