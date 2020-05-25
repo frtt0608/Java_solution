@@ -10,19 +10,15 @@ public class Main {
         System.setIn(new FileInputStream("input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         
-        String input[] = br.readLine().split(" ");
-        int hour = Integer.parseInt(input[0]);
-        int minute = Integer.parseInt(input[1]);
+        int totalScore = 0;
 
-        minute -= 45;
-        if(minute < 0) {
-            hour -= 1;
-            minute += 60;
-            if(hour < 0) {
-                hour = 23;
-            }
+        for(int i=0; i<5; i++) {
+            int score = Integer.parseInt(br.readLine());
+            if(score <= 40) {
+                totalScore += 40;
+            } else totalScore += score;
         }
 
-        System.out.println(hour+" "+minute);
+        System.out.println(totalScore/5);
     }
 }
