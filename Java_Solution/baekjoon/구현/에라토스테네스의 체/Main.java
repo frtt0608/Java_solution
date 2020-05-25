@@ -26,6 +26,7 @@ public class Main {
                     target += i;
                     continue;
                 }
+                
                 cnt += 1;
                 visited[target] = true;
                 if(cnt==K) {
