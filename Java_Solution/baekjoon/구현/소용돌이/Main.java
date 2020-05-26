@@ -6,28 +6,38 @@ import java.io.*;
  * Main
  */
 public class Main {
-    static int r1, r2, c1, c2, size;
+    static int r1, r2, c1, c2;
     static long map[][], res;
-    static int[] dx={0,-1,0,1}, dy={-1,0,1,0};
+    static int[] dx={0,-1,0,1}, dy={1,0,-1,0};
 
     static boolean wall(int x, int y) {
-        if(x >= size || x<0 || y >= size || y<0) return true;
+        if(x<0 || x>=r2-r1+1 || y<0 || y>=c2-c1+1) return true;
         return false;
     }
 
-    static void fillMap(int dir, int x, int y) {
+    static void fillMap() {
+        int x = 0;
+        int y = 0;
+        int dir = 0;
+        int changeDir = 1;
+        int cnt = 0;
+
         while(true) {
-            int nx = x + dx[dir];
-            int ny = y + dy[dir];
-            if(wall(nx, ny) || map[nx][ny] !=0 ) {
-                if(res != 1)
-                    fillMap((dir+1)%4, x, y);
-                return;
+            if(!wall(x-r1,y-c1)) {
+                map[x-r1][y-c1] = res;
             }
-            res -= 1;
-            map[nx][ny] = res;
-            x = nx;
-            y = ny;
+            res += 1;
+            x += dx[dir];
+            y += dy[dir];
+            cnt += 1;
+
+            if(cnt == changeDir) {
+                if(dir==1 || dir==3) changeDir += 1;
+                cnt = 0;
+                dir = (dir+1)%4;
+            }
+
+            if(map[0][0] != 0 && map[0][c2-c1] != 0 && map[r2-r1][0] != 0 && map[r2-r1][c2-c1] != 0) break;
         }
     }
 
@@ -39,18 +49,20 @@ public class Main {
         c1 = Integer.parseInt(input[1]);
         r2 = Integer.parseInt(input[2]);
         c2 = Integer.parseInt(input[3]);
-        size = -2*r1 +1;
+
         map = new long[r2-r1+1][c2-c1+1];
-        r2 -= r1;
-        c2 -= c1;
-        res = (long)Math.pow(size, 2);
+        res = 1;
+
+        fillMap();
+
         int maxLen = (int)Math.log10(res);
-        map[size-1][size-1] = res;
 
-        fillMap(0, size-1, size-1);
-
-        for(int i=0; i<=r2; i++) {
-            for(int j=0; j<=c2; j++) {
+        // for(int i=0; i<r2-r1+1; i++) {
+        //     System.out.println(Arrays.toString(map[i]));
+        // }
+        
+        for(int i=0; i<r2-r1+1; i++) {
+            for(int j=0; j<c2-c1+1; j++) {
 
                 for(int k=0; k<maxLen-Math.log10(map[i][j]); k++) {
                     System.out.print(" ");
