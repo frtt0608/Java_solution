@@ -1,5 +1,4 @@
 import java.io.*;
-import java.util.*;
 
 /**
  * Main
@@ -8,7 +7,6 @@ public class Main {
     static int N;
 
     static public void main(String args[]) throws IOException {
-        
         System.setIn(new FileInputStream("input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
@@ -23,14 +21,17 @@ public class Main {
             type = 0;
         }
         
-        Long numArr[] = new Long[N+1];
-        numArr[0] = (long)0;
-        numArr[1] = (long)1;       
-        for(int i=2; i<=N; i++) {
-            numArr[i] = (numArr[i-2] + numArr[i-1]) % 1000000000;
+        int res = 0;
+        int num0 = 1; // N이 1일때, N-2
+        int num1 = 0; // N이 1일때, N-1
+        
+        for(int i=0; i<N; i++) {
+            res = (num0+num1) % 1000000000;
+            num0 = num1;
+            num1 = res;
         }
 
         System.out.println(type);
-        System.out.println(numArr[N]);
+        System.out.println(res);
     }
 }
