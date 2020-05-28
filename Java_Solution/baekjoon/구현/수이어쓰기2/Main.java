@@ -13,26 +13,22 @@ public class Main {
 
         int N = Integer.parseInt(input[0]);
         int K = Integer.parseInt(input[1]);
-        long cnt = 0;
-        long target = -1;
-        long temp = 0;
+        long finalNum = 0;
+        long numlen = 1;
+        long nine = 9;
 
-        for(int i=1; i<=N; i++) {
-            cnt += (int)Math.log10(i) + 1;
-            if(cnt >= K) {
-                int diff = 0;
-                target = i%10;
-                temp = i/10;
-                while(diff+K != cnt) {
-                    diff++;
-                    target = temp%10;
-                    temp /= 10;
-                }
-                
-                break;
-            }
+        while(K > numlen * nine) {
+            finalNum += nine;
+            K -= numlen * nine;
+            numlen += 1;
+            nine *= 10;
         }
         
-        System.out.println(target);
+        finalNum += (K-1)/numlen + 1;
+        if(finalNum > N) System.out.println(-1);
+        else {
+            int idx = (int)((K-1)%numlen);
+            System.out.println(Long.toString(finalNum).charAt(idx));
+        }
     }
 }
