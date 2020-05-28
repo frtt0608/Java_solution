@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 
 
-class Student {
+class Student implements Comparable<Student> {
     int num;
     int reco;
     int time;
@@ -11,6 +11,15 @@ class Student {
         this.num = num;
         this.reco = reco;
         this.time = time;
+    }
+
+    @Override
+    public int compareTo(Student student) {
+        if(this.reco == student.reco) {
+            return this.time - student.time; // 시간 순
+        } else {
+            return this.reco - student.reco; // 추천 순
+        }
     }
 }
 /**
@@ -24,76 +33,40 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
         M = Integer.parseInt(br.readLine());
-        reco = new int[M];
+        reco = new int[M+1];
         ArrayList<Student> stuArr = new ArrayList<>();
-        boolean flag = false;
 
         String input[] = br.readLine().split(" ");
         
-        for(int i=0; i<M; i++) {
-            reco[i] = Integer.parseInt(input[i]);
+        for(int i=1; i<=M; i++) {
+            reco[i] = Integer.parseInt(input[i-1]);
         }
 
         loop:
-        for(int i=0; i<M; i++) {
-            // for(int k=0; k<N; k++) System.out.print(visited[k][0] + " ");
-            // System.out.println();
-            flag = false;
-            if(stuArr.contains(reco[i])) {
-                
+        for(int i=1; i<=M; i++) {
+            Collections.sort(stuArr);
+
+            for(Student student : stuArr) {
+                if(reco[i] == student.num) {
+                    student.reco += 1;
+                    continue loop;
+                }
             }
 
-            if(!flag && stuArr.size() < N) {
-                visited[cnt][0] = reco[i];
-                visited[cnt][1] = 1;
-                visited[cnt][2] = i;
-            } else if(stuArr.size() >= N) {
-                int minReco = 10001;
-                int minTime = 10001;
-                int target = 0;
-                recoArr.clear();
-
-                // 추천수 비교
-                for(int j=0; j<N; j++) {
-                    if(visited[j][0]!=0) {
-                        if(minReco > visited[j][1]) {
-                            recoArr.clear();
-                            minReco = visited[j][1];
-                            recoArr.add(j);
-                        } else if(minReco == visited[j][1]) {
-                            recoArr.add(j);
-                        }
-                    }
-                }
-                // 최소 추천수가 여러개인 경우,
-                if(recoArr.size() >= 2) {
-                    // 시간 비교
-                    for(Integer reco: recoArr) {
-                        if(minTime > visited[reco][2]) {
-                            minTime = visited[reco][2];
-                            target = reco;
-                        }
-                    }
-                } else {
-                    target = recoArr.get(0);
-                }
-
-                visited[target][0] = reco[i];
-                visited[target][1] = 1;
-                visited[target][2] = i;
+            if(stuArr.size() < N) {
+                stuArr.add(new Student(reco[i], 1, i));
+            } else {
+                stuArr.remove(0);
+                stuArr.add(new Student(reco[i], 1, i));
             }
         }
 
-        int res[] = new int[N];
-        for(int i=0; i<N; i++) {
-            res[i] = visited[i][0];
-        }
+        Collections.sort(stuArr, (Student stu1, Student stu2) -> {
+            return stu1.num - stu2.num;
+        });
 
-        Arrays.sort(res);
-
-        for(int r:res) {
-            if(r!=0)
-                System.out.print(r+" ");
+        for(Student stu : stuArr) {
+            System.out.print(stu.num+" ");
         }
     }
 }
