@@ -60,8 +60,6 @@ public class S5656 {
                 break;
             }
         }
-
-        // minBrick = Math.min(minBrick, findBrick(map));
     }
 
     static void breakBrick(int j, int i, int copy_map[][]) {
@@ -141,7 +139,7 @@ public class S5656 {
             }
 
             setMarble(0, map);
-            
+
             if(minBrick == Integer.MAX_VALUE) minBrick = 0;
             System.out.println("#"+tc+" "+minBrick);
         }
