@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - S5656",
+            "request": "launch",
+            "mainClass": "S5656",
+            "projectName": "A+ 대비_2a86c79b"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - S5658",
             "request": "launch",
             "mainClass": "S5658",
