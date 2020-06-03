@@ -6,52 +6,42 @@ import java.io.*;
  */
 public class Solution {
     static int D, W, K, minRes;
-    static int[][] disk; // A:0 , B:1
+    static int[][] disk, copy_disk; // A:0 , B:1
+    static int cnt, pre_disk;
 
-    static boolean inspectPerform(int j) {
-        int cnt = 1;
-        int pre_disk = disk[0][j];
-
-        for(int i=1; i<D; i++) {
-            if(pre_disk == disk[i][j]) {
-                cnt += 1;
-                if(cnt >= K) return true;
-            } else {
-                cnt = 1;
-                pre_disk = disk[i][j];
+    static boolean inspectPerform() {
+        for(int j=0; j<W; j++) {
+            cnt = 1;
+            pre_disk = disk[0][j];
+            for(int i=1; i<D; i++) {
+                if(pre_disk == disk[i][j]) {
+                    cnt += 1;
+                    if(cnt >= K) break;
+                } else {
+                    cnt = 1;
+                    pre_disk = disk[i][j];
+                }
             }
+            if(cnt < K) return false;
         }
 
-        return false;
+        return true;
     }
 
-    static void checkDisk(int cnt, int idx, boolean visited[]) {
-        boolean checkFlag = true;
-        for(int j=0; j<W; j++) {
-            if(!inspectPerform(j)) {
-                checkFlag = false;
-                break;
-            }
-        }
-
-        if(checkFlag) {
+    static void checkDisk(int cnt, int idx) {
+        if(cnt==K || inspectPerform()) {
             minRes = Math.min(minRes ,cnt);
             return;
-        } else {
-            for(int i=idx; i<D; i++) {
-                if(visited[i]) continue;
-                int temp[] = Arrays.copyOf(disk[i], W);
-                visited[i] = true;
-                
-                Arrays.fill(disk[i], 1);
-                checkDisk(cnt+1, i+1, visited);
+        }
 
-                Arrays.fill(disk[i], 0);
-                checkDisk(cnt+1, i+1, visited);
+        for(int i=idx; i<D; i++) {
+            Arrays.fill(disk[i], 1);
+            checkDisk(cnt+1, i+1);
 
-                visited[i] = false;
-                disk[i] = Arrays.copyOf(temp, W);
-            }
+            Arrays.fill(disk[i], 0);
+            checkDisk(cnt+1, i+1);
+
+            disk[i] = Arrays.copyOf(copy_disk[i], W);
         }
     }
 
@@ -68,17 +58,19 @@ public class Solution {
             K = Integer.parseInt(st.nextToken());
 
             disk = new int[D][W];
-            boolean[] visited = new boolean[D];
+            copy_disk = new int[D][W];
+
             for(int i=0; i<D; i++) {
                 st = new StringTokenizer(br.readLine());
                 for(int j=0; j<W; j++) {
                     disk[i][j] = Integer.parseInt(st.nextToken());
+                    copy_disk[i][j] = disk[i][j];
                 }
             }
 
             minRes = Integer.MAX_VALUE;
             if(K==1) minRes = 0;
-            else checkDisk(0, 0, visited);
+            else checkDisk(0, 0);
 
             System.out.println("#"+tc+" "+minRes);
         }
