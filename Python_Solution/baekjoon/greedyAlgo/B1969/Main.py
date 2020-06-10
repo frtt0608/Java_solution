@@ -16,7 +16,6 @@ def main():
             data[i][dictData[j]] += 1
     
     for dist in data:
-        print(dist)
         maxDist = max(dist)
         minData += alpha[dist.index(maxDist)]
         minCnt += N - maxDist
