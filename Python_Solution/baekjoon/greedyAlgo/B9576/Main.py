@@ -1,48 +1,40 @@
 import sys
 
 sys.stdin = open("input.txt")
-N = 0
-M = 0
-bookCnt = 0
+input = sys.stdin.readline
 
-# def giveBook(idx, signup, visited, cnt):
-#     global bookCnt
+T = int(input())
+signup = []
 
-#     if idx == M:
-#         bookCnt = max(bookCnt, cnt)
-#         return
+def giveBook(idx, visited):
+    global signup
 
-#     for i in range(signup[idx][0], signup[idx][1]+1):
-#         if visited[i]: continue
+    if visited[idx]: 
+        return 0
+    visited[idx] = 1
+    
+    for i in range(signup[idx-1][0], signup[idx-1][1]+1):
+        if signMatch[i]==0 or giveBook(signMatch[i], visited):
+            signMatch[i] = idx
+            return 1
 
-#         visited[i] = 1
-#         giveBook(idx+1, signup, visited, cnt+1)
-#         visited[i] = 0
+    return 0
 
-def main():
-    global N, M
+for tc in range(T):
+    N, M = map(int, input().split())
+    signup = []
+    bookCnt = 0
 
-    T = int(input())
-    for tc in range(T):
-        N, M = map(int, input().split())
-        signup = []
-        visited = [0] * (N+1)
-        bookCnt = 0
+    for _ in range(M):
+        data = list(map(int, input().split()))
+        signup.append(data)
+    signup = sorted(signup, key = lambda x:(x[1], -x[0]), reverse = True)
 
-        for _ in range(M):
-            data = list(map(int, input().split()))
-            signup.append(data)
-        signup = sorted(signup, key = lambda x:(x[1], x[0]), reverse = False)
-        print(signup)
-        for sign in signup:
-            for i in range(sign[0], sign[1]+1):
-                if not visited[i]:
-                    visited[i] = 1
-                    bookCnt += 1
-                    break
+    signMatch = [0] * (N+1)
 
-        # giveBook(0, signup, visited, 0)
+    for idx in range(1, M+1):
+        visited = [0] * (M+1)
+        if giveBook(idx, visited):
+            bookCnt += 1
 
-        print(bookCnt)
-
-main()
+    print(bookCnt)
