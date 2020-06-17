@@ -1,6 +1,5 @@
 # 가장 긴 바이토닉 부분 수열
 
-
 import sys
 sys.stdin = open("input.txt")
 
