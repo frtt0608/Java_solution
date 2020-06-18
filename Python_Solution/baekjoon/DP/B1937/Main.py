@@ -1,4 +1,5 @@
 # 욕심쟁이 판다
+# DFS + DP로 접근.. 배열 만들지 말고 갯수만 만들자.
 
 import sys
 from bisect import bisect_left
