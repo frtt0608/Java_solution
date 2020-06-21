@@ -59,3 +59,34 @@ d = a + b;
 
 맨하탄 거리는 항상 유클리드 거리보다 크거나 같다.
 
+
+
+
+
+#### 3. 이진 탐색
+
+BinarySearch로 구간이 큰 경우를 min + max = mid형태로 구간을 계속 반으로 쪼개면서 탐색해 최종적으로 조건에 맞는 해를 구하는 알고리즘 기법
+
+```java
+public void binarySearch() {
+    int max = maxSize;
+    int min = 0;
+    int mid = 0
+        
+    while(max >= min) {
+        mid = (max+min)/2;
+        
+        if (function() < mid) {
+            min = mid+1
+        } else {
+            max = mid - 1
+        }
+    }
+    
+    return mid
+}
+```
+
+
+
+이외에도 LIS알고리즘에서 쓰이는 이진탐색이 있다.
