@@ -76,7 +76,7 @@ public void binarySearch() {
     while(max >= min) {
         mid = (max+min)/2;
         
-        if (function() < mid) {
+        if(function() < mid) {
             min = mid+1
         } else {
             max = mid - 1
@@ -90,3 +90,54 @@ public void binarySearch() {
 
 
 이외에도 LIS알고리즘에서 쓰이는 이진탐색이 있다.
+
+
+
+
+
+#### 4. LIS 알고리즘
+
+최장 부분 수열을 구하는 알고리즘으로 "최장 증가 or 감소 or 바이토닉" 등을 구하는데 쓰인다. 일반적으로 이중 for문을 이용해 구현할 수 있지만 앞서 정리된 이진탐색을 활용한다면 시간 복잡도를 줄일 수 있다.
+
+```java
+// ex) 최장 증가 부분 수열
+
+public void binarySearch(int num) {
+    int max = maxSize;
+    int min = 0;
+    int mid = 0;
+    
+    while(max >= min) {
+        mid = (max + min) / 2;
+        
+        if(num < mid) {
+            min = mid + 1
+        } else if(num > mid) {
+            max = mid - 1
+        } else {
+            return mid
+        }
+    }
+    
+    return min
+}
+
+public void main() {
+    dpList;
+    numArr;
+    dpList.append(numArr[0]);
+    dpLen = 1;
+    
+    for(int i=1; i<N; i++) {
+        if(dpList[dpLen-1] < numArr[i]) {
+            dpList.append(numArr[i]);
+            dpLen += 1;
+        }
+        else {
+            idx = binarySearch(numArr[i]);
+            dPList.append(idx, numArr[i]);
+        }
+    }
+}
+```
+
