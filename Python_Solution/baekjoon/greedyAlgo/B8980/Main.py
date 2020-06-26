@@ -8,49 +8,41 @@ N, C = map(int, input().split())
 
 M = int(input())
 
-boxes = [list(map(int, input().split())) for _ in range(M)]
-boxes.sort(key = lambda x:(x[1]))
-truck = {}
+boxes = [[] for _ in range(N+1)]
+for i in range(M):
+    inputBox = list(map(int, input().split()))
+    boxes[inputBox[0]].append([inputBox[1], inputBox[2]])
 
-deliveryCnt = 0
-truckWeight = 0
+
+for i in range(1, N+1):
+    boxes[i].sort(key = lambda x:(x[0], x[1]))
+    
+deliveryCnt = 0 # 이동시킨 박스
+truckWeight = 0 # 현재 트럭 무게
+truck = [0 for _ in range(N+1)] # 트럭에 실은 박스 중 도착지에 내릴 갯수
 
 for cityNum in range(1, N+1):
+    deliveryCnt += truck[cityNum]
+    truckWeight -= truck[cityNum]
+    truck[cityNum] = 0
 
-    print(boxes)
-    print(truck)
-    
-    # 박스 내리기
-    if truck:
-        if cityNum in truck.keys():
-            deliveryCnt += truck[cityNum]
-            truckWeight -= truck[cityNum]
-            truck[cityNum] = 0
-
-    # 박스 싣기
-    for box in boxes:
-        inBox = box
-
-        if inBox[0] == cityNum:
-            
-            if truckWeight == C:
-                break
-
-            if truckWeight + inBox[2] > C:
-                if inBox[1] in truck.keys():
-                    truck[inBox[1]] += C - truckWeight
-                else:
-                    truck[inBox[1]] = C - truckWeight
-                truckWeight = C
-            else:
-                if inBox[1] in truck.keys():
-                    truck[inBox[1]] += inBox[2]
-                else:
-                    truck[inBox[1]] = inBox[2]
-                truckWeight += inBox[2]  
-        elif inBox[0] < cityNum:
-            continue
+    for box in boxes[cityNum]:
+        if truckWeight + box[1] <= C:
+            truckWeight += box[1]
+            truck[box[0]] += box[1]
         else:
-            break
+            cannotLoad = box[1] - (C - truckWeight)
 
+            for i in range(N, box[0], -1):
+                if truck[i] >= cannotLoad:
+                    truck[i] -= cannotLoad
+                    cannotLoad = 0
+                    break
+                else:
+                    cannotLoad -= truck[i]
+                    truck[i] = 0
+
+            truckWeight = C
+            truck[box[0]] += box[1] - cannotLoad
+    
 print(deliveryCnt)
