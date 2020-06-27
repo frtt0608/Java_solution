@@ -65,7 +65,7 @@ d = a + b;
 
 #### 3. 이진 탐색
 
-BinarySearch로 구간이 큰 경우를 min + max = mid형태로 구간을 계속 반으로 쪼개면서 탐색해 최종적으로 조건에 맞는 해를 구하는 알고리즘 기법
+BinarySearch로 구간이 큰 경우를 (min + max)/2 = mid형태로 구간을 계속 반으로 쪼개면서 탐색해 최종적으로 조건에 맞는 해를 구하는 알고리즘 기법
 
 ```java
 public void binarySearch() {
