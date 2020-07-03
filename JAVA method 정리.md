@@ -115,15 +115,23 @@
 1. Array 정렬
 
    ```java
-   arr = ["A", "G", "H", "E"];
+   String[] arr = {"A", "G", "H", "E"};
    
-   Arrays.sort(arr, Comparator<String>() {
+   Arrays.sort(arr, new Comparator<String>() {
        @Override
-       public int compareTo(String str1, String str2) {
-           return arr.compare(str1, str2); 
+       public int compare(String str1, String str2) {
+           return str1.compareTo(str2); 
            // 순서대로 쓰면 오름차순, 반대로 (str2, str) 은 내림차순
        }
    });
+   
+   // Arrays.sort(grade, new Comparator<Integer>() {
+   //     @Override
+   //     public int compare(Integer num1, Integer num2) {
+   //         return num2.compareTo(num1);
+   //     }
+   // });
+   // 숫자배열의 경우 Integer로!!
    ```
 
 2. List 정렬
