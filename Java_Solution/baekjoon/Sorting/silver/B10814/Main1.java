@@ -2,10 +2,11 @@
 
 import java.io.*;
 import java.util.StringTokenizer;
-import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.Comparator;
+import java.util.Collections;
 
-public class Main {
+public class Main1 {
 
     static class Person {
         int age;
@@ -22,25 +23,26 @@ public class Main {
         StringTokenizer st;
 
         int N = Integer.parseInt(br.readLine());
-        Person[] people = new Person[N];
+        LinkedList<Person> perList = new LinkedList<>();
 
         for(int i=0; i<N; i++) {
             st = new StringTokenizer(br.readLine());
             int age = Integer.parseInt(st.nextToken());
             String name = st.nextToken();
-            
-            people[i] = new Person(age, name);
+
+            perList.add(new Person(age, name));
         }
 
-        Arrays.sort(people, new Comparator<Person>() {
-            @Override   
+        Collections.sort(perList, new Comparator<Person>() {
+            @Override
             public int compare(Person p1, Person p2) {
                 return p1.age - p2.age;
             }
         });
 
-        for(int i=0; i<N; i++) {
-            System.out.println(people[i].age + " " + people[i].name);
+        while(!perList.isEmpty()) {
+            Person p = perList.pollFirst();
+            System.out.println(p.age +" "+ p.name);
         }
     }
 }
