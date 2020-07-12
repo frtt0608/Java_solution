@@ -447,7 +447,31 @@ https://offbyone.tistory.com/400
    }
    ```
 
-   
+
+
+
+### Set
+
+공통적으로 데이터를 중복 저장x
+
+1. HashSet: 저장 순서가 보장되지 않는다.
+2. TreeSet: 기본적으로 오름차순으로 데이터를 정렬
+3. LinkedHashSet: 입력된 순서대로 데이터를 저장
+
+다음과 같이 자료구조를 선언하면서 정렬조건을 설정할 수 있다.
+
+```java
+Set<String> newSet = new TreeSet<String>(
+	new Comparator<String>() {
+        @Override
+        public int compare(String str1, String str2) {
+            return str1.compareTo(str2);
+        }
+    }
+);
+```
+
+
 
 
 
