@@ -6,38 +6,20 @@ public class Main {
         System.setIn(new FileInputStream("input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        String input = br.readLine();
-        int[] alpha = new int[26];
-        int idx = 0;
-        int maxCnt = 0;
-        int maxIdx = -1;
-        char res = '?';
-        
-        for(int i=0; i<input.length(); i++) {
-            char chr = input.charAt(i);
-
-            if((int)chr >= 97) {
-                idx = chr - 'a';
-            } else {
-                idx = chr - 'A';
-            }
-
-            alpha[idx] += 1;
-            maxCnt = Math.max(maxCnt, alpha[idx]);
+        char[] input = br.readLine().toCharArray();
+        int[] num = new int[7];
+        for(int i=0; i<7; i++) {
+            if(i==3) continue;
+            num[i] = input[i] - '0';
         }
 
-        for(int i=0; i<26; i++) {
-            if(maxCnt == alpha[i]) {
-                if(maxIdx == -1) {
-                    maxIdx = i;
-                    res = (char)(i + 65);
-                } else {
-                    res = '?';
-                    break;
-                }
-            }
-        }
+        int num1 = num[0] + num[1]*10 + num[2]*100;
+        int num2 = num[4] + num[5]*10 + num[6]*100;
 
-        System.out.println(res);
+        if(num1 > num2) {
+            System.out.println(num1);
+        } else {
+            System.out.println(num2);
+        }
     }
 }
