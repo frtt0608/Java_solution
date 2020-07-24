@@ -3,28 +3,53 @@ import java.util.*;
 
 public class Main {
     static int N;
+    static ArrayList<String> croa;
+
+    static void init() {
+        croa.add("c=");
+        croa.add("c-");
+        croa.add("dz=");
+        croa.add("d-");
+        croa.add("lj");
+        croa.add("nj");
+        croa.add("s=");
+        croa.add("z=");
+    }
     static public void main(String[] args) throws IOException {
         System.setIn(new FileInputStream("input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        N = Integer.parseInt(br.readLine());
+        String[] input = br.readLine().split("");
+        croa = new ArrayList<>();
+        init();        
+
         int cnt = 0;
-        Set<Character> groupSet = new HashSet<>();
+        StringBuilder sb;
 
         loop:
-        for(int i=0; i<N; i++) {
-            char[] input = br.readLine().toCharArray();
-            groupSet.clear();
+        for(int i=0; i<input.length; i++) {
+            sb = new StringBuilder();
+            for(int j=i; j<input.length; j++) {
+                sb.append(input[j]);
 
-            for(int j=0; j<input.length; j++) {
-                char chr = input[j];
-                if(!groupSet.contains(chr)) {
-                    groupSet.add(chr);
-                } else if(groupSet.contains(chr) && input[j-1] != chr){
+                if(croa.contains(sb.toString())) {
+                    System.out.println(sb.toString() + ", " + "있음");
+                    cnt += 1;
+                    i += sb.length()-1;
                     continue loop;
+                } else {
+                    if(sb.length() == 3) {
+                        System.out.println(sb.toString() + ", " + "없음");
+                        cnt += 1;
+                        continue loop;
+                    }
                 }
             }
-            cnt += 1;
+
+            if(!croa.contains(sb.toString())) {
+                System.out.println(sb.toString() + ", " + "없음");
+                cnt += 1;
+            }
         }
 
         System.out.println(cnt);
