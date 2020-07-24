@@ -7,19 +7,23 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         char[] input = br.readLine().toCharArray();
-        int[] num = new int[7];
-        for(int i=0; i<7; i++) {
-            if(i==3) continue;
-            num[i] = input[i] - '0';
+        int time = 0;
+
+        for(int i=0; i<input.length; i++) {
+            int num = input[i] - 'A';
+            System.out.println(num + ", " + time);
+
+            if(num >= 0 && num <=14) {
+                time += (int)num/3 +2 +1;
+            } else if(num >= 15 && num <= 18) {
+                time += 8;
+            } else if(num >= 19 && num <= 21) {
+                time += 9;
+            } else {
+                time += 10;
+            }
         }
 
-        int num1 = num[0] + num[1]*10 + num[2]*100;
-        int num2 = num[4] + num[5]*10 + num[6]*100;
-
-        if(num1 > num2) {
-            System.out.println(num1);
-        } else {
-            System.out.println(num2);
-        }
+        System.out.println(time);
     }
 }
