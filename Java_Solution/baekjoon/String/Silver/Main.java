@@ -3,55 +3,42 @@ import java.util.*;
 
 public class Main {
     static int N;
-    static ArrayList<String> croa;
-
-    static void init() {
-        croa.add("c=");
-        croa.add("c-");
-        croa.add("dz=");
-        croa.add("d-");
-        croa.add("lj");
-        croa.add("nj");
-        croa.add("s=");
-        croa.add("z=");
+    static int[] num;
+    
+    static void sell() {
+        for(int i=0; i<10; i++) {
+            num[i] += 1;
+        }
     }
+
     static public void main(String[] args) throws IOException {
         System.setIn(new FileInputStream("input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        String[] input = br.readLine().split("");
-        croa = new ArrayList<>();
-        init();        
-
+        char[] input = br.readLine().toCharArray();
+        num = new int[10];
         int cnt = 0;
-        StringBuilder sb;
 
-        loop:
         for(int i=0; i<input.length; i++) {
-            sb = new StringBuilder();
-            for(int j=i; j<input.length; j++) {
-                sb.append(input[j]);
+            int idx = input[i] - '0';
 
-                if(croa.contains(sb.toString())) {
-                    System.out.println(sb.toString() + ", " + "있음");
+            if(num[idx] == 0) {
+                if(idx == 6 && num[9] > 0) {
+                    num[9] -= 1;
+                } 
+                else if(idx == 9 && num[6] > 0) {
+                    num[6] -= 1;
+                } 
+                else {
+                    sell();
+                    num[idx] -= 1;
                     cnt += 1;
-                    i += sb.length()-1;
-                    continue loop;
-                } else {
-                    if(sb.length() == 3) {
-                        System.out.println(sb.toString() + ", " + "없음");
-                        cnt += 1;
-                        continue loop;
-                    }
                 }
-            }
-
-            if(!croa.contains(sb.toString())) {
-                System.out.println(sb.toString() + ", " + "없음");
-                cnt += 1;
+            } else {
+                num[idx] -= 1;
             }
         }
-
+        
         System.out.println(cnt);
     }
 }
