@@ -33,9 +33,7 @@ public class Main1 {
         int[] dx = {1,-1,0,0}, dy = {0,0,1,-1};
         int x, y, nx, ny, rupee;
         Queue<Node> que = new LinkedList<>();
-        boolean[][] visited = new boolean[N][N];
         que.add(new Node(0, 0, map[0][0]));
-        visited[0][0] = true;
         minRoute[0][0] = map[0][0];
 
         while(!que.isEmpty()) {
@@ -56,13 +54,7 @@ public class Main1 {
                 ny = y + dy[dir];
 
                 if(wall(nx, ny)) continue;
-                if(visited[nx][ny]) {
-                    if(minRoute[nx][ny] > minRoute[x][y] + map[nx][ny]) {
-                        minRoute[nx][ny] = minRoute[x][y] + map[nx][ny];
-                        que.add(new Node(nx, ny, minRoute[nx][ny]));
-                    }
-                } else {
-                    visited[nx][ny] = true;
+                if(minRoute[nx][ny] > minRoute[x][y] + map[nx][ny]) {
                     minRoute[nx][ny] = minRoute[x][y] + map[nx][ny];
                     que.add(new Node(nx, ny, minRoute[nx][ny]));
                 }
@@ -75,6 +67,7 @@ public class Main1 {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
         int tc = 1;
+        
         while(true) {
             N = Integer.parseInt(br.readLine());
             if(N==0) break;
@@ -83,6 +76,8 @@ public class Main1 {
             minRoute = new int[N][N];
                 
             for(int i=0; i<N; i++) {
+                Arrays.fill(minRoute[i], Integer.MAX_VALUE);
+
                 st = new StringTokenizer(br.readLine());
                 for(int j=0; j<N; j++) {
                     map[i][j] = Integer.parseInt(st.nextToken());
