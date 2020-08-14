@@ -28,6 +28,7 @@ class Solution {
 
                 double endTime = h + m + s_;
                 time[i][0] = endTime - append + 0.001;
+                time[i][0] = Math.round(time[i][0]*1000)/1000.0;
                 time[i][1] = endTime;
                 // System.out.println(h + ": " + m + ": " + s_str);
                 // System.out.println(endTime);
@@ -42,23 +43,28 @@ class Solution {
             });
             
             for(int i=0; i<len; i++) {
-                double s_time = time[i][0];
-                double e_time = time[i][0] + 1;
-                int cnt = 0;
-                for(int j=0; j<len; j++) {
-                    if(time[i][1] >= s_time && time[i][0] <= e_time) {
-                        cnt += 1;
+                for(int t=0; t<2; t++) {
+                    double s_time = time[i][t];
+                    double e_time = time[i][t] + 1;
+                    int cnt = 0;
+                    for(int j=0; j<len; j++) {
+                        if(time[j][1] >= s_time && time[j][0] < e_time) {
+                            // System.out.println(time[j][1] + " >= " + s_time);
+                            // System.out.println(time[j][0] + " <= " + e_time);
+                            cnt += 1;
+                        }
                     }
+                    
+                    answer = Math.max(answer, cnt);
                 }
-                answer = Math.max(answer, cnt);
             }
         } else {
             answer = 1;
         }
         
-        for(int i=0; i<len; i++) {
-            System.out.println(Arrays.toString(time[i]));    
-        }
+        // for(int i=0; i<len; i++) {
+        //     System.out.println(Arrays.toString(time[i]));    
+        // }
     
         System.out.println(answer);
         return answer;
