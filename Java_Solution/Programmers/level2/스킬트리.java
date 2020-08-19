@@ -37,9 +37,9 @@ class Solution {
 // class Solution {
 //     public int solution(String skill, String[] skill_trees) {
 //         int answer = skill_trees.length;
-        
+//         String pattern = "[^" + skill + "]";
 //         for(String tree : skill_trees) {
-//             String normal = tree.replaceAll("[^" + skill + "]", "");
+//             String normal = tree.replaceAll(pattern, "");
 //             // System.out.println(normal);
 //             if(skill.indexOf(normal) != 0) {
 //                 answer--;
