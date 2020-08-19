@@ -30,3 +30,22 @@ class Solution {
         return answer;
     }
 }
+
+// 정규화 활용
+// import java.util.*;
+
+// class Solution {
+//     public int solution(String skill, String[] skill_trees) {
+//         int answer = skill_trees.length;
+        
+//         for(String tree : skill_trees) {
+//             String normal = tree.replaceAll("[^" + skill + "]", "");
+//             // System.out.println(normal);
+//             if(skill.indexOf(normal) != 0) {
+//                 answer--;
+//             }
+//         }
+        
+//         return answer;
+//     }
+// }
