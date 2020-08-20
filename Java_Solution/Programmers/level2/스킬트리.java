@@ -1,6 +1,6 @@
 import java.util.*;
 
-class Solution {
+class 스킬트리 {
     public int solution(String skill, String[] skill_trees) {
         int answer = 0;
         char[] skills = skill.toCharArray();

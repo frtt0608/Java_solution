@@ -16,17 +16,16 @@ class 멀쩡한사각형 {
         } else if(w == h) {
             answer = totalSquare - w;
         } else {
-            if(w%2 == 0 && h%2 == 0) {
-                int num = gcd(w, h);
-                answer = totalSquare - (long)Math.pow(num, 2);
-            } else if(w%2 == 0 || h%2 == 0) {
-                answer = totalSquare - 2*Math.min(w, h);
-            } else {
-                answer = totalSquare - (w+h-1);
-            }
+            int num = gcd(w, h);
+            answer = totalSquare - (w+h-num);
         }
-        System.out.println(totalSquare);
-        System.out.println(answer);
+        // System.out.println(totalSquare);
+        // System.out.println(answer);
         return answer;
     }
 }
+
+
+// w와 h의 최대공약수로 각각을 나누면 w', h'이 된다.
+// 서로소인 w'과 h'으로 대각선을 그으면 w'+h'-1만큼 사용가능.
+// 여기서 다시 최대공약수를 곱해주면 w+h-gcd(w,h)가 된다.
