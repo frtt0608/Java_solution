@@ -25,3 +25,19 @@ class 두정수사이의합 {
     }
 }
 
+// 등차수열 공식
+// class Solution {
+    
+//     public long calc(long max, long min) {
+//         return (max-min+1)*(max+min)/2;
+//     }
+    
+//     public long solution(int a, int b) {
+//         long answer = 0;
+        
+//         if(a == b) answer = a;
+//         else answer = calc(Math.max(a, b), Math.min(a,b));
+        
+//         return answer;
+//     }
+// }
