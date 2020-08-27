@@ -1,6 +1,6 @@
 import java.util.*;
 
-class Solution {
+class 단체사진찍기 {
     String[] data;
     char[] friends = {'A', 'C', 'F', 'J', 'M', 'N', 'R', 'T'};
     boolean[] visited;
