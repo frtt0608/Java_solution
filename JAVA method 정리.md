@@ -215,6 +215,10 @@ Short.parseShort(); // (String -> Short)
 
 string_name.toCharArray(); // (String -> char[])
 String.valueOf(char[]); // (char[] -> String)
+
+
+String binaryStr = Integer.toBinaryString(num); // 10진수 -> 2진수
+int cnt = Integer.bitCount(num); // num을 2진수로 바꿔서 1의 수를 반환
 ```
 
 
