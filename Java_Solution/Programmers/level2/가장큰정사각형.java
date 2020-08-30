@@ -1,6 +1,6 @@
 import java.util.*;
 
-class Solution
+class 가장큰정사각형
 {
     int[][] board;
     int min;

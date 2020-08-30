@@ -1,4 +1,4 @@
-class Solution {
+class 나라의숫자124 {
     public String solution(int n) {
         StringBuilder sb = new StringBuilder();
         
