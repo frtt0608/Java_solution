@@ -1,6 +1,6 @@
 import java.util.*;
 
-class Solution {
+class 줄서는방법 {
     public int[] solution(int n, long k) {
         int[] answer = new int[n];
         LinkedList<Integer> numList = new LinkedList<>();

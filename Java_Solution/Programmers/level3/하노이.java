@@ -1,6 +1,6 @@
 import java.util.*;
 
-class Solution {
+class 하노이 {
     ArrayList<int[]> routeList;
     
     public void hanoi(int n, int start, int end, int mid) {

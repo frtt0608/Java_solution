@@ -1,6 +1,6 @@
 import java.util.*;
 
-class Solution {
+class 2xn타일링 {
     int num = 1000000007;
     int answer;
     int cnt;
