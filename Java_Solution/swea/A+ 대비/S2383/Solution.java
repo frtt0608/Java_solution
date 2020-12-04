@@ -1,156 +1,141 @@
 import java.util.*;
 import java.io.*;
-
-class Stair {
-    int x;
-    int y;
-    int size;
-
-    Stair(int x, int y, int size) {
-        this.x = x;
-        this.y = y;
-        this.size = size;
-    }
-}
-
-class Person {
-    int num;
-    int x;
-    int y;
-    int dist;
-    int arriveTime;
-
-    Person(int num, int x, int y) {
-        this.num = num;
-        this.x = x;
-        this.y = y;
-    }
-}
 /**
  * Solution
  */
 public class Solution {
-    static int N, minTime;
-    static int[][] map;
-    static ArrayList<Stair> stairs;
-    static ArrayList<Person> persons;
-    static Person[] stairList1, stairList2, waitingList1, waitingList2;
-    
-    static void choiceStair(int idx, int[] where, int cnt1) {
-        if(idx == persons.size()) {
-            goStair(where, cnt1);
+    static int N, minTime, totalMinTime;
+    static int[][] stair;
+    static List<Person> personList;
+    static Queue<Person> copyPersonQ;
+    static Queue<Person> wait1, wait2;
+    static Queue<Person> stair1, stair2;
+
+    public static void downStair() {
+        Queue<Person> tempQ1 = new LinkedList<>();
+        Queue<Person> tempQ2 = new LinkedList<>();
+
+        while(!stair1.isEmpty()) {
+            Person p = stair1.poll();
+
+            if(minTime - p.downTime < stair[0][2]) {
+                tempQ1.offer(p);
+            } else {
+                // System.out.println(minTime + "분에 " + p.x + ", " + p.y + " 계단 통과   1번 계단 " + p.downTime);
+            }
+        }
+
+        while(!stair2.isEmpty()) {
+            Person p = stair2.poll();
+
+            if(minTime - p.downTime < stair[1][2]) {
+                tempQ2.offer(p);
+            } else {
+                // System.out.println(minTime + "분에 " + p.x + ", " + p.y + " 계단 통과   2번 계단 " + p.downTime);
+            }
+        }
+
+        stair1.addAll(tempQ1);
+        stair2.addAll(tempQ2);
+    }
+
+    public static void startDownToStair() {
+        Queue<Person> tempQ1 = new LinkedList<>();
+        Queue<Person> tempQ2 = new LinkedList<>();
+
+        while(!wait1.isEmpty()) {
+            Person p = wait1.poll();
+            
+            if(stair1.size() < 3 && minTime - p.arriveTime > 0) {
+                // System.out.println(minTime + "에 " + p.x + ", " + p.y + " 1번 계단 내려가기 시작");
+                p.downTime = minTime;
+                stair1.offer(p);
+            } else {
+                tempQ1.offer(p);
+            }
+        }
+
+        while(!wait2.isEmpty()) {
+            Person p = wait2.poll();
+            
+            if(stair2.size() < 3 && minTime - p.arriveTime > 0) {
+                // System.out.println(minTime + "에 " + p.x + ", " + p.y + " 2번 계단 내려가기 시작");
+                p.downTime = minTime;
+                stair2.offer(p);
+            } else {
+                tempQ2.offer(p);
+            }
+        }
+
+        wait1.addAll(tempQ1);
+        wait2.addAll(tempQ2);
+    }
+
+    public static int calculateDiff(Person p, int stx, int sty) {
+        return Math.abs(p.x - stx) + Math.abs(p.y - sty);
+    }
+
+    public static void moveToStair() {
+        Queue<Person> tempQ = new LinkedList<>();
+
+        while(!copyPersonQ.isEmpty()) {
+            Person p = copyPersonQ.poll();
+            
+            int diffPersonAndStair1 = calculateDiff(p, stair[0][0], stair[0][1]);
+            int diffPersonAndStair2 = calculateDiff(p, stair[1][0], stair[1][1]);
+
+            if(p.targetStair == 0 && minTime == diffPersonAndStair1) {
+                // System.out.println(minTime + "에 " + p.x + ", " + p.y + " 1번 계단 도착");
+                p.arriveTime = minTime;
+                wait1.offer(p);
+            } else if(p.targetStair == 1 && minTime == diffPersonAndStair2) {
+                // System.out.println(minTime + "에 " + p.x + ", " + p.y + " 2번 계단 도착");
+                p.arriveTime = minTime;
+                wait2.offer(p);
+            } else {
+                tempQ.offer(p);
+            }
+        }
+
+        copyPersonQ.addAll(tempQ);
+    }
+
+    public static void calculateMinTime(int[] target) {
+        copyPersonQ = new LinkedList<>();
+
+
+        for(int i=0; i<personList.size(); i++) {
+            Person p = personList.get(i);
+            p.targetStair = target[i];
+
+            copyPersonQ.offer(p);
+        }
+        
+        minTime = 0;
+        while(!copyPersonQ.isEmpty() || !stair1.isEmpty() || !stair2.isEmpty() || !wait1.isEmpty() || !wait2.isEmpty()) {
+            minTime += 1;
+
+            moveToStair();
+            downStair();
+            startDownToStair();
+        }
+
+        totalMinTime = Math.min(totalMinTime, minTime);
+    }
+
+    public static void totalCase(int idx, int[] target) {
+        if(idx == personList.size()) {
+            calculateMinTime(target);
             return;
         }
 
-        where[idx] = 1;
-        choiceStair(idx+1, where, cnt1+1);
-        where[idx] = 2;
-        choiceStair(idx+1, where, cnt1);
+        target[idx] = 0;
+        totalCase(idx+1, target);
+        target[idx] = 1;
+        totalCase(idx+1, target);
     }
 
-    static void goStair(int[] where, int cnt1) {
-        int time = 0;
-        int cnt = 0;
-        int len = where.length;
-        stairList1 = new Person[3];
-        stairList2 = new Person[3];
-        waitingList1 = new Person[cnt1];
-        waitingList2 = new Person[len - cnt1];
-        // ArrayList<Integer> distList = new ArrayList<>();
-        int idx1 = 0;
-        int idx2 = 0;
-        // int dist = 0;
-
-        for(int i=0; i<len; i++) {
-            Person p = persons.get(i);
-            if(where[i]==1) {
-                p.dist = Math.abs(p.x - stairs.get(0).x) + Math.abs(p.y - stairs.get(0).y);
-                waitingList1[idx1] = p;
-                idx1++;
-                // dist = p.dist + stairs.get(0).size;
-            } else {
-                p.dist = Math.abs(p.x - stairs.get(1).x) + Math.abs(p.y - stairs.get(1).y);
-                waitingList2[idx2] = p;
-                idx2++;
-                // dist = p.dist + stairs.get(1).size;
-            }
-            // distList.add(dist);
-        }
-        
-        // distList.sort(Comparator.reverseOrder());
-        // minTime = Math.min(minTime, distList.get(0));
-
-        while(true) {
-            
-            // 계단1 통과자 확인하기
-            for(int i=0; i<stairList1.length; i++) {
-                if(stairList1[i] == null) continue;
-
-                if(time - stairList1[i].arriveTime > stairs.get(0).size) {
-                    // System.out.println(stairList1[i].num+"번째 사람//  "+"1번 계단 통과!   " + "time: " + time);
-                    stairList1[i] = null;
-                    cnt++;
-                }
-            }
-
-            // 계단2 통과자 확인하기
-            for(int i=0; i<stairList2.length; i++) {
-                if(stairList2[i] == null) continue;
-
-                if(time - stairList2[i].arriveTime > stairs.get(1).size) {
-                    // System.out.println(stairList2[i].num+"번째 사람//  " + "2번 계단 통과!   " + "time: " + time);
-                    stairList2[i] = null;
-                    cnt++;
-                }
-            }
-
-            if(cnt == where.length) break;
-
-            // 계단1 입구 도착한 사람 확인하기
-            for(int i=0; i<waitingList1.length; i++) {
-                if(waitingList1[i] == null) continue;
-                
-                if(time - waitingList1[i].dist >= 0) {
-                    for(int j=0; j<3; j++) {
-                        if(stairList1[j] == null) {
-                            Person p = waitingList1[i];
-                            // System.out.println(p.num+"번째 사람//  "+"1번계단 입구 도착!  " + "time: " + time);
-                            p.arriveTime = time;
-                            stairList1[j] = p;
-                            waitingList1[i] = null;
-                            break;
-                        }
-                    }
-                }
-            }
-
-            // 계단2 입구 도착한 사람 확인하기
-            for(int i=0; i<waitingList2.length; i++) {
-                if(waitingList2[i] == null) continue;
-
-                if(time - waitingList2[i].dist >= 0) {
-                    for(int j=0; j<3; j++) {
-                        if(stairList2[j] == null) {
-                            Person p = waitingList2[i];
-                            // System.out.println(p.num+"번째 사람//  "+"2번계단 입구 도착!  " + "time: " + time);
-                            p.arriveTime = time;
-                            stairList2[j] = p;
-                            waitingList2[i] = null;
-                            break;
-                        }
-                    }
-                }
-            }
-
-            time++;
-            // System.out.println("--------");
-        }
-
-        // 최소 시간 구하기.
-        minTime = Math.min(minTime, time);
-    }
-
-    static public void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException {
         System.setIn(new FileInputStream("input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
@@ -158,37 +143,48 @@ public class Solution {
 
         for(int tc=1; tc<=T; tc++) {
             N = Integer.parseInt(br.readLine());
-
-            map = new int[N][N];
-            stairs = new ArrayList<>();
-            persons = new ArrayList<>();
-            int idx = 1;
+            stair = new int[2][3];
+            personList = new ArrayList<>();
+            wait1 = new LinkedList<>();
+            wait2 = new LinkedList<>();
+            stair1 = new LinkedList<>();
+            stair2 = new LinkedList<>();
+            totalMinTime = Integer.MAX_VALUE;
+            int idx = 0;
 
             for(int i=0; i<N; i++) {
                 st = new StringTokenizer(br.readLine());
                 for(int j=0; j<N; j++) {
-                    map[i][j] = Integer.parseInt(st.nextToken());
-                    if(map[i][j] > 1) {
-                        stairs.add(new Stair(i, j, map[i][j]));
-                    } else if(map[i][j]==1) {
-                        persons.add(new Person(idx, i, j));
-                        idx++;
+                    int num = Integer.parseInt(st.nextToken());
+
+                    if(num == 1) {
+                        personList.add(new Person(i, j));
+                    } else if(num > 1) {
+                        stair[idx][0] = i;
+                        stair[idx][1] = j;
+                        stair[idx][2] = num;
+                        idx += 1;
                     }
                 }
             }
+            // calculateMinTime(new int[] {1,0,1});
+            totalCase(0, new int[personList.size()]);
 
-            minTime = Integer.MAX_VALUE;
-            int[] where = new int[persons.size()];
-            choiceStair(0, where, 0);
-            // where[0] = 1;
-            // where[1] = 1;
-            // where[2] = 1;
-            // where[3] = 2;
-            // where[4] = 2;
-            // where[5] = 2;
-            // goStair(where, 3);
-
-            System.out.println("#"+tc+" "+minTime);
+        
+            System.out.println("#" + tc + " " + totalMinTime);
         }
+    }
+}
+
+class Person {
+    int x;
+    int y;
+    int targetStair;
+    int arriveTime;
+    int downTime;
+
+    Person(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 }
