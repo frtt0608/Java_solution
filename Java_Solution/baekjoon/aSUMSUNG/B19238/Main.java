@@ -2,14 +2,14 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-    static int N, M, gas, tx, ty, count, pi;
+    static int N, M, gas, tx, ty, count;
     static int[] dx={0,0,1,-1}, dy={1,-1,0,0};
     static int[][] map;
     static Person[] persons;
-    static boolean[] vp;
     static Person target;
 
     static class Person {
+        int pos;
         int sx, sy;
         int ex, ey;
         int diff;
@@ -44,39 +44,25 @@ public class Main {
             int x = t.x;
             int y = t.y;
 
+            if(t.gas < 0) {
+                break;
+            }
+
             if(x == target.ex && y == target.ey) {
-            
-                // System.out.println("도착 전 가스: " + t.gas);
-                vp[pi] = true;
-                map[target.sx][target.sy] = 0;
                 gas = t.gas + (gas - t.gas)*2;
-                // System.out.println("도착 후 가스: " + gas);
                 tx = x;
                 ty = y;
                 count += 1;
                 return;
             }
 
-            if(t.gas == 0) {
-                continue;
-            } else if(t.gas < 0) {
-                break;
-            }
-
             for(int dir=0; dir<4; dir++) {
                 int nx = x + dx[dir];
                 int ny = y + dy[dir];
 
-                if(isWall(nx, ny)) continue;
-                if(map[nx][ny] == 1) continue;
-                if(visited[nx][ny]) continue;
+                if(isWall(nx, ny) || map[nx][ny] == -1 || visited[nx][ny]) continue;
 
                 visited[nx][ny] = true;
-                if(map[nx][ny] == 9) {
-                    if(nx != target.ex || ny != target.ey) {
-                        continue;
-                    }
-                }
                 tq.offer(new Taxi(nx, ny, t.gas-1));
             }
         }
@@ -90,67 +76,57 @@ public class Main {
     }
 
     public static void pickupPerson() {
+        Queue<Taxi> tq = new LinkedList<>();
+        boolean[][] visited = new boolean[N][N];
+        tq.offer(new Taxi(tx, ty, gas));
+        visited[tx][ty] = true;
+        int curDistance = -1;
+        List<Person> pl = new ArrayList<>();
+        
         target = null;
-        for(int i=0; i<M; i++) {
-            if(vp[i]) continue;
+        while(!tq.isEmpty()) {
+            Taxi t = tq.poll();
+            int x = t.x;
+            int y = t.y;
 
-            Queue<Taxi> tq = new LinkedList<>();
-            boolean[][] visited = new boolean[N][N];
-            tq.offer(new Taxi(tx, ty, gas));
-            visited[tx][ty] = true;
+            if(curDistance != -1 && gas-t.gas > curDistance) {
+                break;
+            }
 
-            while(!tq.isEmpty()) {
-                Taxi t = tq.poll();
-                int x = t.x;
-                int y = t.y;
+            if(map[x][y] >= 1) {
+                Person p = persons[map[x][y]-1];
+                p.diff = gas - t.gas;
+                pl.add(p);
+                curDistance = p.diff;
+            }
 
-                if(t.gas == 0) continue;
+            for(int dir=0; dir<4; dir++) {
+                int nx = x + dx[dir];
+                int ny = y + dy[dir];
 
-                if(x == persons[i].sx && y == persons[i].sy) {
-                    Person p = persons[i];
-                    p.diff = gas - t.gas;
-                    if(target == null) {
-                        target = p;
-                        pi = i;
-                    } else {
-                        if(target.diff > p.diff) {
-                            target = p;
-                            pi = i;
-                        } else if(target.diff == p.diff) {
-                            if(target.sx > p.sx) {
-                                target = p;
-                                pi = i;
-                            } else if(target.sx == p.sx) {
-                                if(target.sy > p.sy) {
-                                    target = p;
-                                    pi = i;
-                                }
-                            }
-                        }
-                    }
-                    break;
-                }
+                if(isWall(nx, ny) || map[nx][ny] == -1 || visited[nx][ny]) continue;
 
-                for(int dir=0; dir<4; dir++) {
-                    int nx = x + dx[dir];
-                    int ny = y + dy[dir];
-    
-                    if(isWall(nx, ny)) continue;
-                    if(map[nx][ny] == 1) continue;
-                    if(visited[nx][ny]) continue;
-    
-                    visited[nx][ny] = true;
-                    tq.offer(new Taxi(nx, ny, t.gas-1));
-                }
+                visited[nx][ny] = true;
+                tq.offer(new Taxi(nx, ny, t.gas-1));
             }
         }
+        
+        if(pl.size() > 0) {
+            for(int i=0; i<pl.size(); i++) {
+                Person p = pl.get(i);
+                if(target == null) {
+                    target = p;
+                } else {
+                    if(target.pos > p.pos) {
+                        target = p;
+                    }
+                }
+            }
 
-        if(target != null) {
             tx = target.sx;
             ty = target.sy;
+            map[tx][ty] = 0;
             gas -= target.diff;
-            // System.out.println("태운 승객 위치: " + target.sx + "," + target.sy + " >> " + target.diff);
-            // System.out.println("남은 가스:" + gas);
         }
     }
 
@@ -165,14 +141,15 @@ public class Main {
 
         map = new int[N][N];
         persons = new Person[M];
-        vp = new boolean[M];
         count = 0;
-        pi = 0;
         
         for(int i=0; i<N; i++) {
             st = new StringTokenizer(br.readLine());
             for(int j=0; j<N; j++) {
                 map[i][j] = Integer.parseInt(st.nextToken());
+                if(map[i][j] == 1) {
+                    map[i][j] = -1;
+                }
             }
         }
 
@@ -188,11 +165,12 @@ public class Main {
             int ey = Integer.parseInt(st.nextToken())-1;
 
             Person p = new Person(sx, sy, ex, ey);
+            p.pos = sx * 100 + sy;
             persons[i] = p;
-            map[sx][sy] = 9;
+            map[sx][sy] = i+1;
         }
 
-        while(gas > 0) {
+        while(true) {
             pickupPerson();
 
             if(target == null || gas <= 0) {
