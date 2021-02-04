@@ -1,6 +1,5 @@
 import java.util.*;
 import java.io.*;
-import java.math.BigInteger;
 
 public class Main {
     static StringBuilder sb;
@@ -45,8 +44,6 @@ public class Main {
         } else if(Bi < 0) {
             addRemainNumber(A, Ai);
         }
-
-        
 
         System.out.println(sb.reverse().toString());
     }
