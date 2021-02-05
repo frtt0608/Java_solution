@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B9020 {
 
     static final int MAX = 10000;
     static boolean[] primeArr;
@@ -31,6 +31,16 @@ public class Main {
         for(int tc=1; tc<=T; tc++) {
             int num = Integer.parseInt(br.readLine());
             int prime1=num/2, prime2=num/2;
+
+            while(true) {
+                if(!primeArr[prime1] && !primeArr[prime2]) {
+
+                    break;
+                } else {
+                    prime1 -= 1;
+                    prime2 += 1;
+                }
+            }
 
             System.out.println(prime1+" "+prime2);
         }
