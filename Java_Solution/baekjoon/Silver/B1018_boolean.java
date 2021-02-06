@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B1018_boolean {
     static int minCount;
     static boolean[][] chess;
 
