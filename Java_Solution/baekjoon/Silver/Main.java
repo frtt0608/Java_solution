@@ -3,40 +3,24 @@ import java.util.*;
 
 public class Main {
 
-    static public void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException {
         System.setIn(new FileInputStream("input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
     
         int N = Integer.parseInt(st.nextToken());
-        
-        int endOfWorld = 666;
-        List<Integer> numList = new ArrayList<>();
-
-        while(numList.size() <= 10000) {
-            int copyEndOfWorld = endOfWorld;
-            int sixCount = 0;
-            while(copyEndOfWorld > 0) {
-                int num = copyEndOfWorld%10;
-                if(num == 6) {
-                    sixCount += 1;
-                } else {
-                    sixCount = 0;
-                }
-
-                if(sixCount == 3) {
-                    numList.add(endOfWorld);
-                    break;
-                }
-
-                copyEndOfWorld /= 10;
-            }
-            
-            endOfWorld += 1;
+        int[] numArr = new int[N];
+        for(int i=0; i<N; i++) {
+            numArr[i] = Integer.parseInt(br.readLine());
         }
 
-        Collections.sort(numList);
+        Arrays.sort(numArr);
 
-        System.out.println(numList.get(N-1));
+        StringBuilder sb = new StringBuilder();
+        for(int i=0; i<N; i++) {
+            sb.append(numArr[i]).append('\n');
+        }
+
+        System.out.println(sb.toString());
     }
 }
