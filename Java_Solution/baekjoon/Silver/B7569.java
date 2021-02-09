@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B7569 {
     static int M, N, H, allTime;
     static int[][][] tomatoFarm;
     static Queue<Node> tomatoQue;
