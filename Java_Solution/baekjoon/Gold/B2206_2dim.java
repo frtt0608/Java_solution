@@ -1,10 +1,10 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B2206_2dim {
 
     static int N, M, minRoute;
-    static char[][] map;
+    static int[][] map, isSmash;
 
     static class Node {
         int x, y, routeCnt;
@@ -29,7 +29,7 @@ public class Main {
 
         Queue<Node> que = new LinkedList<>();
         que.add(new Node(0, 0, 1, 0));
-        boolean[][][] visited = new boolean[2][N][M];
+        isSmash[0][0] = 0;
 
         while(!que.isEmpty()) {
             Node node = que.poll();
@@ -48,22 +48,19 @@ public class Main {
                 int ny = y + dy[dir];
 
                 if(isWall(nx, ny)) continue;
-                if(visited[smashFlag][nx][ny]) continue;
 
-                if(map[nx][ny] == '1') {
-                    if(smashFlag == 0) {
-                        visited[1][nx][ny] = true;
-                        que.add(new Node(nx, ny, routeCnt+1, smashFlag+1));
+                if(isSmash[nx][ny] > smashFlag) {
+                    if(map[nx][ny] == 0) {
+                        isSmash[nx][ny] = smashFlag;
+                        que.add(new Node(nx, ny, routeCnt+1, smashFlag));
+                    } else {
+                        if(smashFlag == 0) {
+                            isSmash[nx][ny] = smashFlag + 1;
+                            que.add(new Node(nx, ny, routeCnt+1, smashFlag+1));
+                        }
                     }
-                } else {
-                    visited[smashFlag][nx][ny] = true;
-                    que.add(new Node(nx, ny, routeCnt+1, smashFlag));
                 }
             }
-        }
-
-        if(minRoute == Integer.MAX_VALUE) {
-            minRoute = -1;
         }
     }
 
@@ -74,14 +71,24 @@ public class Main {
 
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
-        map = new char[N][M];
+        map = new int[N][M];
+        isSmash = new int[N][M];
         minRoute = Integer.MAX_VALUE;
 
         for(int i=0; i<N; i++) {
-            map[i] = br.readLine().toCharArray();
+            String[] input = br.readLine().split("");
+            for(int j=0; j<M; j++) {
+                map[i][j] = Integer.parseInt(input[j]);
+                isSmash[i][j] = Integer.MAX_VALUE;
+            }
         }
 
         moveToMapAndSmash();
+
+        if(minRoute == Integer.MAX_VALUE) {
+            minRoute = -1;
+        }
+
         System.out.println(minRoute);
     }
 }
