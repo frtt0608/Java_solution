@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B1707 {
     static int V, E, graphCnt;
     static ArrayList<Integer>[] graph;
     static String result;
