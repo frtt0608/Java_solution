@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B7562 {
     static int N, sx, sy, tx, ty, minCount;
     static int[][] chess, countMap;
 
