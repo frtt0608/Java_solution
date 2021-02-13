@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B9461 {
 
     static final int SIZE = 100;
     static int N;
