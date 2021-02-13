@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B2565_memoi {
 
     static int N;
     static int[][] map;
