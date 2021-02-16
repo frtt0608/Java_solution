@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class B1167 {
     static int N, farNode, maxRadius;
     static boolean[] visited;
     static ArrayList<Node>[] tree;
