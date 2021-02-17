@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class B1967 {
     static int N, farNode, maxRadius;
     static boolean[] visited;
     static ArrayList<Node>[] tree;
@@ -42,20 +42,6 @@ public class Main {
         }
     }
 
-    public static void findParentNodeDFS(int num, int weight) {
-        visited[num] = true;
-
-        if(maxRadius < weight) {
-            maxRadius = weight;
-            farNode = num;
-        }
-
-        for(Node node: tree[num]) {
-            if(visited[node.num]) continue;
-            findParentNodeDFS(node.num, weight + node.weight);
-        }
-    }
-
     public static void main(String[] args) throws IOException {
         System.setIn(new FileInputStream("input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -63,7 +49,6 @@ public class Main {
 
         N = Integer.parseInt(br.readLine());
         tree = new ArrayList[N+1];
-        visited = new boolean[N+1];
         maxRadius = 0;
 
         for(int i=1; i<N+1; i++) {
@@ -79,11 +64,6 @@ public class Main {
             tree[p].add(new Node(s, weight));
             tree[s].add(new Node(p, weight));
         }
-
-        // findParentNodeDFS(1, 0);
-        // visited = new boolean[N+1];
-        // maxRadius = 0;
-        // findParentNodeDFS(farNode, 0);
 
         findParentNodeBFS(1);
         findParentNodeBFS(farNode);
