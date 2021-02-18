@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class B5639_recur {
     static final int MAX_SIZE = 100001;
     static ArrayList<Integer> preOrder;
     static StringBuilder postOrder;
