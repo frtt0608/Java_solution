@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class B2263 {
     static int N;
     static int[] inOrder, postOrder, inOrderIndex;
     static StringBuilder preOrder;
