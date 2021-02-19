@@ -2,56 +2,22 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-    static int N;
-    static ArrayList<Integer> preOrder;
-    static StringBuilder postOrder;
-
-    public static void searchPostOrder(int start, int end) {
-        if(end == start) return;
-        int root = preOrder.get(start);
-        int rootIndex = searchRoot(start, end, root);
-        
-        
-        if(end - start == 1) {
-            postOrder.append(root+"\n");
-            return;
-        }
-
-        if(rootIndex == -1) {
-            searchPostOrder(start+1, end);
-        } else {
-            searchPostOrder(start+1, rootIndex);
-            searchPostOrder(rootIndex, end);
-        }
-
-        postOrder.append(root+"\n");
-    }
-
-    public static int searchRoot(int start, int end, int root) {
-        for(int i=start; i<end; i++) {
-            if(root < preOrder.get(i)) {
-                return i;
-            }
-        }
-
-        return -1;
-    }
+    static int N, M;
 
     public static void main(String[] args) throws IOException {
         System.setIn(new FileInputStream("input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        preOrder = new ArrayList<>();
-        postOrder = new StringBuilder();
+        int testCase = 1;
+        StringBuilder sb = new StringBuilder();
 
         while(true) {
-            String input = br.readLine();
-            if(input == null) break;
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            N = Integer.parseInt(st.nextToken());
+            M = Integer.parseInt(st.nextToken());
+            if(N == 0 && M == 0) break;
 
-            int num = Integer.parseInt(input);
-            preOrder.add(num);
+            int treeCount = 0;
+            
         }
-
-        searchPostOrder(0, preOrder.size());
-        System.out.println(postOrder.toString());
     }
 }   
