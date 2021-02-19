@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class B5639 {
     static int N;
     static ArrayList<Integer> preOrder;
     static StringBuilder postOrder;
