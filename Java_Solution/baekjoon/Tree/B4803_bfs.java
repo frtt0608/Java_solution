@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class B4803 {
+public class B4803_bfs {
     static int N, M;
     static ArrayList<Integer>[] tree;
     static boolean[] visited;

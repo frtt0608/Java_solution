@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 
 
-public class Main {
+public class B1717 {
     static int n, m;
     static int[] tree;
 

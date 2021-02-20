@@ -6,26 +6,7 @@ public class Main {
     static ArrayList<Integer>[] tree;
     static boolean[] visited;
 
-    public static int checkIsTree(int root) {
-        Queue<Integer> que = new LinkedList<>();
-        que.offer(root);
-        int node = 0, edge = 0;
-
-        while(!que.isEmpty()) {
-            int start = que.poll();
-            visited[start] = true;
-            node += 1;
-
-            for(int end: tree[start]) {
-                edge += 1;
-                if(!visited[end]) {
-                    que.offer(end);
-                }
-            }
-        }
-
-        return edge/2+1 == node ? 1:0;
-    }
+   
 
     public static void main(String[] args) throws IOException {
         System.setIn(new FileInputStream("input.txt"));
@@ -54,12 +35,9 @@ public class Main {
                 tree[e2].add(e1);
             }
 
-            // 간선의 개수 = 정점의 개수 - 1
-            // 양방향이므로 간선의개수는 2배
-            // 간선의개수/2 + 1 = 정점의 개수
             for(int i=1; i<N+1; i++) {
                 if(!visited[i]) {
-                    treeCount += checkIsTree(i);               
+
                 }
             }
 
