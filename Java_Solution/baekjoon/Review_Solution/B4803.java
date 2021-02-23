@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class B4803 {
     static int n, m;
     static int[] tree, isCycle, nodeCount;
 
