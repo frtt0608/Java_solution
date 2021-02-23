@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B20040 {
     static int N, M;
     static int[] cycleGame;
 
