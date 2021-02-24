@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B13305 {
 
     static int N, currentOil;
     static int[] distance, price;
