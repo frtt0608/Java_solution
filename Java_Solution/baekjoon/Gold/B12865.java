@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B12865 {
     static int N, K;
     static int[][] item;
     static int[][] knapsack;
