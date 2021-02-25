@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 
 
-public class Main {
+public class B11049 {
     static int N;
     static int[][] arr, minCountDp;
 
