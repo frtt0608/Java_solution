@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B10942 {
     static int N;
     static int[] arr;
     static int[][] dp;
