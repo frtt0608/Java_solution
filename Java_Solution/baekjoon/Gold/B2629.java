@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B2629 {
     static int N, M, total;
     static int[] weight;
     static boolean[][] dp;
