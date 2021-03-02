@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B1660 {
 
     static public void main(String[] args) throws IOException {
         System.setIn(new FileInputStream("input.txt"));
@@ -40,7 +40,6 @@ public class Main {
             }
         }
         System.out.println(Arrays.toString(tetraArr));
-        // System.out.println(Arrays.toString(dpArr));
         System.out.println(dpArr[N]);
     }
 }

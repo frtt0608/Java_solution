@@ -1,6 +1,6 @@
 import java.io.*;
 
-public class Main {
+public class B9252 {
     static int maxLCS, lenStr1, lenStr2;
     static String result;
     static int[][] dpLCS;
