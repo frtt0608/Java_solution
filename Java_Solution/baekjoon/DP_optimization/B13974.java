@@ -4,7 +4,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class B13974 {
     static public void main(String[] args) throws IOException {
         System.setIn(new FileInputStream("input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -22,8 +22,6 @@ public class Main {
                 cost[i][i] = i;
                 priceArr[i] = Integer.parseInt(st.nextToken());
             }
-            
-            // System.out.println(Arrays.toString(priceArr));
             
             sumArr[0] = priceArr[0];
             for(int i=1; i<K; i++) {
@@ -55,9 +53,7 @@ public class Main {
                     }
                 }
             }
-            // for(int i=0; i<K; i++) {
-            //     System.out.println(Arrays.toString(dpMap[i]));
-            // }
+
             System.out.println(dpMap[0][K-1]);
         }
     }
