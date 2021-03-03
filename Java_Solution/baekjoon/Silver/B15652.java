@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B15652 {
 
     static int N, M;
     static StringBuilder sb;
