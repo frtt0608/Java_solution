@@ -7,8 +7,8 @@ public class Main {
     static boolean[] visited;
     static StringBuilder sb;
 
-    public static void permutation(int idx, int[] result) {
-        if(idx == N) {
+    public static void permutation(int idx, int preNum, int[] result) {
+        if(idx == M) {
             for(int num: result) {
                 sb.append(num+" ");
             }
@@ -16,11 +16,11 @@ public class Main {
             return;
         }
 
-        for(int i=1; i<N+1; i++) {
+        for(int i=preNum+1; i<N+1; i++) {
             if(!visited[i]) {
                 visited[i] = true;
                 result[idx] = i;
-                permutation(idx+1, result);
+                permutation(idx+1, i, result);
                 visited[i] = false;
             }
         }
@@ -36,7 +36,7 @@ public class Main {
         visited = new boolean[N+1];
         sb = new StringBuilder();
 
-        permutation(0, new int[M]);
+        permutation(0, 0, new int[M]);
         System.out.println(sb.toString());
     }
 }
