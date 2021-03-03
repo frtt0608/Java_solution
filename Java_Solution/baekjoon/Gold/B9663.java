@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B9663 {
     static int N, count;
     static boolean[] vertical, diagonal, reverseDiagonal;
 
