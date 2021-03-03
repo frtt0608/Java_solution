@@ -3,26 +3,25 @@ import java.util.*;
 
 public class Main {
 
-    static int N, currentOil;
-    static int[] distance, price;
-    static long totalPrice;
+    static int N, M;
+    static boolean[] visited;
+    static StringBuilder sb;
 
-    public static void moveToRightCity() {
-        long minPrice = 0;
-        totalPrice = 0;
+    public static void permutation(int idx, int[] result) {
+        if(idx == N) {
+            for(int num: result) {
+                sb.append(num+" ");
+            }
+            sb.append("\n");
+            return;
+        }
 
-        // i = 현재 도시위치 및 가격, 가야할 거리
-        for(int i=0; i<N; i++) {
-            if(i == N-1) break;
-
-            if(i == 0) {
-                minPrice = price[i];
-                totalPrice = minPrice * distance[i];
-            } else {
-                if(minPrice > price[i]) {
-                    minPrice = price[i];
-                }
-                totalPrice += minPrice * distance[i];
+        for(int i=1; i<N+1; i++) {
+            if(!visited[i]) {
+                visited[i] = true;
+                result[idx] = i;
+                permutation(idx+1, result);
+                visited[i] = false;
             }
         }
     }
@@ -30,23 +29,14 @@ public class Main {
     public static void main(String[] args) throws IOException {
         System.setIn(new FileInputStream("input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
+        StringTokenizer st = new StringTokenizer(br.readLine());
         
-        N = Integer.parseInt(br.readLine());
-        distance = new int[N-1];
-        price = new int[N];
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        visited = new boolean[N+1];
+        sb = new StringBuilder();
 
-        st = new StringTokenizer(br.readLine());
-        for(int i=0; i<N-1; i++) {
-            distance[i] = Integer.parseInt(st.nextToken());
-        }
-
-        st = new StringTokenizer(br.readLine());
-        for(int i=0; i<N; i++) {
-            price[i] = Integer.parseInt(st.nextToken());
-        }  
-        
-        moveToRightCity();
-        System.out.println(totalPrice);
+        permutation(0, new int[M]);
+        System.out.println(sb.toString());
     }
 }
