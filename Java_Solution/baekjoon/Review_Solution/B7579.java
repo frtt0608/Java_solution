@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class B7579 {
     static int N, M, totalCost, minCost;
     static int[] memories, costs;
     static int[][] costDP;
