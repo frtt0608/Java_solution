@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B5014 {
     static int F, S, G, U, D, minCount;
     static int[] dp;
 
