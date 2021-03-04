@@ -1,9 +1,8 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B2573_BFS {
     static int N, M, firstYear, iceCnt;
-    static int[] dx = {1,0,-1,0}, dy = {0,1,0,-1};
     static int[][] northPole;
     static boolean[][] visited;
 
@@ -17,28 +16,37 @@ public class Main {
     }
 
     public static void meltingIceBlock(int x, int y) {
+        int[] dx = {1,0,-1,0}, dy = {0,1,0,-1};
+        Queue<Node> que = new LinkedList<>();
+        que.offer(new Node(x, y));
         visited[x][y] = true;
 
-        for(int dir=0; dir<4; dir++) {
-            int nx = x + dx[dir];
-            int ny = y + dy[dir];
+        while(!que.isEmpty()) {
+            Node node = que.poll();
+            x = node.x;
+            y = node.y;
 
-            if(visited[nx][ny]) continue;
-            if(northPole[nx][ny] == 0) {
-                if(northPole[x][y] > 0) {
-                    northPole[x][y] -= 1;
+            for(int dir=0; dir<4; dir++) {
+                int nx = x + dx[dir];
+                int ny = y + dy[dir];
+
+                if(visited[nx][ny]) continue;
+
+                if(northPole[nx][ny] == 0) {
+                    if(northPole[x][y] > 0) {
+                        northPole[x][y] -= 1;
+                    }
+                } else {
+                    visited[nx][ny] = true;
+                    que.offer(new Node(nx, ny));
                 }
-            } else {
-                meltingIceBlock(nx, ny);
             }
         }
     }
 
     public static boolean checkIceBlockCount() {
         iceCnt = 0;
-        for(int i=0; i<N; i++) {
-            Arrays.fill(visited[i], false);
-        }
+        visited = new boolean[N][M];
 
         for(int i=0; i<N; i++) {
             for(int j=0; j<M; j++) {
@@ -72,7 +80,6 @@ public class Main {
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
         northPole = new int[N][M];
-        visited = new boolean[N][M];
 
         for(int i=0; i<N; i++) {
             st = new StringTokenizer(br.readLine());

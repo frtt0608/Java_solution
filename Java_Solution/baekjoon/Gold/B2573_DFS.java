@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B2573_DFS {
     static int N, M, firstYear, iceCnt;
     static int[] dx = {1,0,-1,0}, dy = {0,1,0,-1};
     static int[][] northPole;
