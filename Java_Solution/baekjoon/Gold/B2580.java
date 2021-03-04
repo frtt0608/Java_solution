@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B2580 {
     static int N, count;
     static int[][] sdoku;
     static boolean[][][] parts;
