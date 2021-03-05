@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B2644 {
 
     static int N, M, targetX, targetY, relationCount;
     static int[][] relation;
