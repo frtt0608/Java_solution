@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B9205 {
 
     static int N, M, targetX, targetY;
     static int[][] stores;
