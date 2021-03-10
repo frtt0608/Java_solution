@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class B4991 {
     static int H, W, totalDustCnt, minMoveCnt;
     static char[][] room;
     static Queue<Node> dustQue;
