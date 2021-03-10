@@ -3,7 +3,7 @@ import java.util.*;
 
 // https://onsil-thegreenhouse.github.io/programming/problem/2018/04/02/problem_combination/
 
-public class Main {
+public class B11401_euclidean {
     static final long MOD = 1000000007;
     static int N, K;
     static long[] factorial;
