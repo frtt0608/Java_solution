@@ -3,7 +3,7 @@ import java.util.*;
 
 // https://onsil-thegreenhouse.github.io/programming/problem/2018/04/02/problem_combination/
 
-public class Main {
+public class B11401_fermat {
     static final long MOD = 1000000007;
     static int N, K;
     static long[] factorial;
@@ -46,7 +46,6 @@ public class Main {
         System.setIn(new FileInputStream("input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        // StringBuilder sb = new StringBuilder();
         
         N = Integer.parseInt(st.nextToken());
         K = Integer.parseInt(st.nextToken());
