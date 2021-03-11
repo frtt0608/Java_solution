@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class B11401_fermat {
     static final int MOD = 1000000007;
     static final int MAX = 4000000;
     static long[] factorial;
@@ -16,36 +16,21 @@ public class Main {
         }
     }
 
-    public static long euclidean_Bezout_identity(long p, long B) {
-        long s = 0;
-        long s0 = 1;
-        long s1 = 0;
-        long t = 1;
-        long t0 = 0;
-        long t1 = 1;
-        long tempB = B;
+    public static long fermatGetFastPower(long B) {
+        long fermatNum = 1;
+        long index = MOD-2;
 
-        while(true) {
-            if(p%B > 0) {
-                s = s0 - s1*(p/B);
-                s0 = s1;
-                s1 = s;
-                t = t0 - t1*(p/B);
-                t0 = t1;
-                t1 = t;
-
-                tempB = B;
-                B = p%B;
-                p =tempB;
-
-            } else {
-                break;
+        while(index > 0) {
+            if(index%2 == 1) {
+                fermatNum = fermatNum * B % MOD;
             }
+
+            B = B * B % MOD;
+            index /= 2;
         }
 
-        return t;
+        return fermatNum;
     }
-    
 
     public static void main(String[] args) throws IOException {
         System.setIn(new FileInputStream("input.txt"));
@@ -56,11 +41,12 @@ public class Main {
         N = Integer.parseInt(st.nextToken());
         K = Integer.parseInt(st.nextToken());
 
-        // euclidean Theorem
-        // ps + Bt = 1
+        // fermat's little Theorem
+        // nCk = (AB^-1) = (AB^(p-2))%p
         long B = factorial[K] * factorial[N-K] % MOD;
-        long t = euclidean_Bezout_identity(MOD, B);
-        long result = factorial[N] * t % MOD;
+        B = fermatGetFastPower(B);
+
+        long result = factorial[N] * B % MOD;
         if(result < 0) result += MOD;
 
         System.out.println(result);

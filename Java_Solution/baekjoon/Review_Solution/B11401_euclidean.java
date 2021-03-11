@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class B11401_euclidean {
     static final int MOD = 1000000007;
     static final int MAX = 4000000;
     static long[] factorial;
