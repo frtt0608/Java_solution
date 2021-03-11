@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B10830 {
     static final long MOD = 1000;
     static int N;
     static long B;
