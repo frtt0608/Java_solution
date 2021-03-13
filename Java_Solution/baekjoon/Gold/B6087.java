@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B6087 {
     static int W, H, minCount;
     static int[] dx = {1,0,-1,0}, dy = {0,1,0,-1};
     static char[][] map;
@@ -57,7 +57,6 @@ public class Main {
         System.setIn(new FileInputStream("input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        // StringBuilder sb = new StringBuilder();
         
         W = Integer.parseInt(st.nextToken());
         H = Integer.parseInt(st.nextToken());
