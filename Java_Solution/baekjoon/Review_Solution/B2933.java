@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class B2933 {
     static int R, C;
     static int[] dx = {1,0,-1,0}, dy = {0,1,0,-1};
     static char[][] cave;
