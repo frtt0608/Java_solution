@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class B6087 {
     static int W, H, minCount;
     static char[][] map;
     static int[] dx = {1,0,-1,0}, dy = {0,1,0,-1};
