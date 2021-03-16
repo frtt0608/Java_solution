@@ -26,7 +26,8 @@ public class B2749 {
         
         N = Long.parseLong(st.nextToken()); 
         
-        // 파사노 주기
+        // 피사노 주기
+        // 모듈러가 10^k (k>2)인 경우, 주기는 15*10^(k-1)이 된다.
         long p = 1500000;
         N %= p;
 
