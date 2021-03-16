@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B2749 {
     static final int MOD = 1000000;
     static long N, res;
     static long[] arr;
