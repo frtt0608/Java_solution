@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class B11657 {
     static final int MAX = Integer.MAX_VALUE;
     static int N, M;
     static Bus[] buses;
