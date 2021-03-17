@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class B11444 {
     static final int MOD = 1000000007;
     static long N;
     static long[][] arr = new long[][] {{1, 1}, {1, 0}};
