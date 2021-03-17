@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B9370 {
     static final int MAX = 10000000;
     static int N, M, T, S, G, H;
     static int[] minRoute;
