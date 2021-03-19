@@ -374,6 +374,9 @@ https://offbyone.tistory.com/400
    map.remove(Object key);
    map.size();
    map.values(); // value를 collections형태로 저장
+   
+   // getOrDefault는 str이 있으면 값을 반환, 없으면 기본 값을 반환
+   mapd.get(str, map.getOrDefault(str, 0)+1)
    ```
 
 2. 응용 메소드
@@ -389,7 +392,7 @@ https://offbyone.tistory.com/400
        for (String word : text.split(" ")) {
            if (map.containsKey(word)) {
                Integer value = map.get(word);
-               map.put(word, ++value);
+               map.put(word, value+1);
            }
        }
    }
@@ -401,6 +404,7 @@ https://offbyone.tistory.com/400
        map.computeIfPresent(word, (String key, Integer value) -> ++value);
      }
    }
+   
    
    // 이와같이 변경 가능
    // computeIfPresent는 key를 받고 key가 존재하는 경우에만 반복적으로 value를 계산하는 함수로 다시 매핑한다
