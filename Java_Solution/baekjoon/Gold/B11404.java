@@ -1,16 +1,14 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B11404 {
     static final int MAX = 100000000;
     static int N, M;
     static int[][] minPrices;
 
     public static void initMinPrices() {
         for(int i=1; i<N+1; i++) {
-            for(int j=1; j<N+1; j++) {
-                minPrices[i][j] = (i==j ? 0:MAX);
-            }
+            Arrays.fill(minPrices[i], MAX);
         }
     }
 
