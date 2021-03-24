@@ -1,7 +1,9 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+// Two pointer
+// or index array
+public class B3273 {
 
     static int N, target, pairCount;
     static int[] nums;
