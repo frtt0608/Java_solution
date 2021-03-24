@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B1644 {
     static int N, idx, resCount;
     static boolean[] prime;
     static int[] nums;
