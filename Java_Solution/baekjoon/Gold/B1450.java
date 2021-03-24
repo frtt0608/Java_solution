@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B1450 {
     static int N, C, resCount;
     static int idxL, idxR;
     static int[] weight;
