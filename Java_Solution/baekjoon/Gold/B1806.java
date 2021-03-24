@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B1806 {
     static final int MIN = 1000000000;
     static int N, S, minLength;
     static int[] nums;
