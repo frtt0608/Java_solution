@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B2470 {
     static final int MAX = 1000000000;
     static int N;
     static int sol1, sol2;
