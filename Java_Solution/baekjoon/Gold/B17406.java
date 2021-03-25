@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B17406 {
     static int N, M, K, minValue;
     static int[] dx = {1,0,-1,0}, dy = {0,1,0,-1};
     static int[][] A, map, rcs;
