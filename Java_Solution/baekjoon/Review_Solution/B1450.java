@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class B1450 {
     static final int MAX = 100000000;
     static int N, C, totalCount;
     static int[] weight;
