@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B2636 {
     static int N, M, time, cheeseCount, preCheeseCount;
     static int[][] cheese;
     static boolean[][] visited;
