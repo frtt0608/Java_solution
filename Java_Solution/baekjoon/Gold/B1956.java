@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B1956 {
     static final int MAX = 4000001;
     static int V, E, minCycle;
     static int[][] city;
