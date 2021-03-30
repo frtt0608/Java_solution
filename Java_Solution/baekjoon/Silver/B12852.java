@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B12852 {
     static int N;
     static int[] minRoute, preNum;
     static StringBuilder sb;
