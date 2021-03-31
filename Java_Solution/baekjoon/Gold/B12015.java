@@ -1,18 +1,18 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B12015 {
     static int N;
-    static int[] seq, bsIndex;
+    static int[] seq;
     static ArrayList<Integer> LIS;
 
-    public static int lower_bound(int min, int max, int val) {
-        int mid;
+    public static int searchPosition(int min, int max, int value) {
+        int mid = 0;
 
         while(min < max) {
-            mid = (min + max)/2;
+            mid = (min+max)/2;
 
-            if(LIS.get(mid) < val) {
+            if(LIS.get(mid) < value) {
                 min = mid+1;
             } else {
                 max = mid;
@@ -26,28 +26,12 @@ public class Main {
         LIS.add(seq[0]);
 
         for(int i=1; i<N; i++) {
-            int size = LIS.size();
-
-            if(LIS.get(size-1) < seq[i]) {
+            if(LIS.get(LIS.size()-1) < seq[i]) {
                 LIS.add(seq[i]);
-                bsIndex[i] = LIS.size()-1;
             } else {
-                int index = lower_bound(0, size, seq[i]);
+                int index = searchPosition(0, LIS.size(), seq[i]);
                 LIS.set(index, seq[i]);
-                bsIndex[i] = index;
             }
-        }
-    }
-
-    public static String getLIS(int target, int index) {
-        if(target == -1) {
-            return "";
-        }
-
-        if(bsIndex[index] == target) {
-            return getLIS(target-1, index-1) + " " + seq[index];
-        } else {
-            return getLIS(target, index-1);
         }
     }
 
@@ -58,7 +42,6 @@ public class Main {
 
         N = Integer.parseInt(st.nextToken());
         seq = new int[N];
-        bsIndex = new int[N];
         LIS = new ArrayList<>();
 
         st = new StringTokenizer(br.readLine());
@@ -68,6 +51,5 @@ public class Main {
 
         getLongestSequence();
         System.out.println(LIS.size());
-        System.out.println(getLIS(LIS.size()-1, N-1).trim());
     }
 }

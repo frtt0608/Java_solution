@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B14002_bs {
     static int N;
     static int[] seq, bsIndex;
     static ArrayList<Integer> LIS;
