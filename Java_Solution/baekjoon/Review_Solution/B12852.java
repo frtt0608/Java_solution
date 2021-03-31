@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class B12852 {
     static final int MAX = 10000001;
     static int N;
     static int[] minCount, preNum;
