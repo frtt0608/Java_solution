@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B2482 {
     static final int MOD = 1000000003;
     static int N, K, totalCount;
     static int[][] dp;
