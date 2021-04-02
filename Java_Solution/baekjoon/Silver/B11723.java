@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B11723 {
     static final int MAX = 20;
     static int N, S;
     static StringBuilder sb = new StringBuilder();
