@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B1676 {
     static int N, count;
    
     public static void getZeroCount(int num) {
