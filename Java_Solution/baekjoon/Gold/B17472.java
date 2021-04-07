@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B17472 {
     static final int MAX = 1000000;
     static int N, M, numbering, minRoute;
     static int[] dx = {1,0,-1,0}, dy = {0,1,0,-1}, parent;
