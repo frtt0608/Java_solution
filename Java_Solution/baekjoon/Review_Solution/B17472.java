@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class B17472 {
     static final int MAX = 100000000;
     static int N, M, islandCnt, resultCnt;
     static int[] dx = {1,0,-1,0}, dy = {0,1,0,-1}, parentNode;
