@@ -2,7 +2,7 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-    static final int MAX = 100000000;
+    static final int MAX = 10000;
     static int N, M, islandCnt, resultCnt;
     static int[] dx = {1,0,-1,0}, dy = {0,1,0,-1}, parentNode;
     static int[][] map, minRoute;
@@ -71,7 +71,7 @@ public class Main {
     public static void installedBridgeMinRoute(int x, int y, int dir, int numbering) {
         int nx, ny, count = 0;
         int curNum = numbering;
-        
+
         while(true) {
             if(curNum != 0 && curNum != numbering) {
                 if(count >= 2) {
@@ -84,6 +84,7 @@ public class Main {
             nx = x + dx[dir];
             ny = y + dy[dir];
             if(isWall(nx, ny)) break;
+            if(map[nx][ny] == numbering) break;
 
             if(map[nx][ny] == 0) {
                 count += 1;
@@ -171,8 +172,8 @@ public class Main {
                 }
             }
         }
-
         routes.sort((Node node1, Node node2) -> (node1.count - node2.count));
+        
         int connectCnt = 0;
         for(Node node: routes) {
             int count = node.count;
@@ -185,9 +186,7 @@ public class Main {
             resultCnt += count;
             connectCnt += 1;
 
-            if(connectCnt == islandCnt - 2) {
-                break;
-            }
+            if(connectCnt == islandCnt - 2) break;
         }
 
         if(connectCnt != islandCnt - 2) {
@@ -203,7 +202,6 @@ public class Main {
         M = Integer.parseInt(st.nextToken());
 
         map = new int[N][M];
-
         for(int i=0; i<N; i++) {
             st = new StringTokenizer(br.readLine());
             for(int j=0; j<M; j++) {
@@ -212,8 +210,6 @@ public class Main {
         }
 
         numberingIsland();
-        
-
         searchIndexIsland();
         getTotalMinRoute();
 
