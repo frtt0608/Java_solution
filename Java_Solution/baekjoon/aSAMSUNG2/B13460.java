@@ -24,18 +24,10 @@ public class B13460 {
             return this.cnt - node.cnt;
         }
     }
-
-    public static boolean isWall(int x, int y) {
-        if(x<0 || x>=N || y<0 || y>=M) return true;
-        return false;
-    }
-
-    // need parameter
-    // rx, ry, bx, by, cnt
+    
     public static void moveNode() {
         PriorityQueue<Node> pq = new PriorityQueue<>();
         pq.offer(new Node(rx, ry, bx, by, 0));
-        visited[rx][ry][bx][by] = true;
 
         while(!pq.isEmpty()) {
             Node node = pq.poll();
@@ -44,78 +36,66 @@ public class B13460 {
             bx = node.bx;
             by = node.by;
             int moveCnt = node.cnt;
-            
 
-            if(map[bx][by] == 'O') continue;
+            if(visited[rx][ry][bx][by]) continue;
+            visited[rx][ry][bx][by] = true;
+
             if(moveCnt > 10)
-                continue;
-
-            if(map[rx][ry] == 'O' && map[bx][by] != 'O') {
-                minMoveCount = moveCnt;
-                break;
-            }
+                return;
 
             for(int dir=0; dir<4; dir++) {
-                int nRx = node.rx;
-                int nRy = node.ry;
-                int nBx = node.bx;
-                int nBy = node.by;
+                int nRx = rx;
+                int nRy = ry;
+                int nBx = bx;
+                int nBy = by;
 
-                while(true) {
+                while(!(map[nRx + dx[dir]][nRy + dy[dir]] == '#')) {
+                    nRx += dx[dir];
+                    nRy += dy[dir];
 
-                    if(map[nRx][nRy] != 'O') {
-                        nRx += dx[dir];
-                        nRy += dy[dir];
-                    }
-                    
-                    if(map[nBx][nBy] != 'O') {
-                        nBx += dx[dir];
-                        nBy += dy[dir];
-                    }
+                    if(map[nRx][nRy] == 'O')
+                        break;
+                }
 
-                    // System.out.println(nRx+", "+nRy + " :: " + nBx + ", " + nBy);
+                while(!(map[nBx + dx[dir]][nBy + dy[dir]] == '#')) {
+                    nBx += dx[dir];
+                    nBy += dy[dir];
 
                     if(map[nBx][nBy] == 'O')
                         break;
+                }
 
-                    if(map[nRx][nRy] == 'O' && map[nBx][nBy] == '#') {
-                        nBx -= dx[dir];
-                        nBy -= dy[dir];
-                        break;
-                    }
-                        
+                if(map[nBx][nBy] == 'O')
+                    continue;
 
-                    if(map[nRx][nRy] == '#' && map[nBx][nBy] == '#') {
-                        nRx -= dx[dir];
-                        nRy -= dy[dir];
-                        nBx -= dx[dir];
-                        nBy -= dy[dir];
-                        break;
-                    }
+                if(map[nRx][nRy] == 'O') {
+                    minMoveCount = moveCnt + 1;
+                    return;
+                }
 
-                    if(map[nRx][nRy] == '#') {
-                        nRx -= dx[dir];
-                        nRy -= dy[dir];
-                        if(nRx == nBx && nRy == nBy) {
-                            nBx -= dx[dir];
-                            nBy -= dy[dir];
+                if(nRx == nBx && nRy == nBy) {
+                    switch(dir) {
+                        case 0:
+                            if(rx < bx) nRx -= 1;
+                            else nBx -= 1;
                             break;
-                        }
-                    }
-
-                    if(map[nBx][nBy] == '#') {
-                        nBx -= dx[dir];
-                        nBy -= dy[dir];
-                        if(nRx == nBx && nRy == nBy) {
-                            nRx -= dx[dir];
-                            nRy -= dy[dir];
+                        case 1:
+                            if(ry < by) nRy -= 1;
+                            else nBy -= 1;
                             break;
-                        }
+                        case 2:
+                            if(rx < bx) nBx += 1;
+                            else nRx += 1;
+                            break;
+                        case 3:
+                            if(ry < by) nBy += 1;
+                            else nRy += 1;
+                            break;
                     }
                 }
 
+                
                 if(!visited[nRx][nRy][nBx][nBy]) {
-                    visited[nRx][nRy][nBx][nBy] = true;
                     pq.offer(new Node(nRx, nRy, nBx, nBy, moveCnt+1));
                 }
             }
@@ -149,7 +129,7 @@ public class B13460 {
         }
 
         moveNode();
-        if(minMoveCount == 11)
+        if(minMoveCount > 10)
             minMoveCount = -1;
 
         System.out.println(minMoveCount);
