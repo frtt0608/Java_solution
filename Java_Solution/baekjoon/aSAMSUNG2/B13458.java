@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class B13458 {
     static int N, B, C;
     static int[] A;
     static long totalManager;
