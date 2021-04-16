@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class B3190 {
     static int N, time;
     static int[] dx = {0,1,0,-1}, dy = {1,0,-1,0};
     static int[][] map, dirMap;
