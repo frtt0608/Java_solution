@@ -6,7 +6,7 @@ import java.io.*;
 // 4 1 3
 //   5
 //   6
-public class Main {
+public class B14499 {
     static int N, M, x, y, K;
     static int[] dx={0,0,-1,1}, dy={1,-1,0,0};
     static int[][] map;
