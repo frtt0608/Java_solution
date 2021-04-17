@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class B14501 {
     static int N, maxPrice;
     static int[] time, price;
 
