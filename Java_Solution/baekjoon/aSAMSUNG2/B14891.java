@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class B14891 {
     static int K;
     static int[][] cycle;
 
