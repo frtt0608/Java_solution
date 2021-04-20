@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class B14889 {
     static int N, minScore;
     static int[][] map;
     static boolean[][] visited;
