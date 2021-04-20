@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class B14890 {
     static int N, L, roadCount;
     static int[][] map;
     static boolean[][][] visited;
