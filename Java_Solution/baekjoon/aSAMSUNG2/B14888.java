@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class B14888 {
     static int N, maxVal, minVal;
     static int[] nums, opers;
 
