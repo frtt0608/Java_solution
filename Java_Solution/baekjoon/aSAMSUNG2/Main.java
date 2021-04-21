@@ -38,48 +38,6 @@ public class Main {
         return false;
     }
 
-    public static void monitoredLeft(int nx, int ny) {
-
-        while(true) {
-            nx += dx[3];
-            ny += dy[3];
-
-            if(isWall(nx, ny) || map[nx][ny] == 6) break;
-
-            if(map[nx][ny] == 0) {
-                visited[nx][ny] = true;
-            }
-        }
-    }
-
-    public static void monitoredRight(int nx, int ny) {
-        
-        while(true) {
-            nx += dx[1];
-            ny += dy[1];
-
-            if(isWall(nx, ny) || map[nx][ny] == 6) break;
-
-            if(map[nx][ny] == 0) {
-                visited[nx][ny] = true;
-            }
-        }
-    }
-
-    public static void monitoredTop(int nx, int ny) {
-        
-        while(true) {
-            nx += dx[2];
-            ny += dy[2];
-
-            if(isWall(nx, ny) || map[nx][ny] == 6) break;
-
-            if(map[nx][ny] == 0) {
-                visited[nx][ny] = true;
-            }
-        }
-    }
-
     public static void monitoredOffice(int nx, int ny, int dir) {
         
         while(true) {
@@ -101,60 +59,32 @@ public class Main {
     }
 
     public static void managedOffice(int[] cctvDir) {
-        int dir;
+        int dir, x, y;
         CCTV cam;
         initVisited();
 
         for(int i=0; i<cctvDir.length; i++) {
             cam = cctv.get(i);
+            x = cam.x;
+            y = cam.y;
             dir = cctvDir[i];
 
             switch(cam.num) {
                 case 1:
-                    monitoredOffice(cam.x, cam.y, dir);
+                    monitoredOffice(x, y, dir);
                     break;
                 case 2:
-                    if(dir == 0) {
-                        monitoredOffice(cam.x, cam.y, 0);
-                        monitoredOffice(cam.x, cam.y, 2);
-                    } else {
-                        monitoredOffice(cam.x, cam.y, 1);
-                        monitoredOffice(cam.x, cam.y, 3);
-                    }
+                    monitoredOffice(x, y, dir);
+                    monitoredOffice(x, y, dir+2);
                     break;
                 case 3:
-                    if(dir == 0) {
-                        monitoredOffice(cam.x, cam.y, 0);
-                        monitoredOffice(cam.x, cam.y, 1);
-                    } else if(dir == 1) {
-                        monitoredOffice(cam.x, cam.y, 1);
-                        monitoredOffice(cam.x, cam.y, 2);
-                    } else if(dir == 2) {
-                        monitoredOffice(cam.x, cam.y, 2);
-                        monitoredOffice(cam.x, cam.y, 3);
-                    } else {
-                        monitoredOffice(cam.x, cam.y, 3);
-                        monitoredOffice(cam.x, cam.y, 0);
-                    }
+                    monitoredOffice(x, y, dir);
+                    monitoredOffice(x, y, (dir+1)%4);
                     break;
                 case 4:
-                    if(dir == 0) {
-                        monitoredOffice(cam.x, cam.y, 0);
-                        monitoredOffice(cam.x, cam.y, 1);
-                        monitoredOffice(cam.x, cam.y, 2);
-                    } else if(dir == 1) {
-                        monitoredOffice(cam.x, cam.y, 1);
-                        monitoredOffice(cam.x, cam.y, 2);
-                        monitoredOffice(cam.x, cam.y, 3);
-                    } else if(dir == 2) {
-                        monitoredOffice(cam.x, cam.y, 2);
-                        monitoredOffice(cam.x, cam.y, 3);
-                        monitoredOffice(cam.x, cam.y, 0);
-                    } else {
-                        monitoredOffice(cam.x, cam.y, 3);
-                        monitoredOffice(cam.x, cam.y, 0);
-                        monitoredOffice(cam.x, cam.y, 1);
-                    }
+                    monitoredOffice(x, y, dir);
+                    monitoredOffice(x, y, (dir+1)%4);
+                    monitoredOffice(x, y, (dir+2)%4);
                     break;
                 case 5:
                     monitoredOffice(cam.x, cam.y, 0);
@@ -163,13 +93,12 @@ public class Main {
                     monitoredOffice(cam.x, cam.y, 3);
             }
         }
-
-        getBlindSpot();
     }
 
     public static void rotateCCTVtotalCase(int idx, int[] cctvDir) {
         if(idx == cctvDir.length) {
             managedOffice(cctvDir);
+            getBlindSpot();
             return;
         }
 
