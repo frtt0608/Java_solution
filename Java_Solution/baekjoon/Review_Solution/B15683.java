@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class B15683 {
     static int N, M, minBlindSpot;
     static int[] dx = {1,0,-1,0}, dy = {0,1,0,-1};
     static int[][] map;
