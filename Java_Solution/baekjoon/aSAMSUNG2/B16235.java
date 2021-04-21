@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class B16235 {
     static int N, M, K, aliveTreeCnt;
     static int[] dx={0,-1,-1,-1,0,1,1,1}, dy={1,1,0,-1,-1,-1,0,1};
     static int[][] S2D2, food, deadTree;
