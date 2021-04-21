@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class B15684 {
     static int N, M, H, minLadderCnt;
     static boolean[][] map;
     static boolean isRight;
