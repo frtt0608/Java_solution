@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class B20056 {
     static int N, M, K, totalFire;
     static int[] dx={-1,-1,0,1,1,1,0,-1,-1}, dy={0,1,1,1,0,-1,-1,-1,0};
     static LinkedList<Fire>[][] map;
@@ -17,11 +17,6 @@ public class Main {
             this.s = s;
             this.d = d;
         }
-    }
-
-    public static boolean isWall(int x, int y) {
-        if(x<=0 || x>N || y<=0 || y>N) return true;
-        return false;
     }
 
     public static void moveFire() {
@@ -75,7 +70,7 @@ public class Main {
     }
 
     public static void fireAndFire() {
-        int totalM=0, totalS=0, totalD=0, size, s, m, oddCnt, evenCnt;
+        int totalM=0, totalS=0, size, s, m, oddCnt, evenCnt;
         Fire fire;
 
         for(int i=1; i<N+1; i++) {
@@ -85,7 +80,6 @@ public class Main {
                 size = map[i][j].size();
                 totalM = 0;
                 totalS = 0;
-                totalD = 0;
                 oddCnt = 0;
                 evenCnt = 0;
 
@@ -93,7 +87,6 @@ public class Main {
                     fire = map[i][j].remove(0);
                     totalM += fire.m;
                     totalS += fire.s;
-                    totalD += fire.d;
 
                     if(fire.d%2 == 0) evenCnt += 1;
                     else oddCnt += 1;
@@ -125,7 +118,6 @@ public class Main {
             for(int j=1; j<N+1; j++) {
                 
                 for(Fire fire: map[i][j]) {
-                    // System.out.println(i+", "+j+": "+ fire.m);
                     totalFire += fire.m;
                 }
             }
