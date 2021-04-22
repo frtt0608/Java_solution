@@ -3,7 +3,7 @@ import java.io.*;
 
 // 5% 틀
 
-public class Main {
+public class B17822 {
     static int N, M, T, totalNumber;
     static int[] dx={0,0,-1,1}, dy={1,-1,0,0};
     static int[][] map;
