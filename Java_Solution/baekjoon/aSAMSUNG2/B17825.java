@@ -3,7 +3,7 @@ import java.io.*;
 
 // 5% 틀
 
-public class Main {
+public class B17825 {
     static int maxScore;
     static int[] nums;
     static Node[] nodes;
