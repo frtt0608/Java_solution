@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class B17143 {
     static int R, C, M, getSharkSize;
     static int[] dx={-1,1,0,0}, dy={0,0,1,-1};
     static Shark[][] sharks;
