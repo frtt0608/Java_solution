@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class B20055 {
     static int N, K, zeroCount;
     static int[] belt;
     static boolean isEnding = false;
