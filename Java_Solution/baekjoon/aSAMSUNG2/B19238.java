@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class B19238 {
     static int N, M, tx, ty, nx, ny;
     static int curPassenger;
     static Taxi curTaxi;
