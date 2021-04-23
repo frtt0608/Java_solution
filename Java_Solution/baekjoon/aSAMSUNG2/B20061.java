@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class B20061 {
     static int N, totalScore, totalBlock;
     static int nx, ny;
     static int[][] blue, green;

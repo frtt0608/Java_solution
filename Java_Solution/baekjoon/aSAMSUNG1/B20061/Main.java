@@ -151,6 +151,19 @@ public class Main {
         }
     }
 
+    public static void print() {
+        System.out.println("GREEN: ");
+        for(int i=0; i<6; i++) {
+            System.out.println(Arrays.toString(green[i]));
+        }
+        
+        System.out.println("BLUE: ");
+        for(int i=0; i<4; i++) {
+            System.out.println(Arrays.toString(blue[i]));
+        }
+        System.out.println("---------------");
+    }
+
     public static void main(String[] args) throws IOException {
         System.setIn(new FileInputStream("input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -167,6 +180,7 @@ public class Main {
             int x = Integer.parseInt(st.nextToken());
             int y = Integer.parseInt(st.nextToken());
             loadBlock(t, x, y);
+            print();
             deleteBlock();
             checkArray();
         }
