@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class B19236 {
     static int maxScore;
     static int[] dx={-1,-1,0,1,1,1,0,-1}, dy={0,-1,-1,-1,0,1,1,1};
     static boolean[] dead;
@@ -159,6 +159,7 @@ public class Main {
         maxScore = fishNum[0][0];
         Fish shark = new Fish(0, 0, -1, fishes[fishNum[0][0]].dir);
         fishNum[0][0] = -1;
+        
         getMaxFishNumber(shark, maxScore, fishNum, fishes);
         System.out.println(maxScore);
     }
