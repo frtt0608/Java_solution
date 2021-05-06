@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B1328 {
     static final int MODE = 1000000007;
     static int N, L, R;
     static long[][][] dp;
@@ -20,7 +20,6 @@ public class Main {
             }
         }
     }
-
 
     public static void main(String[] args) throws IOException {
         System.setIn(new FileInputStream("input.txt"));
