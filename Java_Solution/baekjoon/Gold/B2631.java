@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 
 // 최장 증가 부분 수열
-public class Main {
+public class B2631 {
     static int N;
     static int[] line;
 
