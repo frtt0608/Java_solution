@@ -2,102 +2,103 @@ import java.util.*;
 
 public class 길찾기게임 {
 
-    static class Solution {
-        static int N;
-
-        public static int[][] solution(int[][] nodeinfo) {
-            N = nodeinfo.length;
-            int[][] answer = new int[2][N];
-            Node[] nodes = new Node[N];
-            Tree tree = new Tree();
-            
-            for(int i=0; i<N; i++) {
-                nodes[i] = new Node(nodeinfo[i][0], nodeinfo[i][1], i+1);
-            }
-            
-            Arrays.sort(nodes, new Comparator<Node>() {
-                @Override
-                public int compare(Node n1, Node n2) {
-                    return n1.y == n2.y ? (n1.x - n2.x) : (n2.y - n1.y);
-                }
-            });
-            
-            for(int i=0; i<N; i++) {
-                tree.addNode(nodes[i]);
-            }
-            
-            tree.preOrder(tree.root);
-            tree.postOrder(tree.root);
-            
-            String[] preArray = tree.pre.split(" ");
-            String[] postArray = tree.post.split(" ");
-            for(int i=0; i<N; i++) {
-                answer[0][i] = Integer.parseInt(preArray[i]);
-                answer[1][i] = Integer.parseInt(postArray[i]);
-            }
-            
-            return answer;
-        }
+    class Solution {
+        int[][] answer;
         
-        public static void main(String[] args) {
-            int[][] nodeinfo = {};
-            solution(nodeinfo);
-        }
-    }
-
-    static class Node {
-        int x, y;
-        int data;
-        Node left = null;
-        Node right = null;
-        
-        Node(int x, int y, int data) {
-            this.x = x;
-            this.y = y;
-            this.data = data;
-        }
-    }
-
-    static class Tree {
-        Node root;
-        String pre = "";
-        String post = "";
-        
-        public void addNode(Node node) {
-            if(root == null) {
-                root = node;
-            } else {
-                insertNode(root, node);
+        class Node {
+            int num;
+            int x, y;
+            Node left = null;
+            Node right = null;
+            
+            Node(int num, int x, int y) {
+                this.num = num;
+                this.x = x;
+                this.y = y;
             }
         }
         
-        public void insertNode(Node root, Node insert) {
-            if(root.y > insert.y) {
-                if(root.x < insert.x) {
-                    if(root.right == null) root.right = insert;
-                    else insertNode(root.right, insert);
-                    
+        class Tree {
+            Node root;
+            int idx = 0;
+            int[][] answer;
+            
+            public void addNode(Node param) {
+                if(this.root == null) {
+                    this.root = param;
                 } else {
-                    if(root.left == null) root.left = insert;
-                    else insertNode(root.left, insert);
+                    searchLeftOrRight(this.root, param);
                 }
             }
-        }
-        
-        public void preOrder(Node node) {
-            if(node != null) {
-                pre += node.data + " ";
-                preOrder(node.left);
-                preOrder(node.right);
+            
+            public void searchLeftOrRight(Node parent, Node param) {
+                
+                if(parent.y > param.y) {
+                    
+                    if(parent.x < param.x) {
+                        if(parent.right == null) {
+                            parent.right = param;
+                        } else {
+                            searchLeftOrRight(parent.right, param);
+                        }
+                    } else {
+                        if(parent.left == null) {
+                            parent.left = param;
+                        } else {
+                            searchLeftOrRight(parent.left, param);
+                        }
+                    }
+                }
+            }
+            
+            public void preOrder(Node parent) {
+                if(parent == null) return;
+                
+                answer[0][idx] = parent.num;
+                idx += 1;
+                preOrder(parent.left);
+                preOrder(parent.right);
+            }
+            
+            public void postOrder(Node parent) {
+                if(parent == null) return;
+                
+                postOrder(parent.left);
+                postOrder(parent.right);
+                answer[1][idx] = parent.num;
+                idx += 1;
             }
         }
+
+        public void getOrderResult(Tree tripRoute, int N) {
+            tripRoute.answer = new int[2][N];
+            
+            tripRoute.preOrder(tripRoute.root);
+            tripRoute.idx = 0;
+            tripRoute.postOrder(tripRoute.root);
+        }
         
-        public void postOrder(Node node) {
-            if(node != null) {
-                postOrder(node.left);
-                postOrder(node.right);
-                post += node.data + " ";
+        public Node[] settingNodeinfo(int[][] nodeinfo) {
+            Node[] nodes = new Node[nodeinfo.length];
+            for(int i=0; i<nodeinfo.length; i++) {
+                nodes[i] = new Node(i+1, nodeinfo[i][0], nodeinfo[i][1]);
             }
+            Arrays.sort(nodes, (Node node1, Node node2) -> (node2.y - node1.y));
+            
+            return nodes;
+        }
+        
+        public int[][] solution(int[][] nodeinfo) {
+            Node[] nodes = settingNodeinfo(nodeinfo);
+            Tree tripRoute = new Tree();
+            
+            for(Node node: nodes) {
+                tripRoute.addNode(node);
+            }
+            
+            getOrderResult(tripRoute, nodeinfo.length);
+            
+            return tripRoute.answer;
         }
     }
 }
