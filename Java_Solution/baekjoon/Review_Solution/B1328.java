@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class B1328 {
 
     public static void main(String[] args) throws IOException {
         System.setIn(new FileInputStream("input.txt"));
