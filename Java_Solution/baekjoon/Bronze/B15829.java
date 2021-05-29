@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class B15829 {
     static final long M = 1234567891;
     static long r = 1;
 
