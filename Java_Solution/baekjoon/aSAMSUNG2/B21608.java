@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class B21608 {
     static int N;
     static int[] dr = {1,0,-1,0}, dc = {0,1,0,-1};
     static int[][] room;
