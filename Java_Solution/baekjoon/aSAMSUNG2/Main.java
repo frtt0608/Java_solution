@@ -2,104 +2,200 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-    static int N;
+    static int N, M, maxRainbow, totalScore;
     static int[] dr = {1,0,-1,0}, dc = {0,1,0,-1};
-    static int[][] room;
-    static Map<Integer, List<Integer>> likeMap;
-    static PriorityQueue<Node> possibleNodes;
-
-    static class Node implements Comparable<Node> {
+    static int[][] map;
+    static boolean[][] totalVisited;
+    static ArrayList<Node> target;
+    
+    static class Node {
+        int num;
         int r, c;
-        int likeCnt, emptyCnt;
 
-        Node(int r, int c, int likeCnt, int emptyCnt) {
+        Node(int num, int r, int c) {
+            this.num = num;
             this.r = r;
             this.c = c;
-            this.likeCnt = likeCnt;
-            this.emptyCnt = emptyCnt;
-        }
-
-        @Override
-        public int compareTo(Node node) {
-            if(this.likeCnt == node.likeCnt) {
-                if(this.emptyCnt == node.emptyCnt) {
-                    if(this.r == node.r) {
-                        return this.c - node.c;
-                    }
-
-                    return this.r - node.r;
-                }
-
-                return node.emptyCnt - this.emptyCnt;
-            }
-
-            return node.likeCnt - this.likeCnt;
         }
     }
 
-    public static boolean isWall(int x, int y) {
-        if(x<0 || x>=N || y<0 || y>=N) return true;
+    public static boolean isWall(int r, int c) {
+        if(r<0 || r>=N || c<0 || c>=N) return true;
         return false;
     }
 
-    public static void checkLocation(int r, int c, int num) {
-        int emptyCnt = 0;
-        int likeCnt = 0;
-        List<Integer> likes = likeMap.get(num);
+    public static void compareBlocks(ArrayList<Node> blocks, int rainbow) {
+        if(target.size() == 0) {
+            target = new ArrayList<>(blocks);
+            maxRainbow = rainbow;
+        } else {
 
-        for(int dir=0; dir<4; dir++) {
-            int nr = r + dr[dir];
-            int nc = c + dc[dir];
+            if(blocks.size() > target.size()) {
+                target = new ArrayList<>(blocks);
+                maxRainbow = rainbow;
 
-            if(isWall(nr, nc)) continue;
-            
-            if(room[nr][nc] == 0)
-                emptyCnt += 1;
-            else if(likes.contains(room[nr][nc]))
-                likeCnt += 1;
+            } else if(blocks.size() == target.size()) {
+                if(rainbow > maxRainbow) {
+                    target = new ArrayList<>(blocks);
+                    maxRainbow = rainbow;
+
+                } else if(rainbow == maxRainbow) {
+                    if(blocks.get(0).r > target.get(0).r) {
+                        target = new ArrayList<>(blocks);
+                        maxRainbow = rainbow;
+
+                    } else if(blocks.get(0).r == target.get(0).r) {
+                        if(blocks.get(0).c > target.get(0).c) {
+                            target = new ArrayList<>(blocks);
+                            maxRainbow = rainbow;
+                        }
+                    }
+                }
+            }
         }
-
-        possibleNodes.offer(new Node(r, c, likeCnt, emptyCnt));
     }
-    
-    public static void locateStudent(int num) {
-        for(int r=0; r<N; r++) {
-            for(int c=0; c<N; c++) {
-                if(room[r][c] != 0) continue;
 
-                checkLocation(r, c, num);
+    public static void sortBlocks(ArrayList<Node> blocks) {
+        blocks.sort(new Comparator<Node>() {
+            @Override
+            public int compare(Node node1, Node node2) {
+                if(node1.r > node2.r) {
+                    return node1.c - node2.c;
+                }
+
+                return node1.r - node2.r;
+            }
+        });
+
+        while(blocks.get(0).num == 7) {
+            Node node = blocks.remove(0);
+            blocks.add(node);
+        }
+    }
+
+    public static void makeBlockGroup(int num, int r, int c) {
+        int rainbow = 0;
+        ArrayList<Node> blocks = new ArrayList<>();
+        blocks.add(new Node(num, r, c));
+
+        Queue<Node> que = new LinkedList<>();
+        que.offer(new Node(num, r, c));
+
+        boolean[][] visited = new boolean[N][N];
+        visited[r][c] = true;
+
+        while(!que.isEmpty()) {
+            Node cur = que.poll();
+            r = cur.r;
+            c = cur.c;
+
+            for(int dir=0; dir<4; dir++) {
+                int nr = r + dr[dir];
+                int nc = c + dc[dir];
+
+                if(isWall(nr, nc)) continue;
+                if(visited[nr][nc]) continue;
+                if(map[nr][nc] == -1) continue;
+
+                if(map[nr][nc] == num || map[nr][nc] == 7) {
+                    Node nNode = new Node(map[nr][nc], nr, nc);
+                    visited[nr][nc] = true;
+
+                    que.offer(nNode);
+                    blocks.add(nNode);
+
+                    if(map[nr][nc] == 7)
+                        rainbow += 1;
+                    else {
+                        totalVisited[nr][nc] = true;
+                    }
+                }
             }
         }
 
-        Node locate = possibleNodes.poll();
-        room[locate.r][locate.c] = num;
+        if(blocks.size() >= 2) {
+            sortBlocks(blocks);
+            compareBlocks(blocks, rainbow);
+        }
     }
 
-    public static int calculateResult() {
-        int cnt, result = 0;
-
+    public static void getMaximumBlocks() {
+        totalVisited = new boolean[N][N];
+        
         for(int r=0; r<N; r++) {
             for(int c=0; c<N; c++) {
-                List<Integer> likes = likeMap.get(room[r][c]);
-                cnt = 0;
+                if(totalVisited[r][c]) continue;
+                if(map[r][c] == 0 || map[r][c] == 7 || map[r][c] == -1) continue;
 
-                for(int dir=0; dir<4; dir++) {
-                    int nr = r + dr[dir];
-                    int nc = c + dc[dir];
+                makeBlockGroup(map[r][c], r, c);
+            }
+        }
+    }
 
-                    if(isWall(nr, nc)) continue;
+    public static void removeBlocks() {
+        totalScore += target.size()*target.size();
 
-                    if(likes.contains(room[nr][nc])) {
-                        cnt += 1;
+        while(!target.isEmpty()) {
+            Node node = target.remove(0);
+            map[node.r][node.c] = 0;
+        }
+    }
+
+    public static void downBlocks() {
+
+        for(int j=0; j<N; j++) {
+            for(int i=N-2; i>=0; i--) {
+                if(map[i][j] == -1 || map[i][j] == 0) continue;
+
+                int cur = i;
+
+                while(true) {
+                    if(cur+1 < N && map[cur+1][j] == 0) {
+                        cur += 1;
+                    } else {
+                        break;
                     }
                 }
 
-                if(cnt > 0)
-                    result += Math.pow(10, cnt-1);
+                if(cur != i) {
+                    map[cur][j] = map[i][j];
+                    map[i][j] = 0;
+                }
+            }
+        }
+    }
+
+    public static int[][] rotateBlocks() {
+        int[][] tempMap = new int[N][N];
+        
+        for(int i=0; i<N; i++) {
+            for(int j=0; j<N; j++) {
+                tempMap[i][j] = map[j][N-1-i];
             }
         }
 
-        return result;
+        return tempMap;
+    }
+
+    public static void printMap() {
+        for(int i=0; i<N; i++) {
+            System.out.println(Arrays.toString(map[i]));
+        }
+        System.out.println();
+    }
+
+    public static void startAutoPlay() {
+
+        while(true) {
+            getMaximumBlocks();
+            if(target.size() == 0) return;
+    
+            removeBlocks();            
+            downBlocks();
+            
+            map = rotateBlocks();
+            downBlocks();
+        }
     }
 
     public static void main(String[] args) throws IOException {
@@ -108,24 +204,25 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
 
         N = Integer.parseInt(st.nextToken());
-        room = new int[N][N];
-        likeMap = new HashMap<>();
-        possibleNodes = new PriorityQueue<>();
+        M = Integer.parseInt(st.nextToken());
 
-        for(int i=0; i<N*N; i++) {
+        map = new int[N][N];
+        target = new ArrayList<>();
+        totalScore = 0;
+
+        // 무지개 블록:7로 변경
+        for(int i=0; i<N; i++) {
             st = new StringTokenizer(br.readLine());
-            int num = Integer.parseInt(st.nextToken());
-            List<Integer> likes = new ArrayList<>();
-            possibleNodes.clear();
+            for(int j=0; j<N; j++) {
+                map[i][j] = Integer.parseInt(st.nextToken());
 
-            for(int j=0; j<4; j++) {
-                likes.add(Integer.parseInt(st.nextToken()));
+                if(map[i][j] == 0) {
+                    map[i][j] = 7;
+                }
             }
-
-            likeMap.put(num, likes);
-            locateStudent(num);
         }
 
-        System.out.println(calculateResult());
+        startAutoPlay();
+        System.out.println(totalScore);
     }
 }
