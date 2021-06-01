@@ -6,16 +6,7 @@ public class B21611 {
     static int[] dx = {0,-1,1,0,0}, dy = {0,0,0,-1,1};
     static int[][] marblesArr;
     static Queue<Integer> marblesQue;
-
-    static class Node {
-        int index, num;
-
-        Node(int index, int num) {
-            this.index = index;
-            this.num = num;
-        }
-    }
-
+    
     public static boolean isWall(int x, int y) {
         if(x<=0 || x>N || y<=0 || y>N) return true;
         return false;
@@ -235,12 +226,5 @@ public class B21611 {
         }
         
         System.out.println(totalScore);
-    }
-
-    public static void printArr() {
-        for(int i=1; i<N+1; i++) {
-            System.out.println(Arrays.toString(marblesArr[i]));
-        }
-        System.out.println();
     }
 }
