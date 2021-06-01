@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class B21611 {
     static int N, M, totalScore;
     static int[] dx = {0,-1,1,0,0}, dy = {0,0,0,-1,1};
     static int[][] marblesArr;
