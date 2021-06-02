@@ -3,51 +3,123 @@ import java.io.*;
 
 public class B21609 {
     static int N, M, maxRainbow, totalScore;
-    static int[] dr = {1,0,-1,0}, dc = {0,1,0,-1};
-    static int[][] map;
+    static int[] dx = {1,0,-1,0}, dy = {0,1,0,-1};
+    static int[][] blockArr;
     static boolean[][] totalVisited;
-    static ArrayList<Node> target;
-    
+    static List<Node> targetBlock;
+
     static class Node {
         int num;
-        int r, c;
+        int x, y;
 
-        Node(int num, int r, int c) {
+        Node(int num, int x, int y) {
             this.num = num;
-            this.r = r;
-            this.c = c;
+            this.x = x;
+            this.y = y;
         }
     }
 
-    public static boolean isWall(int r, int c) {
-        if(r<0 || r>=N || c<0 || c>=N) return true;
+    public static void searchBlock() {
+        totalVisited = new boolean[N][N];
+        targetBlock = new LinkedList<>();
+        maxRainbow = 0;
+
+        for(int i=0; i<N; i++) {
+            for(int j=0; j<N; j++) {
+                if(totalVisited[i][j]) continue;
+                if(blockArr[i][j] == 0 || blockArr[i][j] == -1 || blockArr[i][j] == 7) continue;
+
+                searchSameBlock(blockArr[i][j], i, j);
+            }
+        }
+    }
+
+    public static boolean isWall(int x, int y) {
+        if(x<0 || x>=N || y<0 || y>=N) return true;
         return false;
     }
 
-    public static void compareBlocks(ArrayList<Node> blocks, int rainbow) {
-        if(target.size() == 0) {
-            target = new ArrayList<>(blocks);
-            maxRainbow = rainbow;
+    public static void sortTotalBlock(List<Node> totalBlock) {
+        totalBlock.sort(new Comparator<Node>() {
+            @Override
+            public int compare(Node node1, Node node2) {
+                if(node1.x == node2.x) {
+                    return node1.y - node2.y;
+                }
+                return node1.x - node2.x;
+            }
+        });
+
+        while(totalBlock.get(0).num == 7) {
+            totalBlock.add(totalBlock.remove(0));
+        }
+    }
+
+    public static void searchSameBlock(int num, int x, int y) {
+        List<Node> totalBlock = new LinkedList<>();
+        totalBlock.add(new Node(num, x, y));
+        Queue<Node> que = new LinkedList<>();
+        que.offer(new Node(num, x, y));
+
+        boolean[][] visited = new boolean[N][N];
+        visited[x][y] = true;
+        int rainbow = 0;
+
+        while(!que.isEmpty()) {
+            Node cur = que.poll();
+            x = cur.x;
+            y = cur.y;
+        
+            for(int dir=0; dir<4; dir++) {
+                int nx = x + dx[dir];
+                int ny = y + dy[dir];
+
+                if(isWall(nx, ny) || visited[nx][ny]) continue;
+
+                if(blockArr[nx][ny] == num || blockArr[nx][ny] == 7) {
+                    Node next = new Node(blockArr[nx][ny], nx, ny);
+                    totalBlock.add(next);
+                    que.offer(next);
+                    visited[nx][ny] = true;
+
+                    if(blockArr[nx][ny] == 7) {
+                        rainbow += 1;
+                        totalVisited[nx][ny] = true;
+                    }
+                }
+            }
+        }
+
+        if(totalBlock.size() >= 2) {
+            sortTotalBlock(totalBlock);
+            updateTargetBlocks(rainbow, totalBlock);
+        }
+    }
+
+    public static void changeTargetBlock(int rainbow, List<Node> totalBlock) {
+        targetBlock = new LinkedList<>(totalBlock);
+        maxRainbow = rainbow;
+    }
+
+    public static void updateTargetBlocks(int rainbow, List<Node> totalBlock) {
+        if(targetBlock.size() == 0) {
+            changeTargetBlock(rainbow, totalBlock);
+
         } else {
+            if(totalBlock.size() > targetBlock.size()) {
+                changeTargetBlock(rainbow, totalBlock);
 
-            if(blocks.size() > target.size()) {
-                target = new ArrayList<>(blocks);
-                maxRainbow = rainbow;
-
-            } else if(blocks.size() == target.size()) {
+            } else if(totalBlock.size() == targetBlock.size()) {
                 if(rainbow > maxRainbow) {
-                    target = new ArrayList<>(blocks);
-                    maxRainbow = rainbow;
-
+                    changeTargetBlock(rainbow, totalBlock);
+                
                 } else if(rainbow == maxRainbow) {
-                    if(blocks.get(0).r > target.get(0).r) {
-                        target = new ArrayList<>(blocks);
-                        maxRainbow = rainbow;
+                    if(totalBlock.get(0).x > targetBlock.get(0).x) {
+                        changeTargetBlock(rainbow, totalBlock);
 
-                    } else if(blocks.get(0).r == target.get(0).r) {
-                        if(blocks.get(0).c > target.get(0).c) {
-                            target = new ArrayList<>(blocks);
-                            maxRainbow = rainbow;
+                    } else if(totalBlock.get(0).x == targetBlock.get(0).x) {
+                        if(totalBlock.get(0).y > targetBlock.get(0).y) {
+                            changeTargetBlock(rainbow, totalBlock);
                         }
                     }
                 }
@@ -55,146 +127,57 @@ public class B21609 {
         }
     }
 
-    public static void sortBlocks(ArrayList<Node> blocks) {
-        blocks.sort(new Comparator<Node>() {
-            @Override
-            public int compare(Node node1, Node node2) {
-                if(node1.r > node2.r) {
-                    return node1.c - node2.c;
-                }
+    public static void removeTargetBlocks() {
+        totalScore += targetBlock.size() * targetBlock.size();
 
-                return node1.r - node2.r;
-            }
-        });
-
-        while(blocks.get(0).num == 7) {
-            Node node = blocks.remove(0);
-            blocks.add(node);
+        while(!targetBlock.isEmpty()) {
+            Node target = targetBlock.remove(0);
+            blockArr[target.x][target.y] = 0;
         }
     }
 
-    public static void makeBlockGroup(int num, int r, int c) {
-        int rainbow = 0;
-        ArrayList<Node> blocks = new ArrayList<>();
-        blocks.add(new Node(num, r, c));
-
-        Queue<Node> que = new LinkedList<>();
-        que.offer(new Node(num, r, c));
-
-        boolean[][] visited = new boolean[N][N];
-        visited[r][c] = true;
-
-        while(!que.isEmpty()) {
-            Node cur = que.poll();
-            r = cur.r;
-            c = cur.c;
-
-            for(int dir=0; dir<4; dir++) {
-                int nr = r + dr[dir];
-                int nc = c + dc[dir];
-
-                if(isWall(nr, nc)) continue;
-                if(visited[nr][nc]) continue;
-                if(map[nr][nc] == -1) continue;
-
-                if(map[nr][nc] == num || map[nr][nc] == 7) {
-                    Node nNode = new Node(map[nr][nc], nr, nc);
-                    visited[nr][nc] = true;
-
-                    que.offer(nNode);
-                    blocks.add(nNode);
-
-                    if(map[nr][nc] == 7)
-                        rainbow += 1;
-                    else {
-                        totalVisited[nr][nc] = true;
-                    }
-                }
-            }
-        }
-
-        if(blocks.size() >= 2) {
-            sortBlocks(blocks);
-            compareBlocks(blocks, rainbow);
-        }
-    }
-
-    public static void getMaximumBlocks() {
-        totalVisited = new boolean[N][N];
-        
-        for(int r=0; r<N; r++) {
-            for(int c=0; c<N; c++) {
-                if(totalVisited[r][c]) continue;
-                if(map[r][c] == 0 || map[r][c] == 7 || map[r][c] == -1) continue;
-
-                makeBlockGroup(map[r][c], r, c);
-            }
-        }
-    }
-
-    public static void removeBlocks() {
-        totalScore += target.size()*target.size();
-
-        while(!target.isEmpty()) {
-            Node node = target.remove(0);
-            map[node.r][node.c] = 0;
-        }
-    }
-
-    public static void downBlocks() {
+    public static void downBlockArr() {
+        int ni;
 
         for(int j=0; j<N; j++) {
             for(int i=N-2; i>=0; i--) {
-                if(map[i][j] == -1 || map[i][j] == 0) continue;
+                if(blockArr[i][j] == -1 || blockArr[i][j] == 0) continue;
 
-                int cur = i;
+                ni = i;
 
-                while(true) {
-                    if(cur+1 < N && map[cur+1][j] == 0) {
-                        cur += 1;
-                    } else {
-                        break;
-                    }
+                while(ni+1 < N && blockArr[ni+1][j] == 0) {
+                    ni += 1;
                 }
 
-                if(cur != i) {
-                    map[cur][j] = map[i][j];
-                    map[i][j] = 0;
+                if(ni != i) {
+                    blockArr[ni][j] = blockArr[i][j];
+                    blockArr[i][j] = 0;
                 }
             }
         }
     }
 
-    public static int[][] rotateBlocks() {
-        int[][] tempMap = new int[N][N];
-        
+    public static int[][] rotateBlockArr() {
+        int[][] tempArr = new int[N][N];
+
         for(int i=0; i<N; i++) {
             for(int j=0; j<N; j++) {
-                tempMap[i][j] = map[j][N-1-i];
+                tempArr[i][j] = blockArr[j][N-1-i];
             }
         }
 
-        return tempMap;
-    }
-
-    public static void printMap() {
-        for(int i=0; i<N; i++) {
-            System.out.println(Arrays.toString(map[i]));
-        }
-        System.out.println();
+        return tempArr;
     }
 
     public static void startAutoPlay() {
-
         while(true) {
-            getMaximumBlocks();
-            if(target.size() == 0) return;
-    
-            removeBlocks();            
-            downBlocks();
-            
-            map = rotateBlocks();
-            downBlocks();
+            searchBlock();
+            if(targetBlock.size() == 0) return;
+
+            removeTargetBlocks();
+            downBlockArr();
+            blockArr = rotateBlockArr();
+            downBlockArr();
         }
     }
 
@@ -202,22 +185,20 @@ public class B21609 {
         System.setIn(new FileInputStream("input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-
+    
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
 
-        map = new int[N][N];
-        target = new ArrayList<>();
-        totalScore = 0;
+        blockArr = new int[N][N];
+        totalVisited = new boolean[N][N];
 
-        // 무지개 블록:7로 변경
         for(int i=0; i<N; i++) {
             st = new StringTokenizer(br.readLine());
             for(int j=0; j<N; j++) {
-                map[i][j] = Integer.parseInt(st.nextToken());
+                blockArr[i][j] = Integer.parseInt(st.nextToken());
 
-                if(map[i][j] == 0) {
-                    map[i][j] = 7;
+                if(blockArr[i][j] == 0) {
+                    blockArr[i][j] = 7;
                 }
             }
         }

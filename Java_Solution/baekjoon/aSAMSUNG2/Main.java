@@ -2,210 +2,183 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-    static int N, M, totalScore;
-    static int[] dx = {0,-1,1,0,0}, dy = {0,0,0,-1,1};
-    static int[][] marblesArr;
-    static Queue<Integer> marblesQue;
+    static int N, M, maxRainbow, totalScore;
+    static int[] dx = {1,0,-1,0}, dy = {0,1,0,-1};
+    static int[][] blockArr;
+    static boolean[][] totalVisited;
+    static List<Node> targetBlock;
 
     static class Node {
-        int index, num;
+        int num;
+        int x, y;
 
-        Node(int index, int num) {
-            this.index = index;
+        Node(int num, int x, int y) {
             this.num = num;
+            this.x = x;
+            this.y = y;
+        }
+    }
+
+    public static void searchBlock() {
+        totalVisited = new boolean[N][N];
+        targetBlock = new LinkedList<>();
+        maxRainbow = 0;
+
+        for(int i=0; i<N; i++) {
+            for(int j=0; j<N; j++) {
+                if(totalVisited[i][j]) continue;
+                if(blockArr[i][j] == 0 || blockArr[i][j] == -1 || blockArr[i][j] == 7) continue;
+
+                searchSameBlock(blockArr[i][j], i, j);
+            }
         }
     }
 
     public static boolean isWall(int x, int y) {
-        if(x<=0 || x>N || y<=0 || y>N) return true;
+        if(x<0 || x>=N || y<0 || y>=N) return true;
         return false;
     }
 
-    public static void castBlizzard(int d, int s) {
-        int x = (N+1)/2;
-        int y = (N+1)/2;
-
-        while(s > 0) {
-            x += dx[d];
-            y += dy[d];
-
-            marblesArr[x][y] = 0;
-            s -= 1;
-        }
-    }
-
-    public static void explodedMarbles(int cnt, Deque<Integer> newMarbles) {
-        if(cnt >= 4) {
-            totalScore += newMarbles.peekLast()*cnt;
-
-            while(cnt > 0) {
-                cnt -= 1;
-                newMarbles.removeLast();
-            }
-        }
-    }
-
-    public static boolean countSameMarbles() {
-        Deque<Integer> newMarbles = new LinkedList<>();
-        int queSize = marblesQue.size();
-        int num = 0;
-        int cnt = 0;
-        boolean isExploded = true;
-
-        while(!marblesQue.isEmpty()) {
-            int curNum = marblesQue.poll();
-
-            if(num == curNum) {
-                cnt += 1;
-            } else {
-                explodedMarbles(cnt, newMarbles);
-                cnt = 1;
-                num = curNum;
-            }
-
-            newMarbles.add(curNum);
-        }
-
-        explodedMarbles(cnt, newMarbles);
-
-        if(queSize == newMarbles.size()) {
-            isExploded = false;
-        }
-
-        while(!newMarbles.isEmpty()) {
-            marblesQue.offer(newMarbles.poll());
-        }
-    
-        return isExploded;
-    }
-
-    public static int changeDir(int d) {
-        if(d == 3) return 2;
-        else if(d == 2) return 4;
-        else if(d == 4) return 1;
-        else return 3;
-    }
-
-    public static void setMarblesQueue() {
-        int x = (N+1)/2;
-        int y = (N+1)/2;
-        int changeCnt = 1;
-        int flagCnt = 0;
-        int cnt = 0;
-        int d = 3;
-    
-        while(true) {
-            cnt += 1;
-            x += dx[d];
-            y += dy[d];
-
-            if(isWall(x, y)) break;
-            if(marblesArr[x][y] != 0) {
-                marblesQue.offer(marblesArr[x][y]);
-            }
-
-            if(changeCnt == cnt) {
-                d = changeDir(d);
-                cnt = 0;
-                flagCnt += 1;
-                
-                if(flagCnt == 2) {
-                    changeCnt += 1;
-                    flagCnt = 0;
+    public static void sortTotalBlock(List<Node> totalBlock) {
+        totalBlock.sort(new Comparator<Node>() {
+            @Override
+            public int compare(Node node1, Node node2) {
+                if(node1.x == node2.x) {
+                    return node1.y - node2.y;
                 }
+                return node1.x - node2.x;
             }
+        });
+
+        while(totalBlock.get(0).num == 7) {
+            totalBlock.add(totalBlock.remove(0));
         }
     }
 
-    public static void multiplyMarbles() {
-        Queue<Integer> newMarbles = new LinkedList<>();
-        int num = 0;
-        int cnt = 0;
+    public static void searchSameBlock(int num, int x, int y) {
+        List<Node> totalBlock = new LinkedList<>();
+        totalBlock.add(new Node(num, x, y));
+        Queue<Node> que = new LinkedList<>();
+        que.offer(new Node(num, x, y));
 
-        while(!marblesQue.isEmpty()) {
-            int curNum = marblesQue.poll();
+        boolean[][] visited = new boolean[N][N];
+        visited[x][y] = true;
+        int rainbow = 0;
 
-            if(num == curNum) {
-                cnt += 1;
-            } else {
-                if(cnt > 0) {
-                    newMarbles.offer(cnt);
-                    newMarbles.offer(num);
-                }
-
-                num = curNum;
-                cnt = 1;
-            }
-
-            if(newMarbles.size() == N*N-1) break;
-        }
-
-        if(cnt > 0) {
-            newMarbles.offer(cnt);
-            newMarbles.offer(num);
-        }
-
-        marblesQue.clear();
-
-        while(!newMarbles.isEmpty()) {
-            marblesQue.offer(newMarbles.poll());
-        }
-    }
-
-    public static void initMarblesArr() {
-        for(int i=0; i<N+1; i++) {
-            Arrays.fill(marblesArr[i], 0);
-        }
-    }
-
-    private static void setMarblesArr() {
+        while(!que.isEmpty()) {
+            Node cur = que.poll();
+            x = cur.x;
+            y = cur.y;
         
-        int x = (N+1)/2;
-        int y = (N+1)/2;
-        int changeCnt = 1;
-        int flagCnt = 0;
-        int cnt = 0;
-        int d = 3;
+            for(int dir=0; dir<4; dir++) {
+                int nx = x + dx[dir];
+                int ny = y + dy[dir];
 
-        while(!marblesQue.isEmpty()) {
-            int curNum = marblesQue.poll();
+                if(isWall(nx, ny) || visited[nx][ny]) continue;
 
-            cnt += 1;
-            x += dx[d];
-            y += dy[d];
+                if(blockArr[nx][ny] == num || blockArr[nx][ny] == 7) {
+                    Node next = new Node(blockArr[nx][ny], nx, ny);
+                    totalBlock.add(next);
+                    que.offer(next);
+                    visited[nx][ny] = true;
 
-            if(isWall(x, y)) {
-                break;
-            }
-
-            marblesArr[x][y] = curNum;
-
-            if(changeCnt == cnt) {
-                d = changeDir(d);
-                cnt = 0;
-                flagCnt += 1;
-
-                if(flagCnt == 2) {
-                    changeCnt += 1;
-                    flagCnt = 0;
+                    if(blockArr[nx][ny] == 7) {
+                        rainbow += 1;
+                        totalVisited[nx][ny] = true;
+                    }
                 }
             }
         }
 
-        marblesQue.clear();
+        if(totalBlock.size() >= 2) {
+            sortTotalBlock(totalBlock);
+            updateTargetBlocks(rainbow, totalBlock);
+        }
     }
 
-    public static void practiceSkill(int d, int s) {
-        castBlizzard(d, s);
-        setMarblesQueue();
-        while(true) {
-            if(!countSameMarbles()) {
-                break;
+    public static void changeTargetBlock(int rainbow, List<Node> totalBlock) {
+        targetBlock = new LinkedList<>(totalBlock);
+        maxRainbow = rainbow;
+    }
+
+    public static void updateTargetBlocks(int rainbow, List<Node> totalBlock) {
+        if(targetBlock.size() == 0) {
+            changeTargetBlock(rainbow, totalBlock);
+
+        } else {
+            if(totalBlock.size() > targetBlock.size()) {
+                changeTargetBlock(rainbow, totalBlock);
+
+            } else if(totalBlock.size() == targetBlock.size()) {
+                if(rainbow > maxRainbow) {
+                    changeTargetBlock(rainbow, totalBlock);
+                
+                } else if(rainbow == maxRainbow) {
+                    if(totalBlock.get(0).x > targetBlock.get(0).x) {
+                        changeTargetBlock(rainbow, totalBlock);
+
+                    } else if(totalBlock.get(0).x == targetBlock.get(0).x) {
+                        if(totalBlock.get(0).y > targetBlock.get(0).y) {
+                            changeTargetBlock(rainbow, totalBlock);
+                        }
+                    }
+                }
             }
         }
-        multiplyMarbles();
-        initMarblesArr();
-        setMarblesArr();
+    }
+
+    public static void removeTargetBlocks() {
+        totalScore += targetBlock.size() * targetBlock.size();
+
+        while(!targetBlock.isEmpty()) {
+            Node target = targetBlock.remove(0);
+            blockArr[target.x][target.y] = 0;
+        }
+    }
+
+    public static void downBlockArr() {
+        int ni;
+
+        for(int j=0; j<N; j++) {
+            for(int i=N-2; i>=0; i--) {
+                if(blockArr[i][j] == -1 || blockArr[i][j] == 0) continue;
+
+                ni = i;
+
+                while(ni+1 < N && blockArr[ni+1][j] == 0) {
+                    ni += 1;
+                }
+
+                if(ni != i) {
+                    blockArr[ni][j] = blockArr[i][j];
+                    blockArr[i][j] = 0;
+                }
+            }
+        }
+    }
+
+    public static int[][] rotateBlockArr() {
+        int[][] tempArr = new int[N][N];
+
+        for(int i=0; i<N; i++) {
+            for(int j=0; j<N; j++) {
+                tempArr[i][j] = blockArr[j][N-1-i];
+            }
+        }
+
+        return tempArr;
+    }
+
+    public static void startAutoPlay() {
+        while(true) {
+            searchBlock();
+            if(targetBlock.size() == 0) return;
+
+            removeTargetBlocks();
+            downBlockArr();
+            blockArr = rotateBlockArr();
+            downBlockArr();
+        }
     }
 
     public static void main(String[] args) throws IOException {
@@ -215,32 +188,22 @@ public class Main {
     
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
-        marblesArr = new int[N+1][N+1];
-        marblesQue = new LinkedList<>();
-        totalScore = 0;
 
-        for(int i=1; i<N+1; i++) {
+        blockArr = new int[N][N];
+        totalVisited = new boolean[N][N];
+
+        for(int i=0; i<N; i++) {
             st = new StringTokenizer(br.readLine());
-            for(int j=1; j<N+1; j++) {
-                marblesArr[i][j] = Integer.parseInt(st.nextToken());
+            for(int j=0; j<N; j++) {
+                blockArr[i][j] = Integer.parseInt(st.nextToken());
+
+                if(blockArr[i][j] == 0) {
+                    blockArr[i][j] = 7;
+                }
             }
         }
-        
-        for(int i=0; i<M; i++) {
-            st = new StringTokenizer(br.readLine());
-            int d = Integer.parseInt(st.nextToken());
-            int s = Integer.parseInt(st.nextToken());
 
-            practiceSkill(d, s);
-        }
-        
+        startAutoPlay();
         System.out.println(totalScore);
-    }
-
-    public static void printArr() {
-        for(int i=1; i<N+1; i++) {
-            System.out.println(Arrays.toString(marblesArr[i]));
-        }
-        System.out.println();
     }
 }
