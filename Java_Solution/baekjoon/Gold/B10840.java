@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B10840 {
     static final int MODE = 524287;
     static final int p = 31;
     static int result;
