@@ -1,85 +1,84 @@
 import java.io.*;
 import java.util.*;
 
+/*
+1. 롤링 해시 적용 -> 알파벳별 해시값 정하기
+2. 첫번째 문자열을 2중 for문으로 문자열마다 해시값 저장(List1), List1 정렬
+3. 두번째 문자열도 2중 for문으로 문자열마다 해시값 구하기,
+이후, 같은 해시값이 있는지 List1을 이진탐색으로 찾아서 업데이트하기
+
+*/
+
+
+
 public class Main {
     static final int MODE = 524287;
     static final int p = 31;
     static int result;
     static List<Integer> primes;
-    static List<int[]>[] hashs;
-    
+    static List<HashInfo>[] hashs;
 
-    public static long computeHashCode(String str) {
-        long hashCode = 0;
-        long p_pow = 1;
+    static class HashInfo {
+        int hashCode;
+        int len;
 
-        for(int i=0; i<str.length(); i++) {
-            hashCode = (hashCode + (str.charAt(i)-'a'+1) * p_pow) % MODE;
-            p_pow = p_pow * p % MODE;
+        HashInfo(int hashCode, int len) {
+            this.hashCode = hashCode;
+            this.len = len;
         }
-
-        return hashCode;
     }
 
-    public static boolean isPrime(int n) {
-        for(int i=2; i*i<=n; i++) {
-            if(n%i == 0) return false;
-        }
+    public static void setPrimeNumber() {
+        boolean[] visited = new boolean[100000];
 
-        return true;
-    }
+        for(int i=2; i<100000; i++) {
+            if(visited[i]) continue;
 
-    public static void getPrime() {
-        for(int i=2; i<=10000; i++) {
-            if(isPrime(i)) {
-                primes.add(i);
+            primes.add(i);
+            int num = i*2;
+
+            while(true) {
+                if(num >= 100000) break;
+
+                visited[num] = true;
+                num += i;
             }
         }
     }
 
-    public static void initHashs() {
-        for(int i=0; i<MODE; i++) {
-            hashs[i] = new ArrayList<>();
-        }
-    }
-
-    public static void compareString(String Sa, String Sb) {
-        int x, y, now, len;
-        boolean flag = false;
+    public static void setHashList(String Sa) {
+        int x, hashCode, num, len;
 
         for(int i=0; i<Sa.length(); i++) {
             x = 1;
-            y = 1;
+            hashCode = 1;
             for(int j=i; j<Sa.length(); j++) {
-                now = Sa.charAt(j) - 'a';
+                num = Sa.charAt(j) - 'a';
                 len = j - i + 1;
-                x = (x * primes.get(now)) % MODE;
-                y = (y * primes.get(now + 26)) % MODE;
-                hashs[x].add(new int[] {y, len});
+                x = (x * primes.get(num)) % MODE;
+                hashCode = (hashCode * primes.get(num + 26)) % MODE;
+                hashs[x].add(new HashInfo(hashCode, len));
             }
         }
+    }
+
+    public static void searchMaximumLength(String Sb) {
+        int x, hashCode, num, len;
 
         for(int i=0; i<Sb.length(); i++) {
             x = 1;
-            y = 1;
+            hashCode = 1;
+
             for(int j=i; j<Sb.length(); j++) {
-                now = Sb.charAt(j) - 'a';
+                num = Sb.charAt(j) - 'a';
                 len = j - i + 1;
-                x = (x * primes.get(now)) % MODE;
-                y = (y * primes.get(now + 26)) % MODE;
+                x = (x * primes.get(num)) % MODE;
+                hashCode = (hashCode * primes.get(num + 26)) % MODE;
 
-                flag = false;
-
-                for(int k=0; k<hashs[x].size(); k++) {
-                    int[] element = hashs[x].get(k);
-                    
-                    if(element[0] == y && element[1] == len) {
-                        flag = true;
+                for(HashInfo info: hashs[x]) {
+                    if(hashCode == info.hashCode && len == info.len) {
+                        result = Math.max(result, len);
                     }
-                }
-
-                if(flag) {
-                    result = Math.max(result, len);
                 }
             }
         }
@@ -96,9 +95,13 @@ public class Main {
         primes = new ArrayList<>();
         hashs = new ArrayList[MODE];
 
-        getPrime();
-        initHashs();
-        compareString(Sa, Sb);
+        for(int i=0; i<MODE; i++) {
+            hashs[i] = new ArrayList<>();
+        }
+
+        setPrimeNumber();
+        setHashList(Sa);  
+        searchMaximumLength(Sb);
 
         System.out.println(result);
     }
