@@ -2,20 +2,16 @@ import java.io.*;
 import java.util.*;
 
 /*
-1. 롤링 해시 적용 -> 알파벳별 해시값 정하기
-2. 첫번째 문자열을 2중 for문으로 문자열마다 해시값 저장(List1), List1 정렬
-3. 두번째 문자열도 2중 for문으로 문자열마다 해시값 구하기,
-이후, 같은 해시값이 있는지 List1을 이진탐색으로 찾아서 업데이트하기
-
+1. 알파벳별 해시값(소수) 적용
+2. 문자열마다 해시값 적용 -> 충돌방지를 위한 체이닝 기법
+3. 2번째 문자열 비교할 때, 같은 해시값의 같은 길이가 있는지 이진탐색
 */
-
-
 
 public class Main {
     static final int MODE = 524287;
     static final int p = 31;
     static int result;
-    static List<Integer> primes;
+    static int[] primes;
     static List<HashInfo>[] hashs;
 
     static class HashInfo {
@@ -29,70 +25,86 @@ public class Main {
     }
 
     public static void setPrimeNumber() {
-        boolean[] visited = new boolean[100000];
+        primes[0] = 1;
 
-        for(int i=2; i<100000; i++) {
-            if(visited[i]) continue;
-
-            primes.add(i);
-            int num = i*2;
-
-            while(true) {
-                if(num >= 100000) break;
-
-                visited[num] = true;
-                num += i;
-            }
+        for(int i=1; i<26; i++) {
+            primes[i] = (primes[i-1] * p) % MODE;
         }
     }
 
-    public static void setHashList(String Sa) {
-        int x, hashCode, num, len;
+    public static void setHashList(String str) {
+        int hashCode;
+        char[] strArr = str.toCharArray();
 
-        for(int i=0; i<Sa.length(); i++) {
-            x = 1;
-            hashCode = 1;
-            for(int j=i; j<Sa.length(); j++) {
-                num = Sa.charAt(j) - 'a';
-                len = j - i + 1;
-                x = (x * primes.get(num)) % MODE;
-                hashCode = (hashCode * primes.get(num + 26)) % MODE;
-                hashs[x].add(new HashInfo(hashCode, len));
+        for(int i=0; i<strArr.length; i++) {
+            hashCode = 0;
+
+            for(int j=i; j<strArr.length; j++) {
+                hashCode = (hashCode + primes[strArr[j]-'a']) % MODE;
+                hashs[hashCode].add(new HashInfo(hashCode, j-i+1));
             }
+        }
+
+        for(int i=0; i<MODE; i++) {
+            hashs[i].sort((HashInfo info1, HashInfo info2) -> 
+                            (info1.len - info2.len));
         }
     }
 
-    public static void searchMaximumLength(String Sb) {
-        int x, hashCode, num, len;
+    public static void searchMaximumLength(String str) {
+        int hashCode;
+        char[] strArr = str.toCharArray();
 
-        for(int i=0; i<Sb.length(); i++) {
-            x = 1;
-            hashCode = 1;
+        for(int i=0; i<strArr.length; i++) {
+            hashCode = 0;
 
-            for(int j=i; j<Sb.length(); j++) {
-                num = Sb.charAt(j) - 'a';
-                len = j - i + 1;
-                x = (x * primes.get(num)) % MODE;
-                hashCode = (hashCode * primes.get(num + 26)) % MODE;
+            for(int j=i; j<strArr.length; j++) {
+                hashCode = (hashCode + primes[strArr[j]-'a']) % MODE;
 
-                for(HashInfo info: hashs[x]) {
-                    if(hashCode == info.hashCode && len == info.len) {
-                        result = Math.max(result, len);
+                for(HashInfo info: hashs[hashCode]) {
+                    if(info.len == j-i+1) {
+                        result = Math.max(result, j-i+1);
+                        break;
                     }
                 }
+
+                // if(hashs[(int)hashCode].size() > 0) {
+                //     if(binarySearchHashCode((int)hashCode, j-i+1)) {
+                //         result = Math.max(result, j-i+1);
+                //     }
+                // }
             }
         }
+    }
+
+    public static boolean binarySearchHashCode(int hashCode, int len) {
+        int min = 0;
+        int max = hashs[hashCode].size()-1;
+        int mid;
+
+        while(min <= max) {
+            mid = (min + max)/2;
+
+            if(hashs[hashCode].get(mid).len > len) {
+                max = mid-1;
+            } else if(hashs[hashCode].get(mid).len < len) {
+                min = mid+1;
+            } else {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public static void main(String[] args) throws IOException {
         System.setIn(new FileInputStream("input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        // StringTokenizer st = new StringTokenizer(br.readLine());
 
-        String Sa = br.readLine();
-        String Sb = br.readLine();
+        String strA = br.readLine();
+        String strB = br.readLine();
         result = 0;
-        primes = new ArrayList<>();
+        primes = new int[26];
         hashs = new ArrayList[MODE];
 
         for(int i=0; i<MODE; i++) {
@@ -100,8 +112,8 @@ public class Main {
         }
 
         setPrimeNumber();
-        setHashList(Sa);  
-        searchMaximumLength(Sb);
+        setHashList(strA);
+        searchMaximumLength(strB);
 
         System.out.println(result);
     }
