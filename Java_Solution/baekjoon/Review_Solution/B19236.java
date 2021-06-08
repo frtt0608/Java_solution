@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class B19236 {
     static final int SIZE = 4;
     static final int fishNum = 17;
     static int maxNumber;
