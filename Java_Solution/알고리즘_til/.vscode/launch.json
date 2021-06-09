@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch RabinKarp",
+            "request": "launch",
+            "mainClass": "RabinKarp",
+            "projectName": "알고리즘_til_6762ea8"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - FloydSP",
             "request": "launch",
             "mainClass": "FloydSP",
