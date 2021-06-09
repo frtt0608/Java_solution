@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B16236 {
     static int N, sX, sY, sSize, feedCnt, spendTime;
     static int[] dx = {-1,0,1,0}, dy = {0,-1,0,1};
     static int[][] sea;
