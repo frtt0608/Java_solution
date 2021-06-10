@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch KMP",
+            "request": "launch",
+            "mainClass": "KMP",
+            "projectName": "알고리즘_til_6762ea8"
+        },
+        {
+            "type": "java",
             "name": "Launch RabinKarp",
             "request": "launch",
             "mainClass": "RabinKarp",
