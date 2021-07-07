@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B5430 {
     static boolean isRotate, isError;
     static List<String> strings;
 
