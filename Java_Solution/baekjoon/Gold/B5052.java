@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class B5052 {
     static int n;
     static String result;
     static String[] numbers;
